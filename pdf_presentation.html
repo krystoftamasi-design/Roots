@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Prezentace</title>
+    <!-- Modern Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #0a0a0c;
+            --container-bg: #111115;
+            --accent-color: #6366f1;
+            --text-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            /* Hide scrollbars but keep scrolling functional */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDxwYXRoIGQ9Ik0zOC42NjEsMjYuNDg1QzM4LjI2OCwyNy4wMTYgMzcuMjUyLDI2Ljc1OCAzNS45ODksMjUuODQ1QzM0LjY3NiwyNC44OTUgMzMuODk4LDIzLjg2MiAzMy40MjIsMjIuNjcxQzMzLjI4NSwyMi4zMyAzMy4wNDUsMjIuMDQyIDMyLjcyNywyMS44NTZMMzIuNDQzLDIxLjY5TDMyLjE1OSwyMS44NTZDMzEuODQxLDIyLjA0MiAzMS42MDEsMjIuMzMgMzEuNDY1LDIyLjY3MUMzMC45ODgsMjMuODU5IDMwLjIxLDI0Ljg5MyAyOC44OTcsMjUuODQ1QzI3LjYzNiwyNi43NTggMjYuNjE4LDI3LjAxNiAyNi4yMjYsMjYuNDg1QzI1LjcxOSwyNS43OTcgMjUuNjA2LDI0LjIwMiAyNi43NDEsMjMuMzgxQzI3LjUwMiwyMi44MzEgMjguNzY5LDIyLjMzNSAzMC42MzQsMjEuNjUzQzMwLjg3NiwyMS41NjQgMzEuMDk2LDIxLjQxOSAzMS4yNzMsMjEuMjI5TDMyLjM5OSwyMC4wMTlMMzIuNDgzLDIwLjAxOUwzMy42MDksMjEuMjI5QzMzLjc4NSwyMS40MTcgMzQuMDA2LDIxLjU2NCAzNC4yNDgsMjEuNjUzQzM2LjExMywyMi4zMzUgMzcuMzgsMjIuODMxIDM4LjE0MSwyMy4zODFDMzkuMjc2LDI0LjIwMiAzOS4xNjMsMjUuNzk5IDM4LjY1NiwyNi40ODVMMzguNjYxLDI2LjQ4NVoiIHN0eWxlPSJmaWxsOnJnYigyNTUsMzAsMCk7ZmlsbC1ydWxlOm5vbnplcm87Ii8+IDwvZz48L3N2Zz4=') 20 16, default !important;
+        }
+
+        a, button, [role="button"], input, select, textarea, label, [onclick], canvas {
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDwhLS0gQXJyb3doZWFkIC0tPiA8cGF0aCBkPSJNMzguNjYxLDI2LjQ4NUMzOC4yNjgsMjcuMDE2IDM3LjI1MiwyNi43NTggMzUuOTg5LDI1Ljg0NUMzNC42NzYsMjQuODk1IDMzLjg5OCwyMy44NjIgMzMuNDIyLDIyLjY3MUMzMy4yODUsMjIuMzMgMzMuMDQ1LDIyLjA0MiAzMi43MjcsMjEuODU2TDMyLjQ0MywyMS42OUwzMi4xNTksMjEuODU2QzMxLjg0MSwyMi4wNDIgMzEuNjAxLDIyLjMzIDMxLjQ2NSwyMi42NzFDMzAuOTg4LDIzLjg1OSAzMC4yMSwyNC44OTMgMjguODk3LDI1Ljg0NUMyNy42MzYsMjYuNzU4IDI2LjYxOCwyNy4wMTYgMjYuMjI2LDI2LjQ4NUMyNS43MTksMjUuNzk3IDI1LjYwNiwyNC4yMDIgMjYuNzQxLDIzLjM4MUMyNy41MDIsMjIuODMxIDI4Ljc2OSwyMi4zMzUgMzAuNjM0LDIxLjY1M0MzMC44NzYsMjEuNTY0IDMxLjA5NiwyMS40MTkgMzEuMjczLDIxLjIyOUwzMi4zOTksMjAuMDE5TDMyLjQ4MywyMC4wMTlMMzMuNjA5LDIxLjIyOUMzMy43ODUsMjEuNDE3IDM0LjAwNiwyMS41NjQgMzQuMjQ4LDIxLjY1M0MzNi4xMTMsMjIuMzM1IDM3LjM4LDIyLjgzMSAzOC4xNDEsMjMuMzgxQzM5LjI3NiwyNC4yMDIgMzkuMTYzLDI1Ljc5OSAzOC42NTYsMjYuNDg1TDM4LjY2MSwyNi40ODVaIiBzdHlsZT0iZmlsbDpyZ2IoMjU1LDMwLDApO2ZpbGwtcnVsZTpub256ZXJvOyIvPiA8IS0tIFRvcCBEb3QgLS0+IDxwYXRoIGQ9Ik0zMi40MjYsMTguMzYzQzMzLjE1NiwxOC4zNjMgMzMuNzQ4LDE3Ljc3NiAzMy43NDgsMTcuMDUyQzMzLjc0OCwxNi4zMjggMzMuMTU2LDE1Ljc0MiAzMi40MjYsMTUuNzQyQzMxLjY5NSwxNS43NDIgMzEuMTAzLDE2LjMyOCAzMS4xMDMsMTcuMDUyQzMxLjEwMywxNy43NzYgMzEuNjk1LDE4LjM2MyAzMi40MjYsMTguMzYzWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPCEtLSBCb3R0b20gRG90IC0tPiA8cGF0aCBkPSJNMzIuNDI2LDI3LjJDMzMuMDM0LDI3LjIgMzMuNTI4LDI2LjcxIDMzLjUyOCwyNi4xMDdDMzMuNTI4LDI1LjUwNCAzMy4wMzQsMjUuMDE1IDMyLjQyNiwyNS4wMTVDMzEuODE3LDI1LjAxNSAzMS4zMjQsMjUuNTA0IDMxLjMyNCwyNi4xMDdDMzEuMzI0LDI2LjcxIDMxLjgxNywyNy4yIDMyLjQyNiwyNy4yWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPC9nPjwvc3ZnPg==') 20 16, pointer !important;
+        }
+
+        #pdf-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0px; /* No gaps to look seamless, or small premium gaps */
+        }
+
+        .pdf-page-wrapper {
+            position: relative;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Loading indicator */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Ambient background glow */
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loading-text">Načítání PDF prezentace...</div>
+    </div>
+
+    <div id="pdf-container"></div>
+
+    <script>
+        // Tell PDF.js where the worker is located
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+        const url = 'Untitled.pdf';
+        const container = document.getElementById('pdf-container');
+        const loader = document.getElementById('loader');
+
+        // Load the PDF document
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            console.log('PDF loaded, total pages:', pdf.numPages);
+            
+            let pagesRendered = 0;
+            const totalPages = pdf.numPages;
+
+            // Render all pages
+            for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+                // Create wrapper for full screen slide experience
+                const wrapper = document.createElement('div');
+                wrapper.className = 'pdf-page-wrapper';
+                
+                // Add glowing background
+                const glow = document.createElement('div');
+                glow.className = 'glow';
+                wrapper.appendChild(glow);
+
+                const canvas = document.createElement('canvas');
+                wrapper.appendChild(canvas);
+                container.appendChild(wrapper);
+
+                renderPage(pdf, pageNum, canvas, () => {
+                    pagesRendered++;
+                    if (pagesRendered === totalPages) {
+                        // Hide loader once all pages are rendered
+                        loader.style.opacity = 0;
+                        setTimeout(() => {
+                            loader.style.visibility = 'hidden';
+                        }, 500);
+                    }
+                });
+            }
+        }).catch(err => {
+            console.error('Chyba při načítání PDF:', err);
+            document.querySelector('.loading-text').innerText = 'Chyba při načítání PDF. Ujistěte se, že soubor "Untitled.pdf" existuje v tomto adresáři.';
+            document.querySelector('.spinner').style.borderTopColor = '#ef4444';
+        });
+
+        function renderPage(pdf, pageNum, canvas, callback) {
+            pdf.getPage(pageNum).then(page => {
+                const ctx = canvas.getContext('2d');
+                
+                // Calculate scale to fit width
+                const viewport = page.getPageViewport ? page.getPageViewport({ scale: 1.0 }) : page.getViewport({ scale: 1.0 });
+                const windowWidth = window.innerWidth;
+                const scale = windowWidth / viewport.width;
+                
+                const scaledViewport = page.getViewport({ scale: scale });
+                
+                // Set high DPI canvas backing store if needed (optional, scale 1.5-2 for crispness)
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = scaledViewport.width * dpr;
+                canvas.height = scaledViewport.height * dpr;
+                canvas.style.width = `${scaledViewport.width}px`;
+                canvas.style.height = `${scaledViewport.height}px`;
+                
+                ctx.scale(dpr, dpr);
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: scaledViewport
+                };
+                
+                page.render(renderContext).promise.then(() => {
+                    callback();
+                });
+            });
+        }
+
+        // Re-render on resize to maintain full screen fit
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                location.reload(); // Quickest and cleanest way to recalculate all pages for fullscreen
+            }, 300);
+        });
+    </script>
+</body>
+</html>

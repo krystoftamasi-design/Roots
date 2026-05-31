@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Interaktivní online výstavní galerie prezentující dvacet jedinečných grafických elementů z umělecké sbírky Kořeny s plynulou animací a Montserrat typografií.">
+    <title>Kořeny — Výstava Grafických Elementů</title>
+    <!-- Google Fonts: Montserrat (only weight 400/regular as requested) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-main: #18191b;
+            --text-muted: #6c757d;
+            --accent-glow: rgba(0, 0, 0, 0.02);
+            --svg-fill: #000000;
+            --comp-photo-size: 420px;
+            /* enlarged display */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            /* Force all text to regular */
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 6rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDxwYXRoIGQ9Ik0zOC42NjEsMjYuNDg1QzM4LjI2OCwyNy4wMTYgMzcuMjUyLDI2Ljc1OCAzNS45ODksMjUuODQ1QzM0LjY3NiwyNC44OTUgMzMuODk4LDIzLjg2MiAzMy40MjIsMjIuNjcxQzMzLjI4NSwyMi4zMyAzMy4wNDUsMjIuMDQyIDMyLjcyNywyMS44NTZMMzIuNDQzLDIxLjY5TDMyLjE1OSwyMS44NTZDMzEuODQxLDIyLjA0MiAzMS42MDEsMjIuMzMgMzEuNDY1LDIyLjY3MUMzMC45ODgsMjMuODU5IDMwLjIxLDI0Ljg5MyAyOC44OTcsMjUuODQ1QzI3LjYzNiwyNi43NTggMjYuNjE4LDI3LjAxNiAyNi4yMjYsMjYuNDg1QzI1LjcxOSwyNS43OTcgMjUuNjA2LDI0LjIwMiAyNi43NDEsMjMuMzgxQzI3LjUwMiwyMi44MzEgMjguNzY5LDIyLjMzNSAzMC42MzQsMjEuNjUzQzMwLjg3NiwyMS41NjQgMzEuMDk2LDIxLjQxOSAzMS4yNzMsMjEuMjI5TDMyLjM5OSwyMC4wMTlMMzIuNDgzLDIwLjAxOUwzMy42MDksMjEuMjI5QzMzLjc4NSwyMS40MTcgMzQuMDA2LDIxLjU2NCAzNC4yNDgsMjEuNjUzQzM2LjExMywyMi4zMzUgMzcuMzgsMjIuODMxIDM4LjE0MSwyMy4zODFDMzkuMjc2LDI0LjIwMiAzOS4xNjMsMjUuNzk5IDM4LjY1NiwyNi40ODVMMzguNjYxLDI2LjQ4NVoiIHN0eWxlPSJmaWxsOnJnYigyNTUsMzAsMCk7ZmlsbC1ydWxlOm5vbnplcm87Ii8+IDwvZz48L3N2Zz4=') 20 16, default !important;
+        }
+
+        a, button, [role="button"], input, select, textarea, label, [onclick], .art-photo, #custom-settings-indicator button {
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDwhLS0gQXJyb3doZWFkIC0tPiA8cGF0aCBkPSJNMzguNjYxLDI2LjQ4NUMzOC4yNjgsMjcuMDE2IDM3LjI1MiwyNi43NTggMzUuOTg5LDI1Ljg0NUMzNC42NzYsMjQuODk1IDMzLjg5OCwyMy44NjIgMzMuNDIyLDIyLjY3MUMzMy4yODUsMjIuMzMgMzMuMDQ1LDIyLjA0MiAzMi43MjcsMjEuODU2TDMyLjQ0MywyMS42OUwzMi4xNTksMjEuODU2QzMxLjg0MSwyMi4wNDIgMzEuNjAxLDIyLjMzIDMxLjQ2NSwyMi42NzFDMzAuOTg4LDIzLjg1OSAzMC4yMSwyNC44OTMgMjguODk3LDI1Ljg0NUMyNy42MzYsMjYuNzU4IDI2LjYxOCwyNy4wMTYgMjYuMjI2LDI2LjQ4NUMyNS43MTksMjUuNzk3IDI1LjYwNiwyNC4yMDIgMjYuNzQxLDIzLjM4MUMyNy41MDIsMjIuODMxIDI4Ljc2OSwyMi4zMzUgMzAuNjM0LDIxLjY1M0MzMC44NzYsMjEuNTY0IDMxLjA5NiwyMS40MTkgMzEuMjczLDIxLjIyOUwzMi4zOTksMjAuMDE5TDMyLjQ4MywyMC4wMTlMMzMuNjA5LDIxLjIyOUMzMy43ODUsMjEuNDE3IDM0LjAwNiwyMS41NjQgMzQuMjQ4LDIxLjY1M0MzNi4xMTMsMjIuMzM1IDM3LjM4LDIyLjgzMSAzOC4xNDEsMjMuMzgxQzM5LjI3NiwyNC4yMDIgMzkuMTYzLDI1Ljc5OSAzOC42NTYsMjYuNDg1TDM4LjY2MSwyNi40ODVaIiBzdHlsZT0iZmlsbDpyZ2IoMjU1LDMwLDApO2ZpbGwtcnVsZTpub256ZXJvOyIvPiA8IS0tIFRvcCBEb3QgLS0+IDxwYXRoIGQ9Ik0zMi40MjYsMTguMzYzQzMzLjE1NiwxOC4zNjMgMzMuNzQ4LDE3Ljc3NiAzMy43NDgsMTcuMDUyQzMzLjc0OCwxNi4zMjggMzMuMTU2LDE1Ljc0MiAzMi40MjYsMTUuNzQyQzMxLjY5NSwxNS43NDIgMzEuMTAzLDE2LjMyOCAzMS4xMDMsMTcuMDUyQzMxLjEwMywxNy43NzYgMzEuNjk1LDE4LjM2MyAzMi40MjYsMTguMzYzWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPCEtLSBCb3R0b20gRG90IC0tPiA8cGF0aCBkPSJNMzIuNDI2LDI3LjJDMzMuMDM0LDI3LjIgMzMuNTI4LDI2LjcxIDMzLjUyOCwyNi4xMDdDMzMuNTI4LDI1LjUwNCAzMy4wMzQsMjUuMDE1IDMyLjQyNiwyNS4wMTVDMzEuODE3LDI1LjAxNSAzMS4zMjQsMjUuNTA0IDMxLjMyNCwyNi4xMDdDMzEuMzI0LDI2LjcxIDMxLjgxNywyNy4yIDMyLjQyNiwyNy4yWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPC9nPjwvc3ZnPg==') 20 16, pointer !important;
+        }
+
+        /* Ambient glows scattered in background */
+        .glow-point {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.015) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(50px);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 6rem;
+            max-width: 700px;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            /* Regular */
+            font-size: 3rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        header p {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            /* Regular */
+            color: var(--text-muted);
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+
+        /* Scattered Gallery Wrapper */
+        #gallery {
+            width: 95vw;
+            max-width: 1800px;
+            position: relative;
+            min-height: 4800px;
+            /* space for absolute scattered positioning */
+            margin-bottom: 6rem;
+        }
+
+        /* Custom Settings Indicator Bar */
+        #custom-settings-indicator {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        #custom-settings-indicator button {
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: inherit;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        #custom-settings-indicator button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* THE COMPONENT STYLES */
+        .art-element {
+            display: grid;
+            grid-template-areas: "text visual";
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            user-select: none;
+            position: relative;
+        }
+
+        /* Layout direction modifiers */
+        .art-element.layout-left {
+            grid-template-areas: "text visual";
+        }
+
+        .art-element.layout-right {
+            grid-template-areas: "visual text";
+        }
+
+        /* Circle Photo */
+        .art-photo {
+            grid-area: visual;
+            position: relative;
+            width: var(--comp-photo-size);
+            height: var(--comp-photo-size);
+            object-fit: cover;
+            border-radius: 50%;
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            align-self: center;
+            justify-self: center;
+        }
+
+        .art-element:hover .art-photo {
+            transform: scale(1.02);
+        }
+
+        /* SVG Background Container */
+        .art-svg-background {
+            grid-area: visual;
+            width: calc(var(--comp-photo-size) * 1.45);
+            height: calc(var(--comp-photo-size) * 1.45);
+            z-index: 1;
+            pointer-events: none;
+            transform-origin: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            justify-self: center;
+        }
+
+        .art-svg-pulse {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center center;
+        }
+
+        .art-svg-background svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--svg-fill);
+            opacity: 0.65;
+            transition: fill 0.4s ease, opacity 0.4s ease;
+        }
+
+        .art-element:hover svg {
+            opacity: 0.95;
+        }
+
+        /* 2. TEXT SECTION CONTAINER */
+        .art-text-container {
+            grid-area: text;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* Indicator dot (Pulsing micro-dot) */
+        .art-indicator-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .art-element:hover .art-indicator-dot {
+            transform: scale(1.3);
+        }
+
+        /* Text lines: all styled as Montserrat Regular (400) */
+        .art-text-lines {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .art-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 0.95rem;
+            line-height: 1.3;
+            letter-spacing: 0.05em;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .art-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 0.95rem;
+            line-height: 1.3;
+            letter-spacing: 0.03em;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        .art-author {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 0.95rem;
+            line-height: 1.3;
+            letter-spacing: 0.03em;
+            color: rgba(0, 0, 0, 0.4);
+            margin-top: 0.15rem;
+        }
+
+        /* Footer styling */
+        footer {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            margin-top: auto;
+            color: rgba(0, 0, 0, 0.3);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* Responsive collapse on smaller displays */
+        @media (max-width: 768px) {
+            #gallery {
+                min-height: auto !important;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 5rem;
+                padding-bottom: 5rem;
+            }
+
+            .art-element,
+            .art-element.layout-left,
+            .art-element.layout-right {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                margin: 0 auto !important;
+                display: flex;
+                flex-direction: column-reverse;
+                gap: 2.5rem;
+                text-align: center;
+            }
+
+            .art-text-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .art-text-lines {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Custom Settings Notification Bar -->
+    <div id="custom-settings-indicator" style="display: none;">
+        <span>Aktivní vlastní nastavení z konfigurátoru</span>
+        <button onclick="resetCustomSettings()">Obnovit výchozí</button>
+    </div>
+
+    <!-- Dynamic glows positioned behind elements -->
+    <div class="glow-point" style="top: 15%; left: 20%;"></div>
+    <div class="glow-point" style="top: 45%; left: 70%;"></div>
+    <div class="glow-point" style="top: 75%; left: 15%;"></div>
+
+    <header>
+        <h1>Kořeny</h1>
+        <p>Interaktivní výstavní galerie dvaceti organicky rozmístěných grafických prvků. Přejíždějte kurzorem po dílech
+            a sledujte chování animace.</p>
+    </header>
+
+    <!-- Scattered items container -->
+    <div id="gallery"></div>
+
+    <footer>
+        &copy; 2026 Kořeny &bull; Grafická Sbírka
+    </footer>
+
+    <script>
+        // Check for custom settings exported from component.html
+        let customSettings = null;
+        try {
+            const saved = localStorage.getItem('koreny_gallery_settings');
+            if (saved) {
+                customSettings = JSON.parse(saved);
+                document.getElementById('custom-settings-indicator').style.display = 'flex';
+            }
+        } catch (e) {
+            console.error("Failed to load customizer settings", e);
+        }
+
+        window.resetCustomSettings = function () {
+            localStorage.removeItem('koreny_gallery_settings');
+            window.location.reload();
+        };
+
+        // Word pool to generate unique combinations of art pieces
+        const poolTitles = ["Lůno", "Země", "Hlína", "Stín", "Křivka", "Dotek", "Ticho", "Popel", "Plamen", "Tvar", "Ozvěna", "Otisk", "Hlubina", "Vlna", "Pohyb", "Prostor", "Světlo", "Čas", "Návrat", "Zrod"];
+        const poolSubtitles = ["Barborky", "Prvoky", "Fragmenty", "Prameny", "Siluety", "Stopy", "Věky", "Kořeny", "Obrysy", "Odstíny"];
+        const poolAuthors = ["Ondřej Muroň", "Krystian M.", "Jan Novák", "Kateřina Š."];
+
+        const gallery = document.getElementById('gallery');
+        const elementsData = [];
+
+        // Inline SVG template string
+        const svgContent = `
+        <svg viewBox="0 0 988 1087" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+            <g transform="matrix(1,0,0,1,-14385,-5935)">
+                <g id="Artboard5" transform="matrix(0.722753,0,0,1,3988.065911,0)">
+                    <rect x="14385.176" y="5935" width="1366.176" height="1086.671" style="fill:none;"/>
+                    <g transform="matrix(-1.649062,-0,0,-1.191865,21491.630475,7862.046931)">
+                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                            <path d="M75.446,97.272C71.782,99.956 73.561,106.908 79.865,115.549C86.425,124.537 93.558,129.861 101.777,133.118C104.129,134.053 106.12,135.697 107.402,137.868L108.548,139.814L107.402,141.759C106.12,143.931 104.129,145.574 101.777,146.509C93.573,149.767 86.44,155.09 79.865,164.078C73.561,172.704 71.782,179.671 75.446,182.356C80.197,185.824 91.205,186.593 96.876,178.827C100.676,173.624 104.099,164.953 108.804,152.195C109.422,150.536 110.418,149.028 111.73,147.821L120.084,140.115L120.084,139.542L111.73,131.836C110.433,130.63 109.422,129.122 108.804,127.463C104.099,114.705 100.676,106.033 96.876,100.831C91.205,93.064 80.181,93.833 75.446,97.302L75.446,97.272Z" />
+                        </g>
+                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                            <path d="M205.696,97.272C209.361,99.956 207.581,106.908 201.278,115.549C194.718,124.537 187.585,129.861 179.366,133.118C177.013,134.053 175.023,135.697 173.741,137.868L172.595,139.814L173.741,141.759C175.023,143.931 177.013,145.574 179.366,146.509C187.57,149.767 194.703,155.09 201.278,164.078C207.581,172.704 209.361,179.671 205.696,182.356C200.946,185.824 189.937,186.593 184.267,178.827C180.467,173.624 177.043,164.953 172.338,152.195C171.72,150.536 170.725,149.028 169.413,147.821L161.058,140.115L161.058,139.542L169.413,131.836C170.71,130.63 171.72,129.122 172.338,127.463C177.043,114.705 180.467,106.033 184.267,100.831C189.937,93.064 200.961,93.833 205.696,97.302L205.696,97.272Z" />
+                        </g>
+                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                            <path d="M183.091,74.666C180.406,71.001 173.454,72.781 164.813,79.085C155.825,85.645 150.502,92.778 147.244,100.997C146.309,103.349 144.666,105.34 142.494,106.622L140.549,107.768L138.603,106.622C136.432,105.34 134.788,103.349 133.853,100.997C130.596,92.793 125.272,85.66 116.284,79.085C107.658,72.781 100.691,71.001 98.007,74.666C94.538,79.416 93.769,90.425 101.535,96.095C106.738,99.896 115.41,103.319 128.168,108.024C129.826,108.642 131.335,109.638 132.541,110.95L140.247,119.304L140.82,119.304L148.526,110.95C149.733,109.653 151.241,108.642 152.9,108.024C165.658,103.319 174.329,99.896 179.532,96.095C187.298,90.425 186.529,79.401 183.061,74.666L183.091,74.666Z" />
+                        </g>
+                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                            <path d="M183.091,204.917C180.406,208.581 173.454,206.802 164.813,200.498C155.825,193.938 150.502,186.805 147.244,178.586C146.309,176.233 144.666,174.243 142.494,172.961L140.549,171.815L138.603,172.961C136.432,174.243 134.788,176.233 133.853,178.586C130.596,186.79 125.272,193.923 116.284,200.498C107.658,206.802 100.691,208.581 98.007,204.917C94.538,200.166 93.769,189.157 101.535,183.487C106.738,179.687 115.41,176.264 128.168,171.559C129.826,170.94 131.335,169.945 132.541,168.633L140.247,160.278L140.82,160.278L148.526,168.633C149.733,169.93 151.241,170.94 152.9,171.559C165.658,176.264 174.329,179.687 179.532,183.487C187.298,189.157 186.529,200.181 183.061,204.917L183.091,204.917Z" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </svg>`;
+
+        // Generate 20 random elements
+        let elementIdx = 0;
+        let rowIndex = 0;
+        const rowHeight = 720;
+        const verticalOffsetRange = 80;
+
+        while (elementIdx < 20) {
+            // Decide how many elements in this row: 1, 2, or 3
+            const rand = Math.random();
+            let countInRow = 2;
+            if (rand < 0.25) {
+                countInRow = 1;
+            } else if (rand < 0.65) {
+                countInRow = 2;
+            } else {
+                countInRow = 3;
+            }
+
+            if (elementIdx + countInRow > 20) {
+                countInRow = 20 - elementIdx;
+            }
+
+            for (let j = 0; j < countInRow; j++) {
+                const title = poolTitles[elementIdx % poolTitles.length];
+                const subtitle = poolSubtitles[Math.floor(Math.random() * poolSubtitles.length)];
+                const author = poolAuthors[Math.floor(Math.random() * poolAuthors.length)];
+                const layoutDirection = Math.random() > 0.5 ? 'layout-left' : 'layout-right';
+
+                // Calculate vertical position
+                const top = rowIndex * rowHeight + 100 + Math.floor(Math.random() * verticalOffsetRange);
+
+                // Calculate horizontal position (left percentage)
+                let left = 0;
+                if (countInRow === 1) {
+                    left = 25 + Math.floor(Math.random() * 20); // 25% to 45%
+                } else if (countInRow === 2) {
+                    if (j === 0) {
+                        left = 5 + Math.floor(Math.random() * 15); // 5% to 20%
+                    } else {
+                        left = 52 + Math.floor(Math.random() * 15); // 52% to 67%
+                    }
+                } else {
+                    if (j === 0) {
+                        left = 0 + Math.floor(Math.random() * 6); // 0% to 6%
+                    } else if (j === 1) {
+                        left = 34 + Math.floor(Math.random() * 6); // 34% to 40%
+                    } else {
+                        left = 68 + Math.floor(Math.random() * 6); // 68% to 74%
+                    }
+                }
+
+                // Build element block with absolute coordinates (no art-visual-container wrapper)
+                const elHtml = `
+                <div class="art-element ${layoutDirection}" id="art-el-${elementIdx}" style="position: absolute; top: ${top}px; left: ${left}%;">
+                    <div class="art-text-container">
+                        <span class="art-indicator-dot"></span>
+                        <div class="art-text-lines">
+                            <span class="art-title">${title}</span>
+                            <span class="art-subtitle">${subtitle}</span>
+                            <span class="art-author">${author}</span>
+                        </div>
+                    </div>
+                    <div class="art-svg-background">
+                        <div class="art-svg-pulse">
+                            ${svgContent}
+                        </div>
+                    </div>
+                    <img src="grafika/circlephoto.png" class="art-photo" alt="${title} - ${subtitle}">
+                </div>`;
+
+                gallery.insertAdjacentHTML('beforeend', elHtml);
+
+                // Fetch the generated element and its children to map configuration
+                const elDom = document.getElementById(`art-el-${elementIdx}`);
+                const svgBg = elDom.querySelector('.art-svg-background');
+
+                // Set configuration (use custom exported values or random defaults)
+                let config;
+                if (customSettings) {
+                    config = {
+                        baseScale: customSettings.baseScale,
+                        pulseMax: customSettings.pulseMax,
+                        pulseDuration: customSettings.pulseDuration,
+                        hoverScale: customSettings.hoverScale,
+                        hoverSpeed: customSettings.hoverSpeed,
+                        returnSpeed: customSettings.returnSpeed
+                    };
+                } else {
+                    config = {
+                        baseScale: 1.15 + Math.random() * 0.3,       // 1.15 to 1.45
+                        pulseMax: 1.04 + Math.random() * 0.04,        // 1.04 to 1.08
+                        pulseDuration: 3.5 + Math.random() * 2.5,     // 3.5s to 6.0s (cycle duration)
+                        hoverScale: 1.25 + Math.random() * 0.15,      // 1.25 to 1.40
+                        hoverSpeed: 3.0 + Math.random() * 2.5,        // Grow lerp speed (3.0 to 5.5)
+                        returnSpeed: 1.2 + Math.random() * 1.0        // Return lerp speed (1.2 to 2.2)
+                    };
+                }
+
+                const data = {
+                    el: elDom,
+                    svgBg: svgBg,
+                    config: config,
+                    state: 'pulsing', // 'pulsing', 'hovering', 'returning'
+                    relativeScale: 1.0,
+                    phase: Math.random() * Math.PI * 2 // Randomized starting phase (out-of-sync breathing)
+                };
+
+                // Setup listeners for individual hover state machine tracking
+                elDom.addEventListener('mouseenter', () => {
+                    data.state = 'hovering';
+                });
+
+                elDom.addEventListener('mouseleave', () => {
+                    data.state = 'returning';
+                });
+
+                elementsData.push(data);
+                elementIdx++;
+            }
+            rowIndex++;
+        }
+
+        // Set dynamic height for absolute positioning container based on row count
+        gallery.style.height = (rowIndex * rowHeight + 200) + 'px';
+
+        // Global animation loop driving all 20 elements with frame-independent math
+        let lastTime = performance.now();
+
+        function animate(currentTime) {
+            let dt = (currentTime - lastTime) / 1000.0;
+            if (dt > 0.1) dt = 0.1; // Cap time step
+            lastTime = currentTime;
+
+            elementsData.forEach(item => {
+                const amplitude = item.config.pulseMax - 1.0;
+
+                if (item.state === 'pulsing') {
+                    // Out-of-sync breathing pulse using the element's custom duration
+                    item.phase += (2 * Math.PI / item.config.pulseDuration) * dt;
+                    item.relativeScale = 1.0 + amplitude * Math.sin(item.phase);
+                } else if (item.state === 'hovering') {
+                    // Grow to target hoverScale from current scale
+                    item.relativeScale += (item.config.hoverScale - item.relativeScale) * (1.0 - Math.exp(-item.config.hoverSpeed * dt));
+                } else if (item.state === 'returning') {
+                    // Shrink slowly back to the minimum pulse scale
+                    const target = 1.0 - amplitude;
+                    item.relativeScale += (target - item.relativeScale) * (1.0 - Math.exp(-item.config.returnSpeed * dt));
+
+                    // Once reached, transition back to the breathing loop cleanly
+                    if (Math.abs(item.relativeScale - target) < 0.0015) {
+                        item.relativeScale = target;
+                        item.state = 'pulsing';
+                        item.phase = -Math.PI / 2.0; // Reset phase to minimum of sine wave (-90deg)
+                    }
+                }
+
+                // Apply total scale (centered automatically by Grid layout)
+                const totalScale = item.config.baseScale * item.relativeScale;
+                item.svgBg.style.transform = `scale(${totalScale})`;
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+
+        // Smooth parallax effect for ambient background glow points
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 45;
+            const y = (e.clientY / window.innerHeight - 0.5) * 45;
+            const glows = document.querySelectorAll('.glow-point');
+            glows.forEach((glow, idx) => {
+                const speed = (idx + 1) * 0.4;
+                glow.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carp scale - O projektu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('The Seasons Light Italic.ttf') format('truetype');
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* Bez scrollu */
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            color: #000000;
+            position: relative;
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDxwYXRoIGQ9Ik0zOC42NjEsMjYuNDg1QzM4LjI2OCwyNy4wMTYgMzcuMjUyLDI2Ljc1OCAzNS45ODksMjUuODQ1QzM0LjY3NiwyNC44OTUgMzMuODk4LDIzLjg2MiAzMy40MjIsMjIuNjcxQzMzLjI4NSwyMi4zMyAzMy4wNDUsMjIuMDQyIDMyLjcyNywyMS44NTZMMzIuNDQzLDIxLjY5TDMyLjE1OSwyMS44NTZDMzEuODQxLDIyLjA0MiAzMS42MDEsMjIuMzMgMzEuNDY1LDIyLjY3MUMzMC45ODgsMjMuODU5IDMwLjIxLDI0Ljg5MyAyOC44OTcsMjUuODQ1QzI3LjYzNiwyNi43NTggMjYuNjE4LDI3LjAxNiAyNi4yMjYsMjYuNDg1QzI1LjcxOSwyNS43OTcgMjUuNjA2LDI0LjIwMiAyNi43NDEsMjMuMzgxQzI3LjUwMiwyMi44MzEgMjguNzY5LDIyLjMzNSAzMC42MzQsMjEuNjUzQzMwLjg3NiwyMS41NjQgMzEuMDk2LDIxLjQxOSAzMS4yNzMsMjEuMjI5TDMyLjM5OSwyMC4wMTlMMzIuNDgzLDIwLjAxOUwzMy42MDksMjEuMjI5QzMzLjc4NSwyMS40MTcgMzQuMDA2LDIxLjU2NCAzNC4yNDgsMjEuNjUzQzM2LjExMywyMi4zMzUgMzcuMzgsMjIuODMxIDM4LjE0MSwyMy4zODFDMzkuMjc2LDI0LjIwMiAzOS4xNjMsMjUuNzk5IDM4LjY1NiwyNi40ODVMMzguNjYxLDI2LjQ4NVoiIHN0eWxlPSJmaWxsOnJnYigyNTUsMzAsMCk7ZmlsbC1ydWxlOm5vbnplcm87Ii8+IDwvZz48L3N2Zz4=') 20 16, default !important;
+        }
+
+        a,
+        button,
+        [role="button"],
+        input,
+        select,
+        textarea,
+        label,
+        [onclick],
+        .debug-btn,
+        input[type="range"],
+        input[type="range"]::-webkit-slider-thumb {
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDwhLS0gQXJyb3doZWFkIC0tPiA8cGF0aCBkPSJNMzguNjYxLDI2LjQ4NUMzOC4yNjgsMjcuMDE2IDM3LjI1MiwyNi43NTggMzUuOTg5LDI1Ljg0NUMzNC42NzYsMjQuODk1IDMzLjg5OCwyMy44NjIgMzMuNDIyLDIyLjY3MUMzMy4yODUsMjIuMzMgMzMuMDQ1LDIyLjA0MiAzMi43MjcsMjEuODU2TDMyLjQ0MywyMS42OUwzMi4xNTksMjEuODU2QzMxLjg0MSwyMi4wNDIgMzEuNjAxLDIyLjMzIDMxLjQ2NSwyMi42NzFDMzAuOTg4LDIzLjg1OSAzMC4yMSwyNC44OTMgMjguODk3LDI1Ljg0NUMyNy42MzYsMjYuNzU4IDI2LjYxOCwyNy4wMTYgMjYuMjI2LDI2LjQ4NUMyNS43MTksMjUuNzk3IDI1LjYwNiwyNC4yMDIgMjYuNzQxLDIzLjM4MUMyNy41MDIsMjIuODMxIDI4Ljc2OSwyMi4zMzUgMzAuNjM0LDIxLjY1M0MzMC44NzYsMjEuNTY0IDMxLjA5NiwyMS40MTkgMzEuMjczLDIxLjIyOUwzMi4zOTksMjAuMDE5TDMyLjQ4MywyMC4wMTlMMzMuNjA5LDIxLjIyOUMzMy43ODUsMjEuNDE3IDM0LjAwNiwyMS41NjQgMzQuMjQ4LDIxLjY1M0MzNi4xMTMsMjIuMzM1IDM3LjM4LDIyLjgzMSAzOC4xNDEsMjMuMzgxQzM5LjI3NiwyNC4yMDIgMzkuMTYzLDI1Ljc5OSAzOC42NTYsMjYuNDg1TDM4LjY2MSwyNi40ODVaIiBzdHlsZT0iZmlsbDpyZ2IoMjU1LDMwLDApO2ZpbGwtcnVsZTpub256ZXJvOyIvPiA8IS0tIFRvcCBEb3QgLS0+IDxwYXRoIGQ9Ik0zMi40MjYsMTguMzYzQzMzLjE1NiwxOC4zNjMgMzMuNzQ4LDE3Ljc3NiAzMy43NDgsMTcuMDUyQzMzLjc0OCwxNi4zMjggMzMuMTU2LDE1Ljc0MiAzMi40MjYsMTUuNzQyQzMxLjY5NSwxNS43NDIgMzEuMTAzLDE2LjMyOCAzMS4xMDMsMTcuMDUyQzMxLjEwMywxNy43NzYgMzEuNjk1LDE4LjM2MyAzMi40MjYsMTguMzYzWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPCEtLSBCb3R0b20gRG90IC0tPiA8cGF0aCBkPSJNMzIuNDI2LDI3LjJDMzMuMDM0LDI3LjIgMzMuNTI4LDI2LjcxIDMzLjUyOCwyNi4xMDdDMzMuNTI4LDI1LjUwNCAzMy4wMzQsMjUuMDE1IDMyLjQyNiwyNS4wMTVDMzEuODE3LDI1LjAxNSAzMS4zMjQsMjUuNTA0IDMxLjMyNCwyNi4xMDdDMzEuMzI0LDI2LjcxIDMxLjgxNywyNy4yIDMyLjQyNiwyNy4yWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPC9nPjwvc3ZnPg==') 20 16, pointer !important;
+        }
+
+        .arrow-top-left:hover,
+        .arrow-mid-left:hover,
+        .arrow-mid-right:hover {
+            cursor: none !important;
+        }
+
+        /* Top Right "O projektu" */
+        .header-top-right {
+            position: absolute;
+            top: 40px;
+            right: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;
+        }
+
+        .header-top-right h1 {
+            font-family: 'The Seasons', 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 32px;
+            letter-spacing: 0.02em;
+        }
+
+        /* Large Bottom Text */
+        .bottom-container {
+            position: absolute;
+            bottom: 50px;
+            left: 5vw;
+            /* display: flex; */
+            align-items: baseline;
+            gap: 20px;
+            z-index: 20;
+        }
+
+        .bottom-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 30px;
+        }
+
+        .bottom-title {
+            font-family: 'The Seasons', serif;
+            font-size: 280px;
+            line-height: 1;
+            font-weight: 300;
+            font-style: italic;
+            color: #000;
+            padding-right: 50px;
+        }
+
+        /* Main center photo */
+        .center-photo-wrapper {
+            position: absolute;
+            top: 40%;
+            left: 34%;
+            transform: translate(-50%, -50%);
+            width: 42%;
+            aspect-ratio: 16/9;
+            z-index: 10;
+            background-color: #000;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            pointer-events: none;
+        }
+
+        .center-photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: scale(1);
+            opacity: 0;
+        }
+
+        .center-photo.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+
+        /* Info column on the right */
+        .info-column {
+            position: absolute;
+            right: 50px;
+            top: 100px;
+            bottom: 80px;
+            width: 35vw;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            z-index: 20;
+        }
+
+        .info-block {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .info-block strong {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .info-specs {
+            margin-top: 30px;
+        }
+
+        .info-specs div {
+            margin-bottom: 5px;
+        }
+
+        .info-text p {
+            margin-bottom: 20px;
+        }
+
+        .info-text {
+            margin-top: auto;
+        }
+
+        .info-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bg-lines-wrapper {
+            position: absolute;
+            top: 40%;
+            left: 34%;
+            width: 80%;
+            height: 70%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+
+        .bg-line-left,
+        .bg-line-right {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(agent/svg_symbol.svg);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.9;
+            will-change: transform;
+            transform-origin: center;
+        }
+
+        .bg-line-left {
+            clip-path: inset(0 50% 0 0);
+            transform: rotateX(var(--mouse-rot-x-left, 0deg)) rotateY(var(--mouse-rot-y-left, 0deg));
+        }
+
+        .bg-line-right {
+            clip-path: inset(0 0 0 50%);
+            transform: rotateX(var(--mouse-rot-x-right, 0deg)) rotateY(var(--mouse-rot-y-right, 0deg));
+        }
+
+        /* SVGs styling */
+        .svg-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow-top-left {
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .arrow-top-left:hover {
+            transform: scale(1.15);
+        }
+
+        .arrow-mid-left {
+            position: absolute;
+            top: 40%;
+            left: calc(34% - 21vw - 230px);
+            width: 110px;
+            height: 110px;
+            transform: translateY(-50%) rotateX(calc(var(--mouse-rot-x-left, 0deg) * 1.5)) rotateY(calc(var(--mouse-rot-y-left, 0deg) * 1.5));
+            transform-origin: center;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .arrow-mid-left:hover {
+            transform: translateY(-50%) scale(1.35) rotateX(calc(var(--mouse-rot-x-left, 0deg) * 1.5)) rotateY(calc(var(--mouse-rot-y-left, 0deg) * 1.5));
+        }
+
+        .arrow-mid-right {
+            position: absolute;
+            top: 40%;
+            left: calc(34% + 21vw + 150px);
+            width: 110px;
+            height: 110px;
+            transform: translateY(-50%) rotateX(calc(var(--mouse-rot-x-right, 0deg) * 1.5)) rotateY(calc(var(--mouse-rot-y-right, 0deg) * 1.5));
+            transform-origin: center;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .arrow-mid-right:hover {
+            transform: translateY(-50%) scale(1.35) rotateX(calc(var(--mouse-rot-x-right, 0deg) * 1.5)) rotateY(calc(var(--mouse-rot-y-right, 0deg) * 1.5));
+        }
+
+        /* Expanded hover area (2x area) for middle arrows */
+        .arrow-mid-left::before,
+        .arrow-mid-right::before {
+            content: '';
+            position: absolute;
+            top: -25px;
+            left: -25px;
+            right: -25px;
+            bottom: -25px;
+            cursor: pointer;
+        }
+
+        /* The lines connecting the mid arrows to the edges */
+        .horizontal-line-left {
+            position: absolute;
+            top: 40%;
+            left: calc(-1 * var(--shift-x));
+            width: calc(34% - 21vw - 220px + var(--shift-x));
+            height: 220px;
+            z-index: 10;
+        }
+
+        .horizontal-line-right {
+            position: absolute;
+            bottom: calc(100vh - 40%);
+            left: calc(34% + 21vw + 270px);
+            right: calc(var(--shift-x) - 3vw);
+            height: 140px;
+            z-index: 10;
+        }
+
+        /* Container to shift the entire composition slightly to the right */
+        .composition-container {
+            --shift-x: 4vw;
+            /* Zde můžete měnit posun celé kompozice doprava/doleva bez rozpadnutí */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: translateX(var(--shift-x));
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .arrow-mid-left,
+        .arrow-mid-right,
+        .bg-lines-wrapper {
+            pointer-events: auto;
+        }
+
+        /* Debug Menu */
+        #debug-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 350px;
+            max-width: 80vw;
+            height: 100vh;
+            background: #000000;
+            color: #ffffff;
+            z-index: 9999;
+            padding: 40px 30px;
+            font-family: 'Montserrat', sans-serif;
+            overflow-y: auto;
+            border-right: 1px solid #333333;
+        }
+
+        #debug-menu h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .debug-toggle-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .debug-toggle-group label {
+            margin-left: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            user-select: none;
+            color: #ffffff;
+        }
+
+        .debug-toggle-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #000000;
+        }
+
+        .debug-submenu {
+            margin-top: 30px;
+            border-top: 1px solid #333333;
+            padding-top: 20px;
+        }
+
+        .debug-submenu h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888888;
+        }
+
+        .debug-slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .slider-label-row label {
+            font-size: 12px;
+            color: #cccccc;
+            font-weight: 400;
+        }
+
+        .slider-label-row span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ff1e00;
+            background: #111111;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid #222222;
+        }
+
+        .debug-slider-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #222222;
+            outline: none;
+            border-radius: 3px;
+            accent-color: #ff1e00;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .debug-slider-group input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #222222;
+            border-radius: 3px;
+        }
+
+        .debug-slider-group input[type="range"]::-webkit-slider-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #ff1e00;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -5px;
+            transition: transform 0.1s ease;
+        }
+
+        .debug-slider-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .debug-button-group {
+            margin-top: 30px;
+        }
+
+        .debug-btn {
+            width: 100%;
+            padding: 12px;
+            background: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .debug-btn:hover {
+            background: #ff1e00;
+            border-color: #ff1e00;
+            color: #ffffff;
+        }
+
+        /* Pulsing Animation pro pozadí (každé zvlášť) */
+        @keyframes pulse-anim-bg-left {
+            0% {
+                transform: scale(1) rotateX(var(--mouse-rot-x-left, 0deg)) rotateY(var(--mouse-rot-y-left, 0deg));
+            }
+
+            50% {
+                transform: scale(1.03) rotateX(var(--mouse-rot-x-left, 0deg)) rotateY(var(--mouse-rot-y-left, 0deg));
+            }
+
+            100% {
+                transform: scale(1) rotateX(var(--mouse-rot-x-left, 0deg)) rotateY(var(--mouse-rot-y-left, 0deg));
+            }
+        }
+
+        @keyframes pulse-anim-bg-right {
+            0% {
+                transform: scale(1) rotateX(var(--mouse-rot-x-right, 0deg)) rotateY(var(--mouse-rot-y-right, 0deg));
+            }
+
+            50% {
+                transform: scale(1.03) rotateX(var(--mouse-rot-x-right, 0deg)) rotateY(var(--mouse-rot-y-right, 0deg));
+            }
+
+            100% {
+                transform: scale(1) rotateX(var(--mouse-rot-x-right, 0deg)) rotateY(var(--mouse-rot-y-right, 0deg));
+            }
+        }
+
+        @keyframes pulse-anim-left {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse-anim-right {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        body.pulsing-active .bg-line-left {
+            animation: pulse-anim-bg-left 6s infinite ease-in-out;
+        }
+
+        body.pulsing-active .bg-line-right {
+            animation: pulse-anim-bg-right 7s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Inline SVG definitions for the red motifs and black lines -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+        <defs>
+            <!-- Gradients for horizontal lines animation -->
+            <linearGradient id="grad-left" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop id="stop-left-1" offset="0%" stop-color="#000000" />
+                <stop id="stop-left-2" offset="100%" stop-color="#000000" />
+                <stop id="stop-left-3" offset="100%" stop-color="#ff1e00" />
+                <stop id="stop-left-4" offset="100%" stop-color="#ff1e00" />
+                <stop id="stop-left-5" offset="100%" stop-color="#000000" />
+                <stop id="stop-left-6" offset="100%" stop-color="#000000" />
+            </linearGradient>
+            <linearGradient id="grad-right" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop id="stop-right-1" offset="0%" stop-color="#000000" />
+                <stop id="stop-right-2" offset="0%" stop-color="#000000" />
+                <stop id="stop-right-3" offset="0%" stop-color="#ff1e00" />
+                <stop id="stop-right-4" offset="0%" stop-color="#ff1e00" />
+                <stop id="stop-right-5" offset="0%" stop-color="#000000" />
+                <stop id="stop-right-6" offset="100%" stop-color="#000000" />
+            </linearGradient>
+
+            <g id="sipky-all">
+                <g transform="matrix(1,0,0,1,-1995,0)">
+                    <g id="Artboard2" transform="matrix(0.089755,0,0,0.145508,2116.152163,0)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(0,25.425732,-41.219529,0,3868.881944,-300.5466)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                        <g transform="matrix(0,25.425732,-41.219529,0,3868.881944,-300.5466)">
+                            <path
+                                d="M32.426,18.363C33.156,18.363 33.748,17.776 33.748,17.052C33.748,16.328 33.156,15.742 32.426,15.742C31.695,15.742 31.103,16.328 31.103,17.052C31.103,17.776 31.695,18.363 32.426,18.363Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                        <g transform="matrix(0,25.425732,-41.219529,0,3868.881944,-300.5466)">
+                            <path
+                                d="M32.426,27.2C33.034,27.2 33.528,26.71 33.528,26.107C33.528,25.504 33.034,25.015 32.426,25.015C31.817,25.015 31.324,25.504 31.324,26.107C31.324,26.71 31.817,27.2 32.426,27.2Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                    </g>
+                    <g id="Artboard21" serif:id="Artboard2"
+                        transform="matrix(0.089755,0,0,0.145508,1818.183144,202.043007)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(0,-29.339864,47.565017,0,1817.512733,1491.814514)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                    </g>
+                    <g id="Artboard22" serif:id="Artboard2" transform="matrix(0.089755,0,0,0.145508,1818.183144,0)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(0,29.339864,-47.565017,0,4042.487267,-411.814514)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                    </g>
+                    <g id="Artboard23" serif:id="Artboard2"
+                        transform="matrix(0.089755,0,0,0.145508,2116.152163,202.043007)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(41.219529,0,-0,25.425732,1592.79726,-5.905714)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                        <g transform="matrix(41.219529,0,-0,25.425732,1592.79726,-5.905714)">
+                            <path
+                                d="M32.426,18.363C33.156,18.363 33.748,17.776 33.748,17.052C33.748,16.328 33.156,15.742 32.426,15.742C31.695,15.742 31.103,16.328 31.103,17.052C31.103,17.776 31.695,18.363 32.426,18.363Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                        <g transform="matrix(41.219529,0,-0,25.425732,1592.79726,-5.905714)">
+                            <path
+                                d="M32.426,27.2C33.034,27.2 33.528,26.71 33.528,26.107C33.528,25.504 33.034,25.015 32.426,25.015C31.817,25.015 31.324,25.504 31.324,26.107C31.324,26.71 31.817,27.2 32.426,27.2Z"
+                                style="fill:rgb(255,30,0);fill-rule:nonzero;" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="cara-leva">
+                <g transform="matrix(1,0,0,1,-3663.537432,-0)">
+                    <g id="Artboard5_left" transform="matrix(0.498804,0,0,0.365218,2093.353315,72.426468)">
+                        <rect x="3147.895" y="-198.31" width="1479.957" height="731.935" style="fill:none;" />
+                        <g transform="matrix(2.012625,0,0,2.73809,4479.200461,-1156.49081)">
+                            <path
+                                d="M-663.291,617.624C-663.436,616.891 -663.427,616.855 -663.013,616.233C-662.422,615.345 -662.257,615.528 -661.216,615.314C-623.094,607.494 -607.963,587.193 -574.273,567.344C-548.013,551.873 -525.958,546.14 -509.63,541.258C-495.848,537.137 -469.119,529.023 -428.612,517.653C-397.348,508.877 -376.471,503.701 -371.59,502.605C-311.798,489.177 -271.979,483.876 -259.741,481.87C-258.767,481.71 -234.921,476.884 -203.051,472.184C-201.512,471.957 -201.519,471.928 -194.859,471.373C-160.792,468.532 -128.45,467.931 -117.292,467.541C-109.256,467.261 -99.959,466.882 -58.391,466.283C-25.801,465.814 9.545,465.9 14.031,465.845L73.859,465.175C74.604,465.166 74.64,465.183 75.166,465.71C75.177,465.722 75.712,467.033 75.709,467.041C75.53,467.478 75.499,468.016 75.166,468.35C74.835,468.682 74.329,468.802 73.87,468.887C73.817,468.897 46.614,468.534 14.036,468.269C11.194,468.246 -44.48,468.414 -77.581,469.604C-99.733,470.4 -114.751,471.261 -121.216,471.636C-121.235,471.637 -131.269,472.337 -143.597,473.404C-175.105,476.129 -199.306,479.326 -200.505,479.415C-206.074,479.83 -226.463,480.993 -258.664,484.671C-259.375,484.752 -293.87,489.866 -348.478,502.653C-364.567,506.421 -364.551,506.471 -372.366,508.356C-377.783,509.662 -415.431,517.83 -458.361,529.362C-480.308,535.257 -516.681,545.34 -531.619,550.515C-586.175,569.412 -603.877,597.037 -637.762,611.781C-648.63,616.509 -657.72,618.393 -661.113,619.081C-661.224,619.103 -661.862,619.232 -662.503,618.803C-663.124,618.387 -663.145,618.357 -663.291,617.624Z"
+                                fill="inherit" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="cara-prava">
+                <g transform="matrix(1,0,0,1,-3663.537432,-440.769768)">
+                    <g id="Artboard5_right" transform="matrix(0.498804,0,0,0.365218,2093.353315,513.196236)">
+                        <rect x="3147.895" y="-198.31" width="1479.957" height="731.935" style="fill:none;" />
+                        <g transform="matrix(-2.012625,-0,0,-2.73809,3296.547139,1491.805859)">
+                            <path
+                                d="M-663.291,617.624C-663.436,616.891 -663.427,616.855 -663.013,616.233C-662.422,615.345 -662.257,615.528 -661.216,615.314C-623.094,607.494 -607.963,587.193 -574.273,567.344C-548.013,551.873 -525.958,546.14 -509.63,541.258C-495.848,537.137 -469.119,529.023 -428.612,517.653C-397.348,508.877 -376.471,503.701 -371.59,502.605C-311.798,489.177 -271.979,483.876 -259.741,481.87C-258.767,481.71 -234.921,476.884 -203.051,472.184C-201.512,471.957 -201.519,471.928 -194.859,471.373C-160.792,468.532 -128.45,467.931 -117.292,467.541C-109.256,467.261 -99.959,466.882 -58.391,466.283C-25.801,465.814 9.545,465.9 14.031,465.845L73.859,465.175C74.604,465.166 74.64,465.183 75.166,465.71C75.177,465.722 75.712,467.033 75.709,467.041C75.53,467.478 75.499,468.016 75.166,468.35C74.835,468.682 74.329,468.802 73.87,468.887C73.817,468.897 46.614,468.534 14.036,468.269C11.194,468.246 -44.48,468.414 -77.581,469.604C-99.733,470.4 -114.751,471.261 -121.216,471.636C-121.235,471.637 -131.269,472.337 -143.597,473.404C-175.105,476.129 -199.306,479.326 -200.505,479.415C-206.074,479.83 -226.463,480.993 -258.664,484.671C-259.375,484.752 -293.87,489.866 -348.478,502.653C-364.567,506.421 -364.551,506.471 -372.366,508.356C-377.783,509.662 -415.431,517.83 -458.361,529.362C-480.308,535.257 -516.681,545.34 -531.619,550.515C-586.175,569.412 -603.877,597.037 -637.762,611.781C-648.63,616.509 -657.72,618.393 -661.113,619.081C-661.224,619.103 -661.862,619.232 -662.503,618.803C-663.124,618.387 -663.145,618.357 -663.291,617.624Z"
+                                fill="inherit" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </defs>
+    </svg>
+
+    <!-- Top Left Arrow -->
+    <div class="arrow-top-left svg-icon">
+        <svg viewBox="357.134 253.611 54 54" width="100%" height="100%">
+            <use href="#sipky-all" />
+        </svg>
+    </div>
+
+    <!-- Top Right: O projektu -->
+    <div class="header-top-right">
+        <h1>O projektu</h1>
+        <div class="svg-icon">
+            <svg viewBox="361.975 49.288 54 54" width="100%" height="100%">
+                <use href="#sipky-all" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Wrapper containing arrows, lines, background lines, and photo to shift them left together -->
+    <div class="composition-container">
+        <!-- Background wavy lines -->
+        <div class="bg-lines-wrapper">
+            <div class="bg-line-left"></div>
+            <div class="bg-line-right"></div>
+        </div>
+
+        <!-- Horizontal Lines connecting to edges -->
+        <svg class="horizontal-line-left" viewBox="-1.83 115.22 740.03 152.44" preserveAspectRatio="none">
+            <use href="#cara-leva" fill="url(#grad-left)" />
+        </svg>
+        <svg class="horizontal-line-right" viewBox="0 -0.35 740.02 152.43" preserveAspectRatio="none">
+            <use href="#cara-prava" fill="url(#grad-right)" />
+        </svg>
+
+        <!-- Mid Left Arrow -->
+        <div class="arrow-mid-left svg-icon">
+            <svg viewBox="55.715 249.617 62 62" width="100%" height="100%">
+                <use href="#sipky-all" />
+            </svg>
+        </div>
+
+        <!-- Center Photo with dual layer layout for premium crossfading -->
+        <div class="center-photo-wrapper">
+            <div id="photo-layer-1" class="center-photo active" style="background-image: url('lůno01.png');"></div>
+            <div id="photo-layer-2" class="center-photo" style="background-image: url('kapr_foto2.jpg');"></div>
+        </div>
+
+        <!-- Mid Right Arrow -->
+        <div class="arrow-mid-right svg-icon">
+            <svg viewBox="54.616 47.574 62 62" width="100%" height="100%">
+                <use href="#sipky-all" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Right Info Column -->
+    <div class="info-column">
+        <div class="info-block info-specs">
+            <div>Autor: <strong>Veronika Konečná</strong></div>
+            <div>Objekt: <strong>Stojan na šperky</strong></div>
+            <div>Událost: <strong>Kapří šupina 15. května</strong></div>
+        </div>
+
+        <div class="info-block info-text">
+            <p>
+                <strong>CZ</strong><br>
+                Projekt Kapr je stojan na šperky, který se věnuje interpretaci štědrovečerní večeře, konkrétně zvyku
+                uschování kapřích šupin. Jejich nošení dle tradice přináší finanční stabilitu a v českém prostředí jsou
+                jedny z nejznámějších lidových symbolů bohatství, štěstí a ochrany. V konceptu dochází k posunu tohoto
+                zvyku do moderního kontextu. Šupina už neschovává peníze v kapse, ale samotný objekt střeží jiný druh
+                cennosti - šperky, které pro nás mají často silný osobní a emocionální význam.
+            </p>
+            <p>
+                <strong>ENG</strong><br>
+                The "Kapr" (Carp) project is a jewelry holder dedicated to the interpretation of the Christmas Eve
+                dinner, specifically the custom of keeping carp scales. According to tradition, carrying them brings
+                financial stability, and in the Czech environment, they are among the most well known folk symbols of
+                wealth, good fortune, and protection. The concept shifts this custom into a modern context. Instead of a
+                scale saving up money in a pocket, the object itself guards a different kind of valuables - jewelry,
+                which often carries a strong personal and emotional significance for us.
+            </p>
+        </div>
+    </div>
+
+    <!-- Bottom Left Title -->
+    <div class="bottom-container">
+        <div class="bottom-label">Název:</div>
+        <div class="bottom-title">Carp scale</div>
+    </div>
+
+    <!-- Debug Menu -->
+    <div id="debug-menu">
+        <h2>DEBUG MENU</h2>
+        <p style="margin-bottom: 20px; color: #888888; font-size: 12px;">Stiskněte klávesu "d" pro zavření/otevření.</p>
+        <div id="debug-toggles-container">
+            <div class="debug-toggle-group">
+                <input type="checkbox" id="toggle-pulsing" checked>
+                <label for="toggle-pulsing">Pulzování pozadí</label>
+            </div>
+            <div class="debug-toggle-group">
+                <input type="checkbox" id="toggle-3d" checked>
+                <label for="toggle-3d">3D rotace na myš</label>
+            </div>
+        </div>
+
+        <div class="debug-submenu">
+            <h3>Pokročilé Nastavení</h3>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-tilt-speed">Rychlost náklonu po kliku</label>
+                    <span id="val-tilt-speed">0.045</span>
+                </div>
+                <input type="range" id="slider-tilt-speed" min="0.01" max="0.2" step="0.005" value="0.045">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-tilt-angle">Úhel náklonu (stupně)</label>
+                    <span id="val-tilt-angle">15</span>
+                </div>
+                <input type="range" id="slider-tilt-angle" min="5" max="45" step="1" value="15">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-tilt-duration">Doba setrvání náklonu (ms)</label>
+                    <span id="val-tilt-duration">250</span>
+                </div>
+                <input type="range" id="slider-tilt-duration" min="100" max="2000" step="50" value="250">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-return-click">Rychlost návratu po kliku</label>
+                    <span id="val-return-click">0.01</span>
+                </div>
+                <input type="range" id="slider-return-click" min="0.01" max="0.2" step="0.005" value="0.01">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-return-leave">Rychlost návratu po opuštění</label>
+                    <span id="val-return-leave">0.019</span>
+                </div>
+                <input type="range" id="slider-return-leave" min="0.001" max="0.05" step="0.001" value="0.019">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-pulse-duration">Doba pulzu čar (ms)</label>
+                    <span id="val-pulse-duration">1300</span>
+                </div>
+                <input type="range" id="slider-pulse-duration" min="100" max="2000" step="50" value="1300">
+            </div>
+
+            <div class="debug-button-group">
+                <button id="btn-reset-defaults" class="debug-btn">Obnovit výchozí</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slideshow and Line Animation Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Výchozí konfigurace pro animace (uložená navždy v localStorage)
+            const DEFAULTS = {
+                pulsingActive: true,
+                rotate3DActive: true,
+                tiltSpeed: 0.045,
+                tiltAngle: 15,
+                tiltDuration: 250,
+                returnClickSpeed: 0.01,
+                returnLeaveSpeed: 0.019,
+                pulseDuration: 1300
+            };
+
+            let config = { ...DEFAULTS };
+
+            // Načtení konfigurace z localStorage
+            function loadConfig() {
+                try {
+                    const saved = localStorage.getItem('kapr_anim_config');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        config = { ...DEFAULTS, ...parsed };
+                    }
+                } catch (e) {
+                    console.error("Chyba při načítání konfigurace:", e);
+                }
+            }
+
+            // Uložení konfigurace do localStorage
+            function saveConfig() {
+                try {
+                    localStorage.setItem('kapr_anim_config', JSON.stringify(config));
+                } catch (e) {
+                    console.error("Chyba při ukládání konfigurace:", e);
+                }
+            }
+
+            const photos = ['lůno01.png', 'kapr_foto2.jpg'];
+            let currentIdx = 0;
+
+            const layer1 = document.getElementById('photo-layer-1');
+            const layer2 = document.getElementById('photo-layer-2');
+            let activeLayer = layer1;
+            let inactiveLayer = layer2;
+
+            function changePhoto(direction) {
+                if (direction === 'next') {
+                    currentIdx = (currentIdx + 1) % photos.length;
+                } else {
+                    currentIdx = (currentIdx - 1 + photos.length) % photos.length;
+                }
+
+                const nextLayer = inactiveLayer;
+                const prevLayer = activeLayer;
+
+                // Set image src
+                nextLayer.style.backgroundImage = `url('${photos[currentIdx]}')`;
+
+                // Set styles instantly with no transition
+                nextLayer.style.transition = 'none';
+                nextLayer.style.transform = 'scale(1)';
+                nextLayer.style.opacity = '1';
+                nextLayer.style.zIndex = '2';
+
+                prevLayer.style.transition = 'none';
+                prevLayer.style.transform = 'scale(1)';
+                prevLayer.style.opacity = '0';
+                prevLayer.style.zIndex = '1';
+
+                // Swap layers
+                activeLayer = nextLayer;
+                inactiveLayer = prevLayer;
+            }
+
+            // Left Line animation function (R to L)
+            let animLeftFrame = null;
+            function animateLeftLine() {
+                if (animLeftFrame) cancelAnimationFrame(animLeftFrame);
+
+                const duration = config.pulseDuration; // dynamically configured
+                const startTime = performance.now();
+
+                const stop2 = document.getElementById('stop-left-2');
+                const stop3 = document.getElementById('stop-left-3');
+                const stop4 = document.getElementById('stop-left-4');
+                const stop5 = document.getElementById('stop-left-5');
+
+                if (!stop2 || !stop3 || !stop4 || !stop5) return;
+
+                function update(time) {
+                    const elapsed = time - startTime;
+                    const linearP = Math.min(elapsed / duration, 1);
+                    // Ease-out cubic/quartic: very fast start, decelerating end
+                    const p = 1 - Math.pow(1 - linearP, 3.5);
+
+                    const lead = 1.0 - p * 1.25;
+                    const trail = 1.25 - p * 1.25;
+
+                    const t_lead = Math.max(0, Math.min(1, lead));
+                    const t_trail = Math.max(0, Math.min(1, trail));
+
+                    const offset2 = t_lead;
+                    const offset3 = t_lead;
+                    const offset4 = t_trail;
+                    const offset5 = t_trail;
+
+                    stop2.setAttribute('offset', (offset2 * 100) + '%');
+                    stop3.setAttribute('offset', (offset3 * 100) + '%');
+                    stop4.setAttribute('offset', (offset4 * 100) + '%');
+                    stop5.setAttribute('offset', (offset5 * 100) + '%');
+
+                    if (p < 1) {
+                        animLeftFrame = requestAnimationFrame(update);
+                    } else {
+                        // Reset to black
+                        stop2.setAttribute('offset', '100%');
+                        stop3.setAttribute('offset', '100%');
+                        stop4.setAttribute('offset', '100%');
+                        stop5.setAttribute('offset', '100%');
+                    }
+                }
+                animLeftFrame = requestAnimationFrame(update);
+            }
+
+            // Right Line animation function (L to R)
+            let animRightFrame = null;
+            function animateRightLine() {
+                if (animRightFrame) cancelAnimationFrame(animRightFrame);
+
+                const duration = config.pulseDuration; // dynamically configured
+                const startTime = performance.now();
+
+                const stop2 = document.getElementById('stop-right-2');
+                const stop3 = document.getElementById('stop-right-3');
+                const stop4 = document.getElementById('stop-right-4');
+                const stop5 = document.getElementById('stop-right-5');
+
+                if (!stop2 || !stop3 || !stop4 || !stop5) return;
+
+                function update(time) {
+                    const elapsed = time - startTime;
+                    const linearP = Math.min(elapsed / duration, 1);
+                    // Ease-out cubic/quartic: very fast start, decelerating end
+                    const p = 1 - Math.pow(1 - linearP, 3.5);
+
+                    const lead = 1.0 - p * 1.25;
+                    const trail = 1.25 - p * 1.25;
+
+                    const t_lead = Math.max(0, Math.min(1, lead));
+                    const t_trail = Math.max(0, Math.min(1, trail));
+
+                    const offset2 = t_lead;
+                    const offset3 = t_lead;
+                    const offset4 = t_trail;
+                    const offset5 = t_trail;
+
+                    stop2.setAttribute('offset', (offset2 * 100) + '%');
+                    stop3.setAttribute('offset', (offset3 * 100) + '%');
+                    stop4.setAttribute('offset', (offset4 * 100) + '%');
+                    stop5.setAttribute('offset', (offset5 * 100) + '%');
+
+                    if (p < 1) {
+                        animRightFrame = requestAnimationFrame(update);
+                    } else {
+                        // Reset to black
+                        stop2.setAttribute('offset', '100%');
+                        stop3.setAttribute('offset', '100%');
+                        stop4.setAttribute('offset', '100%');
+                        stop5.setAttribute('offset', '100%');
+                    }
+                }
+                animRightFrame = requestAnimationFrame(update);
+            }
+
+            // Variables for 3D rotation
+            let targetRotX = 0, targetRotY = 0;
+            let currentRotXLeft = 0, currentRotYLeft = 0;
+            let currentRotXRight = 0, currentRotYRight = 0;
+            let isTilting = false;
+            let isMouseInside = false;
+            let isReturningFromClick = false;
+            let clickReturnTimeout = null;
+
+            const bgLinesWrapper = document.querySelector('.bg-lines-wrapper');
+
+            if (bgLinesWrapper) {
+                window.addEventListener('mousemove', (e) => {
+                    if (!document.body.classList.contains('rotate-3d-active') || isTilting) return;
+
+                    const rect = bgLinesWrapper.getBoundingClientRect();
+                    const mx = e.clientX;
+                    const my = e.clientY;
+
+                    // Active only within the bounds of bgLinesWrapper
+                    if (mx >= rect.left && mx <= rect.right && my >= rect.top && my <= rect.bottom) {
+                        isReturningFromClick = false;
+                        if (clickReturnTimeout) {
+                            clearTimeout(clickReturnTimeout);
+                            clickReturnTimeout = null;
+                        }
+
+                        const x = ((mx - rect.left) / rect.width - 0.5) * 2;
+                        const y = ((my - rect.top) / rect.height - 0.5) * 2;
+
+                        isMouseInside = true;
+                        targetRotX = -y * 15;
+                        targetRotY = x * 15;
+                    } else {
+                        if (isMouseInside) {
+                            isMouseInside = false;
+                            if (isTilting) return;
+                            targetRotX = 0;
+                            targetRotY = 0;
+                        }
+                    }
+                });
+
+                document.addEventListener('mouseleave', () => {
+                    isMouseInside = false;
+                    if (isTilting) return;
+                    targetRotX = 0;
+                    targetRotY = 0;
+                });
+            }
+
+            function animate3D() {
+                // Rychlosti animací:
+                // - Při naklonění (kliknutí na šipku): velmi rychlý náklon (config.tiltSpeed)
+                // - Při vracení z kliknutí: rychlejší návrav (config.returnClickSpeed)
+                // - Při opuštění wrapperu: trochu pomalejší (config.returnLeaveSpeed)
+                // - Při běžném sledování myši: střední/plynulé (0.02)
+                let speedL = 0.02;
+                let speedR = 0.02;
+
+                if (isTilting) {
+                    speedL = config.tiltSpeed;
+                    speedR = config.tiltSpeed;
+                } else if (isReturningFromClick) {
+                    speedL = config.returnClickSpeed;
+                    speedR = config.returnClickSpeed;
+                } else if (!isMouseInside) {
+                    speedL = config.returnLeaveSpeed;
+                    speedR = config.returnLeaveSpeed;
+                }
+
+                if (document.body.classList.contains('rotate-3d-active')) {
+                    // Completely independent rotation scales
+                    currentRotXLeft += (targetRotX * 0.6 - currentRotXLeft) * speedL;
+                    currentRotYLeft += (targetRotY * 0.6 - currentRotYLeft) * speedL;
+
+                    currentRotXRight += (targetRotX * 1.4 - currentRotXRight) * speedR;
+                    currentRotYRight += (targetRotY * 1.4 - currentRotYRight) * speedR;
+                } else {
+                    currentRotXLeft += (0 - currentRotXLeft) * speedL;
+                    currentRotYLeft += (0 - currentRotYLeft) * speedL;
+                    currentRotXRight += (0 - currentRotXRight) * speedR;
+                    currentRotYRight += (0 - currentRotYRight) * speedR;
+                }
+
+                document.body.style.setProperty('--mouse-rot-x-left', currentRotXLeft + 'deg');
+                document.body.style.setProperty('--mouse-rot-y-left', currentRotYLeft + 'deg');
+                document.body.style.setProperty('--mouse-rot-x-right', currentRotXRight + 'deg');
+                document.body.style.setProperty('--mouse-rot-y-right', currentRotYRight + 'deg');
+
+                requestAnimationFrame(animate3D);
+            }
+            animate3D();
+
+            // Click triggers
+            const arrowLeft = document.querySelector('.arrow-mid-left');
+            const arrowRight = document.querySelector('.arrow-mid-right');
+            const arrowBack = document.querySelector('.arrow-top-left');
+
+            if (arrowLeft) {
+                arrowLeft.addEventListener('click', () => {
+                    if (isTilting) return; // ignore click ONLY while the active tilt is running
+
+                    changePhoto('prev');
+                    animateLeftLine();
+
+                    if (document.body.classList.contains('rotate-3d-active')) {
+                        isTilting = true;
+                        isReturningFromClick = false;
+                        if (clickReturnTimeout) {
+                            clearTimeout(clickReturnTimeout);
+                            clickReturnTimeout = null;
+                        }
+                        targetRotX = 0;
+                        targetRotY = -config.tiltAngle; // elegant moderate tilt (dynamically configured)
+                        setTimeout(() => {
+                            isTilting = false;
+                            targetRotX = 0; // Return to 0 immediately after tilting
+                            targetRotY = 0;
+                            isReturningFromClick = true;
+                            clickReturnTimeout = setTimeout(() => {
+                                isReturningFromClick = false;
+                            }, 1500); // 1.5 seconds is enough to return to center
+                        }, config.tiltDuration); // Snappy tilt holds for tiltDuration then returns
+                    }
+                });
+            }
+
+            if (arrowRight) {
+                arrowRight.addEventListener('click', () => {
+                    if (isTilting) return; // ignore click ONLY while the active tilt is running
+
+                    changePhoto('next');
+                    animateRightLine();
+
+                    if (document.body.classList.contains('rotate-3d-active')) {
+                        isTilting = true;
+                        isReturningFromClick = false;
+                        if (clickReturnTimeout) {
+                            clearTimeout(clickReturnTimeout);
+                            clickReturnTimeout = null;
+                        }
+                        targetRotX = 0;
+                        targetRotY = config.tiltAngle; // elegant moderate tilt (dynamically configured)
+                        setTimeout(() => {
+                            isTilting = false;
+                            targetRotX = 0; // Return to 0 immediately after tilting
+                            targetRotY = 0;
+                            isReturningFromClick = true;
+                            clickReturnTimeout = setTimeout(() => {
+                                isReturningFromClick = false;
+                            }, 1500); // 1.5 seconds is enough to return to center
+                        }, config.tiltDuration); // Snappy tilt holds for tiltDuration then returns
+                    }
+                });
+            }
+
+            if (arrowBack) {
+                arrowBack.addEventListener('click', () => {
+                    // Navigate back to index.html with a subtle fade-out transition
+                    document.body.style.transition = 'opacity 0.5s ease';
+                    document.body.style.opacity = '0';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 500);
+                });
+            }
+
+            // Debug Menu Toggle Logic
+            document.addEventListener('keydown', (e) => {
+                // Ignore keydown if user is typing in an input
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+                if (e.key === 'd' || e.key === 'D') {
+                    const debugMenu = document.getElementById('debug-menu');
+                    if (debugMenu.style.display === 'none' || debugMenu.style.display === '') {
+                        debugMenu.style.display = 'block';
+                    } else {
+                        debugMenu.style.display = 'none';
+                    }
+                }
+            });
+
+            // Toggle Pulzování
+            const togglePulsing = document.getElementById('toggle-pulsing');
+            if (togglePulsing) {
+                togglePulsing.addEventListener('change', (e) => {
+                    config.pulsingActive = e.target.checked;
+                    if (e.target.checked) {
+                        document.body.classList.add('pulsing-active');
+                    } else {
+                        document.body.classList.remove('pulsing-active');
+                    }
+                    saveConfig();
+                });
+            }
+
+            // Toggle 3D Rotace
+            const toggle3D = document.getElementById('toggle-3d');
+            if (toggle3D) {
+                toggle3D.addEventListener('change', (e) => {
+                    config.rotate3DActive = e.target.checked;
+                    if (e.target.checked) {
+                        document.body.classList.add('rotate-3d-active');
+                    } else {
+                        document.body.classList.remove('rotate-3d-active');
+                    }
+                    saveConfig();
+                });
+            }
+
+            // Slider UI references
+            const sliderTiltSpeed = document.getElementById('slider-tilt-speed');
+            const sliderTiltAngle = document.getElementById('slider-tilt-angle');
+            const sliderTiltDuration = document.getElementById('slider-tilt-duration');
+            const sliderReturnClick = document.getElementById('slider-return-click');
+            const sliderReturnLeave = document.getElementById('slider-return-leave');
+            const sliderPulseDuration = document.getElementById('slider-pulse-duration');
+
+            const valTiltSpeed = document.getElementById('val-tilt-speed');
+            const valTiltAngle = document.getElementById('val-tilt-angle');
+            const valTiltDuration = document.getElementById('val-tilt-duration');
+            const valReturnClick = document.getElementById('val-return-click');
+            const valReturnLeave = document.getElementById('val-return-leave');
+            const valPulseDuration = document.getElementById('val-pulse-duration');
+
+            const btnResetDefaults = document.getElementById('btn-reset-defaults');
+
+            // Synchronizace UI s konfigurací
+            function updateUIFromConfig() {
+                if (togglePulsing) {
+                    togglePulsing.checked = config.pulsingActive;
+                    if (config.pulsingActive) {
+                        document.body.classList.add('pulsing-active');
+                    } else {
+                        document.body.classList.remove('pulsing-active');
+                    }
+                }
+                if (toggle3D) {
+                    toggle3D.checked = config.rotate3DActive;
+                    if (config.rotate3DActive) {
+                        document.body.classList.add('rotate-3d-active');
+                    } else {
+                        document.body.classList.remove('rotate-3d-active');
+                    }
+                }
+
+                if (sliderTiltSpeed) { sliderTiltSpeed.value = config.tiltSpeed; valTiltSpeed.textContent = config.tiltSpeed; }
+                if (sliderTiltAngle) { sliderTiltAngle.value = config.tiltAngle; valTiltAngle.textContent = config.tiltAngle; }
+                if (sliderTiltDuration) { sliderTiltDuration.value = config.tiltDuration; valTiltDuration.textContent = config.tiltDuration; }
+                if (sliderReturnClick) { sliderReturnClick.value = config.returnClickSpeed; valReturnClick.textContent = config.returnClickSpeed; }
+                if (sliderReturnLeave) { sliderReturnLeave.value = config.returnLeaveSpeed; valReturnLeave.textContent = config.returnLeaveSpeed; }
+                if (sliderPulseDuration) { sliderPulseDuration.value = config.pulseDuration; valPulseDuration.textContent = config.pulseDuration; }
+            }
+
+            // Načtení a inicializace nastavení při startu
+            loadConfig();
+            updateUIFromConfig();
+
+            // Pomocná funkce pro nastavení eventů sliderů
+            function setupSlider(sliderEl, valEl, key, isFloat = false) {
+                if (!sliderEl) return;
+                sliderEl.addEventListener('input', (e) => {
+                    const val = isFloat ? parseFloat(e.target.value) : parseInt(e.target.value, 10);
+                    config[key] = val;
+                    valEl.textContent = e.target.value;
+                    saveConfig();
+                });
+            }
+
+            setupSlider(sliderTiltSpeed, valTiltSpeed, 'tiltSpeed', true);
+            setupSlider(sliderTiltAngle, valTiltAngle, 'tiltAngle', false);
+            setupSlider(sliderTiltDuration, valTiltDuration, 'tiltDuration', false);
+            setupSlider(sliderReturnClick, valReturnClick, 'returnClickSpeed', true);
+            setupSlider(sliderReturnLeave, valReturnLeave, 'returnLeaveSpeed', true);
+            setupSlider(sliderPulseDuration, valPulseDuration, 'pulseDuration', false);
+
+            if (btnResetDefaults) {
+                btnResetDefaults.addEventListener('click', () => {
+                    config = { ...DEFAULTS };
+                    saveConfig();
+                    updateUIFromConfig();
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>

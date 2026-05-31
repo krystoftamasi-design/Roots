@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktivní Element — Kořeny</title>
+    <!-- Google Fonts: Plus Jakarta Sans for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Light Theme (Default for the element) */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #18191b;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+            --accent-color: #000000;
+            --accent-glow: rgba(0, 0, 0, 0.05);
+            --svg-fill: #000000;
+
+            /* Component Specific variables */
+            --comp-spacing: 0.8rem;
+            --comp-photo-size: 420px;
+            --comp-svg-scale: 1.45;
+        }
+
+        /* Dark Theme modifier */
+        [data-theme="dark"] {
+            --bg-color: #0a0a0c;
+            --card-bg: #111115;
+            --text-main: #f1f3f5;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --accent-color: #ffffff;
+            --accent-glow: rgba(255, 255, 255, 0.08);
+            --svg-fill: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 3rem 1.5rem;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDxwYXRoIGQ9Ik0zOC42NjEsMjYuNDg1QzM4LjI2OCwyNy4wMTYgMzcuMjUyLDI2Ljc1OCAzNS45ODksMjUuODQ1QzM0LjY3NiwyNC44OTUgMzMuODk4LDIzLjg2MiAzMy40MjIsMjIuNjcxQzMzLjI4NSwyMi4zMyAzMy4wNDUsMjIuMDQyIDMyLjcyNywyMS44NTZMMzIuNDQzLDIxLjY5TDMyLjE1OSwyMS44NTZDMzEuODQxLDIyLjA0MiAzMS42MDEsMjIuMzMgMzEuNDY1LDIyLjY3MUMzMC45ODgsMjMuODU5IDMwLjIxLDI0Ljg5MyAyOC44OTcsMjUuODQ1QzI3LjYzNiwyNi43NTggMjYuNjE4LDI3LjAxNiAyNi4yMjYsMjYuNDg1QzI1LjcxOSwyNS43OTcgMjUuNjA2LDI0LjIwMiAyNi43NDEsMjMuMzgxQzI3LjUwMiwyMi44MzEgMjguNzY5LDIyLjMzNSAzMC42MzQsMjEuNjUzQzMwLjg3NiwyMS41NjQgMzEuMDk2LDIxLjQxOSAzMS4yNzMsMjEuMjI5TDMyLjM5OSwyMC4wMTlMMzIuNDgzLDIwLjAxOUwzMy42MDksMjEuMjI5QzMzLjc4NSwyMS40MTcgMzQuMDA2LDIxLjU2NCAzNC4yNDgsMjEuNjUzQzM2LjExMywyMi4zMzUgMzcuMzgsMjIuODMxIDM4LjE0MSwyMy4zODFDMzkuMjc2LDI0LjIwMiAzOS4xNjMsMjUuNzk5IDM4LjY1NiwyNi40ODVMMzguNjYxLDI2LjQ4NVoiIHN0eWxlPSJmaWxsOnJnYigyNTUsMzAsMCk7ZmlsbC1ydWxlOm5vbnplcm87Ii8+IDwvZz48L3N2Zz4=') 20 16, default !important;
+        }
+
+        a, button, [role="button"], input, select, textarea, label, [onclick], .toggle-btn, .tab-btn, .copy-btn, .art-photo, #interactive-element, input[type="range"], input[type="range"]::-webkit-slider-thumb {
+            cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDwhLS0gQXJyb3doZWFkIC0tPiA8cGF0aCBkPSJNMzguNjYxLDI2LjQ4NUMzOC4yNjgsMjcuMDE2IDM3LjI1MiwyNi43NTggMzUuOTg5LDI1Ljg0NUMzNC42NzYsMjQuODk1IDMzLjg5OCwyMy44NjIgMzMuNDIyLDIyLjY3MUMzMy4yODUsMjIuMzMgMzMuMDQ1LDIyLjA0MiAzMi43MjcsMjEuODU2TDMyLjQ0MywyMS42OUwzMi4xNTksMjEuODU2QzMxLjg0MSwyMi4wNDIgMzEuNjAxLDIyLjMzIDMxLjQ2NSwyMi42NzFDMzAuOTg4LDIzLjg1OSAzMC4yMSwyNC44OTMgMjguODk3LDI1Ljg0NUMyNy42MzYsMjYuNzU4IDI2LjYxOCwyNy4wMTYgMjYuMjI2LDI2LjQ4NUMyNS43MTksMjUuNzk3IDI1LjYwNiwyNC4yMDIgMjYuNzQxLDIzLjM4MUMyNy41MDIsMjIuODMxIDI4Ljc2OSwyMi4zMzUgMzAuNjM0LDIxLjY1M0MzMC44NzYsMjEuNTY0IDMxLjA5NiwyMS40MTkgMzEuMjczLDIxLjIyOUwzMi4zOTksMjAuMDE5TDMyLjQ4MywyMC4wMTlMMzMuNjA5LDIxLjIyOUMzMy43ODUsMjEuNDE3IDM0LjAwNiwyMS41NjQgMzQuMjQ4LDIxLjY1M0MzNi4xMTMsMjIuMzM1IDM3LjM4LDIyLjgzMSAzOC4xNDEsMjMuMzgxQzM5LjI3NiwyNC4yMDIgMzkuMTYzLDI1Ljc5OSAzOC42NTYsMjYuNDg1TDM4LjY2MSwyNi40ODVaIiBzdHlsZT0iZmlsbDpyZ2IoMjU1LDMwLDApO2ZpbGwtcnVsZTpub256ZXJvOyIvPiA8IS0tIFRvcCBEb3QgLS0+IDxwYXRoIGQ9Ik0zMi40MjYsMTguMzYzQzMzLjE1NiwxOC4zNjMgMzMuNzQ4LDE3Ljc3NiAzMy43NDgsMTcuMDUyQzMzLjc0OCwxNi4zMjggMzMuMTU2LDE1Ljc0MiAzMi40MjYsMTUuNzQyQzMxLjY5NSwxNS43NDIgMzEuMTAzLDE2LjMyOCAzMS4xMDMsMTcuMDUyQzMxLjEwMywxNy43NzYgMzEuNjk1LDE4LjM2MyAzMi40MjYsMTguMzYzWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPCEtLSBCb3R0b20gRG90IC0tPiA8cGF0aCBkPSJNMzIuNDI2LDI3LjJDMzMuMDM0LDI3LjIgMzMuNTI4LDI2LjcxIDMzLjUyOCwyNi4xMDdDMzMuNTI4LDI1LjUwNCAzMy4wMzQsMjUuMDE1IDMyLjQyNiwyNS4wMTVDMzEuODE3LDI1LjAxNSAzMS4zMjQsMjUuNTA0IDMxLjMyNCwyNi4xMDdDMzEuMzI0LDI2LjcxIDMxLjgxNywyNy4yIDMyLjQyNiwyNy4yWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPC9nPjwvc3ZnPg==') 20 16, pointer !important;
+        }
+
+        /* Ambient background glow */
+        .ambient-glow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 50vh;
+            background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            font-weight: 300;
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Premium Toggle Switch button */
+        .toggle-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--accent-color);
+            background-color: var(--card-bg);
+        }
+
+        .toggle-btn.active {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border-color: var(--accent-color);
+        }
+
+        /* Divider inside controls */
+        .divider {
+            width: 1px;
+            height: 20px;
+            background-color: var(--border-color);
+        }
+
+        /* Sliders Panel */
+        .sliders-panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s ease;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .slider-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slider-group label span {
+            color: var(--text-main);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .slider-group input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-color);
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+
+        /* --- PREVIEW WORKSPACE --- */
+        .preview-workspace {
+            width: 100%;
+            max-width: 850px;
+            min-height: 400px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+            margin-bottom: 3.5rem;
+            position: relative;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        /* ========================================================
+           THE ART COMPONENT CORE STYLES
+           ======================================================== */
+
+        /* Parent Container */
+        .art-element {
+            display: grid;
+            grid-template-areas: "text visual";
+            align-items: center;
+            justify-content: center;
+            gap: var(--comp-spacing);
+            user-select: none;
+        }
+
+        /* Layout modifications */
+        .art-element.layout-left {
+            grid-template-areas: "text visual";
+            /* Text Left, Image Right */
+        }
+
+        .art-element.layout-right {
+            grid-template-areas: "visual text";
+            /* Text Right, Image Left */
+        }
+
+        /* Circle Photo */
+        .art-photo {
+            grid-area: visual;
+            position: relative;
+            width: var(--comp-photo-size);
+            height: var(--comp-photo-size);
+            object-fit: cover;
+            border-radius: 50%;
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            align-self: center;
+            justify-self: center;
+        }
+
+        .art-element:hover .art-photo {
+            transform: scale(1.02);
+        }
+
+        /* SVG Background Container */
+        .art-svg-background {
+            grid-area: visual;
+            width: calc(var(--comp-photo-size) * var(--comp-svg-scale));
+            height: calc(var(--comp-photo-size) * var(--comp-svg-scale));
+            z-index: 1;
+            pointer-events: none;
+            transform-origin: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            justify-self: center;
+        }
+
+        /* SVG Inner Animator (Pulse position keeper) */
+        .art-svg-pulse {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center center;
+        }
+
+        /* Inline SVG styling */
+        .art-svg-background svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--svg-fill);
+            transition: fill 0.4s ease;
+        }
+
+        /* ==============================================
+           INTERACTIVE HOVER BEHAVIOR
+           ============================================== */
+
+        /* 2. TEXT SECTION CONTAINER */
+        .art-text-container {
+            grid-area: text;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        /* Interactive Dot next to text */
+        .art-indicator-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: inline-block;
+            transition: background-color 0.4s ease, transform 0.3s ease;
+        }
+
+        /* Micro animation for the dot on hover */
+        .art-element:hover .art-indicator-dot {
+            transform: scale(1.25);
+        }
+
+        /* Text lines container */
+        .art-text-lines {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .art-title {
+            font-size: 1.05rem;
+            font-weight: 400;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            color: var(--text-main);
+        }
+
+        .art-subtitle {
+            font-size: 1.05rem;
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--text-main);
+            margin-top: 0.15rem;
+        }
+
+        .art-author {
+            font-size: 1.05rem;
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        /* Responsive collapse on smaller displays */
+        @media (max-width: 650px) {
+            .controls-panel {
+                flex-direction: column;
+                border-radius: 20px;
+                padding: 1.2rem;
+                gap: 1rem;
+                width: 100%;
+                max-width: 350px;
+                align-items: stretch;
+            }
+
+            .control-group {
+                justify-content: space-between;
+            }
+
+            .divider {
+                display: none;
+            }
+
+            .art-element,
+            .art-element.layout-left,
+            .art-element.layout-right {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: 3rem;
+                text-align: center;
+            }
+
+            .art-text-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .art-text-lines {
+                text-align: center;
+            }
+        }
+
+        /* ========================================================
+           CODE CODE SHOWCASE & COPY MODULE
+           ======================================================== */
+
+        .code-showcase {
+            width: 100%;
+            max-width: 850px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.01);
+            transition: all 0.3s ease;
+        }
+
+        .showcase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .copy-btn {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 0.5rem 1.1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .code-container {
+            padding: 1.5rem;
+            margin: 0;
+            overflow-x: auto;
+            max-height: 450px;
+        }
+
+        pre {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .code-panel {
+            display: none;
+        }
+
+        .code-panel.active {
+            display: block;
+        }
+
+        /* SVG icon style */
+        .icon {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <header>
+        <h1>Interaktivní Grafický Element</h1>
+        <p>Prezentace nového animovaného bloku s pulzujícím SVG pozadím a textem. Vyberte si uspořádání a zkopírujte
+            kód.</p>
+    </header>
+
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+        <div class="control-group">
+            <span class="control-label">Pozice textu:</span>
+            <button class="toggle-btn active" id="layout-left-btn" onclick="setLayout('left')">Vlevo</button>
+            <button class="toggle-btn" id="layout-right-btn" onclick="setLayout('right')">Vpravo</button>
+        </div>
+        <div class="divider"></div>
+        <div class="control-group">
+            <span class="control-label">Motiv:</span>
+            <button class="toggle-btn active" id="theme-light-btn" onclick="setTheme('light')">Světlý</button>
+            <button class="toggle-btn" id="theme-dark-btn" onclick="setTheme('dark')">Tmavý</button>
+        </div>
+        <div class="divider"></div>
+        <div class="control-group">
+            <button class="toggle-btn" id="export-btn" onclick="exportSettings()"
+                style="background-color: var(--accent-color); color: var(--bg-color); border-color: var(--accent-color); font-weight: 600;">Exportovat
+                do Galerie</button>
+        </div>
+    </div>
+
+    <!-- Sliders Panel -->
+    <div class="sliders-panel">
+        <div class="slider-group">
+            <label for="scale-slider">Základní velikost (base scale): <span id="scale-val">1.45</span>x</label>
+            <input type="range" id="scale-slider" min="1.0" max="2.0" step="0.05" value="1.45"
+                oninput="updateSvgScale(this.value)">
+        </div>
+        <div class="slider-group">
+            <label for="pulse-slider">Max. velikost cyklu (max scale): <span id="pulse-val">1.05</span>x</label>
+            <input type="range" id="pulse-slider" min="1.0" max="1.25" step="0.01" value="1.05"
+                oninput="updateSvgPulse(this.value)">
+        </div>
+        <div class="slider-group">
+            <label for="pulse-duration-slider">Doba cyklu dýchání (speed/duration): <span
+                    id="pulse-duration-val">4.5</span>s</label>
+            <input type="range" id="pulse-duration-slider" min="1.0" max="10.0" step="0.5" value="4.5"
+                oninput="updatePulseDuration(this.value)">
+        </div>
+        <div class="slider-group">
+            <label for="hover-slider">Velikost při hoveru (hover scale): <span id="hover-val">1.22</span>x</label>
+            <input type="range" id="hover-slider" min="1.0" max="2.5" step="0.05" value="1.22"
+                oninput="updateSvgHover(this.value)">
+        </div>
+        <div class="slider-group">
+            <label for="hover-speed-slider">Rychlost růstu (hover grow): <span id="hover-speed-val">4.0</span></label>
+            <input type="range" id="hover-speed-slider" min="1.0" max="10.0" step="0.5" value="4.0"
+                oninput="updateHoverSpeed(this.value)">
+        </div>
+        <div class="slider-group">
+            <label for="return-speed-slider">Rychlost návratu (slow return): <span
+                    id="return-speed-val">1.5</span></label>
+            <input type="range" id="return-speed-slider" min="0.2" max="5.0" step="0.1" value="1.5"
+                oninput="updateReturnSpeed(this.value)">
+        </div>
+    </div>
+
+    <!-- Preview Workspace -->
+    <div class="preview-workspace">
+
+        <!-- THE COMPONENT -->
+        <div class="art-element layout-left" id="interactive-element">
+
+            <!-- Text container (Left/Right) -->
+            <div class="art-text-container">
+                <span class="art-indicator-dot"></span>
+                <div class="art-text-lines">
+                    <span class="art-title">Lůno</span>
+                    <span class="art-subtitle">Barborky</span>
+                    <span class="art-author">Ondřej Muroň</span>
+                </div>
+            </div>
+
+            <!-- Visual interactive block -->
+            <div class="art-svg-background">
+                <div class="art-svg-pulse">
+                    <!-- Inline SVG symbol -->
+                    <svg viewBox="0 0 988 1087" xmlns="http://www.w3.org/2000/svg"
+                        style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                        <g transform="matrix(1,0,0,1,-14385,-5935)">
+                            <g id="Artboard5" transform="matrix(0.722753,0,0,1,3988.065911,0)">
+                                <rect x="14385.176" y="5935" width="1366.176" height="1086.671"
+                                    style="fill:none;" />
+                                <g transform="matrix(-1.649062,-0,0,-1.191865,21491.630475,7862.046931)">
+                                    <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                        <path
+                                            d="M75.446,97.272C71.782,99.956 73.561,106.908 79.865,115.549C86.425,124.537 93.558,129.861 101.777,133.118C104.129,134.053 106.12,135.697 107.402,137.868L108.548,139.814L107.402,141.759C106.12,143.931 104.129,145.574 101.777,146.509C93.573,149.767 86.44,155.09 79.865,164.078C73.561,172.704 71.782,179.671 75.446,182.356C80.197,185.824 91.205,186.593 96.876,178.827C100.676,173.624 104.099,164.953 108.804,152.195C109.422,150.536 110.418,149.028 111.73,147.821L120.084,140.115L120.084,139.542L111.73,131.836C110.433,130.63 109.422,129.122 108.804,127.463C104.099,114.705 100.676,106.033 96.876,100.831C91.205,93.064 80.181,93.833 75.446,97.302L75.446,97.272Z" />
+                                    </g>
+                                    <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                        <path
+                                            d="M205.696,97.272C209.361,99.956 207.581,106.908 201.278,115.549C194.718,124.537 187.585,129.861 179.366,133.118C177.013,134.053 175.023,135.697 173.741,137.868L172.595,139.814L173.741,141.759C175.023,143.931 177.013,145.574 179.366,146.509C187.57,149.767 194.703,155.09 201.278,164.078C207.581,172.704 209.361,179.671 205.696,182.356C200.946,185.824 189.937,186.593 184.267,178.827C180.467,173.624 177.043,164.953 172.338,152.195C171.72,150.536 170.725,149.028 169.413,147.821L161.058,140.115L161.058,139.542L169.413,131.836C170.71,130.63 171.72,129.122 172.338,127.463C177.043,114.705 180.467,106.033 184.267,100.831C189.937,93.064 200.961,93.833 205.696,97.302L205.696,97.272Z" />
+                                    </g>
+                                    <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                        <path
+                                            d="M183.091,74.666C180.406,71.001 173.454,72.781 164.813,79.085C155.825,85.645 150.502,92.778 147.244,100.997C146.309,103.349 144.666,105.34 142.494,106.622L140.549,107.768L138.603,106.622C136.432,105.34 134.788,103.349 133.853,100.997C130.596,92.793 125.272,85.66 116.284,79.085C107.658,72.781 100.691,71.001 98.007,74.666C94.538,79.416 93.769,90.425 101.535,96.095C106.738,99.896 115.41,103.319 128.168,108.024C129.826,108.642 131.335,109.638 132.541,110.95L140.247,119.304L140.82,119.304L148.526,110.95C149.733,109.653 151.241,108.642 152.9,108.024C165.658,103.319 174.329,99.896 179.532,96.095C187.298,90.425 186.529,79.401 183.061,74.666L183.091,74.666Z" />
+                                    </g>
+                                    <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                        <path
+                                            d="M183.091,204.917C180.406,208.581 173.454,206.802 164.813,200.498C155.825,193.938 150.502,186.805 147.244,178.586C146.309,176.233 144.666,174.243 142.494,172.961L140.549,171.815L138.603,172.961C136.432,174.243 134.788,176.233 133.853,178.586C130.596,186.79 125.272,193.923 116.284,200.498C107.658,206.802 100.691,208.581 98.007,204.917C94.538,200.166 93.769,189.157 101.535,183.487C106.738,179.687 115.41,176.264 128.168,171.559C129.826,170.94 131.335,169.945 132.541,168.633L140.247,160.278L140.82,160.278L148.526,168.633C149.733,169.93 151.241,170.94 152.9,171.559C165.658,176.264 174.329,179.687 179.532,183.487C187.298,189.157 186.529,200.181 183.061,204.917L183.061,204.917Z" />
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <!-- Circle Photo -->
+            <img src="grafika/circlephoto.png" class="art-photo" alt="Lůno - Barborky">
+
+        </div>
+
+    </div>
+
+    <!-- Code Showcase Area -->
+    <div class="code-showcase">
+        <div class="showcase-header">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('html')">HTML</button>
+                <button class="tab-btn" onclick="showTab('css')">CSS</button>
+                <button class="tab-btn" onclick="showTab('js')">Javascript (JS)</button>
+            </div>
+            <button class="copy-btn" onclick="copyCode()">
+                <svg class="icon" viewBox="0 0 24 24" id="copy-icon">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                </svg>
+                <svg class="icon" viewBox="0 0 24 24" id="check-icon" style="display: none;">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                <span id="copy-text">Kopírovat</span>
+            </button>
+        </div>
+        <div class="code-container">
+            <!-- HTML Panel -->
+            <div class="code-panel active" id="panel-html">
+                <pre><code id="code-html"></code></pre>
+            </div>
+            <!-- CSS Panel -->
+            <div class="code-panel" id="panel-css">
+                <pre><code id="code-css"></code></pre>
+            </div>
+            <!-- JS Panel -->
+            <div class="code-panel" id="panel-js">
+                <pre><code id="code-js"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global configuration connected to sliders
+        const config = {
+            baseScale: 1.45,
+            pulseMax: 1.05,
+            hoverScale: 1.22,
+            hoverSpeed: 4.0,
+            returnSpeed: 1.5,
+            pulseDuration: 4.5
+        };
+
+        // State variables for animation loop
+        let state = 'pulsing'; // 'pulsing', 'hovering', 'returning'
+        let relativeScale = 1.0;
+        let phase = 0.0;
+        let lastTime = performance.now();
+
+        const element = document.getElementById('interactive-element');
+        const svgBg = document.querySelector('.art-svg-background');
+
+        // Setup mouse listeners for interactive state tracking
+        if (element && svgBg) {
+            element.addEventListener('mouseenter', () => {
+                state = 'hovering';
+            });
+
+            element.addEventListener('mouseleave', () => {
+                state = 'returning';
+            });
+
+            // Frame-rate independent animation loop
+            function animate(currentTime) {
+                let dt = (currentTime - lastTime) / 1000.0;
+                if (dt > 0.1) dt = 0.1; // Cap time step
+                lastTime = currentTime;
+
+                const amplitude = config.pulseMax - 1.0;
+
+                if (state === 'pulsing') {
+                    // Breathing loop: adjustable pulse duration (seconds) per full cycle
+                    phase += (2 * Math.PI / config.pulseDuration) * dt;
+                    relativeScale = 1.0 + amplitude * Math.sin(phase);
+                } else if (state === 'hovering') {
+                    // Grow to target hoverScale from current scale
+                    relativeScale += (config.hoverScale - relativeScale) * (1.0 - Math.exp(-config.hoverSpeed * dt));
+                } else if (state === 'returning') {
+                    // Slower return to the minimum pulse scale (1.0 - amplitude)
+                    const target = 1.0 - amplitude;
+                    relativeScale += (target - relativeScale) * (1.0 - Math.exp(-config.returnSpeed * dt));
+
+                    // Once we reach the minimum of the pulse cycle, return back to the normal pulsing loop
+                    if (Math.abs(relativeScale - target) < 0.001) {
+                        relativeScale = target;
+                        state = 'pulsing';
+                        phase = -Math.PI / 2.0; // Reset phase precisely to the sine wave minimum (-90deg)
+                    }
+                }
+
+                // Total scale = base scale * relative scale
+                const totalScale = config.baseScale * relativeScale;
+                svgBg.style.transform = `scale(${totalScale})`;
+
+                requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Layout Switcher
+        function setLayout(direction) {
+            const el = document.getElementById('interactive-element');
+            const leftBtn = document.getElementById('layout-left-btn');
+            const rightBtn = document.getElementById('layout-right-btn');
+
+            if (direction === 'left') {
+                el.classList.remove('layout-right');
+                el.classList.add('layout-left');
+                leftBtn.classList.add('active');
+                rightBtn.classList.remove('active');
+            } else {
+                el.classList.remove('layout-left');
+                el.classList.add('layout-right');
+                leftBtn.classList.remove('active');
+                rightBtn.classList.add('active');
+            }
+            updateCodeSnippet();
+        }
+
+        // Theme Switcher
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            const lightBtn = document.getElementById('theme-light-btn');
+            const darkBtn = document.getElementById('theme-dark-btn');
+
+            if (theme === 'light') {
+                lightBtn.classList.add('active');
+                darkBtn.classList.remove('active');
+            } else {
+                lightBtn.classList.remove('active');
+                darkBtn.classList.add('active');
+            }
+        }
+
+        // Sliders input updates
+        function updateSvgScale(val) {
+            config.baseScale = parseFloat(val);
+            document.getElementById('scale-val').textContent = val;
+            updateCodeSnippet();
+        }
+
+        function updateSvgPulse(val) {
+            config.pulseMax = parseFloat(val);
+            document.getElementById('pulse-val').textContent = val;
+            updateCodeSnippet();
+        }
+
+        function updateSvgHover(val) {
+            config.hoverScale = parseFloat(val);
+            document.getElementById('hover-val').textContent = val;
+            updateCodeSnippet();
+        }
+
+        function updateHoverSpeed(val) {
+            config.hoverSpeed = parseFloat(val);
+            document.getElementById('hover-speed-val').textContent = val;
+            updateCodeSnippet();
+        }
+
+        function updateReturnSpeed(val) {
+            config.returnSpeed = parseFloat(val);
+            document.getElementById('return-speed-val').textContent = val;
+            updateCodeSnippet();
+        }
+
+        function updatePulseDuration(val) {
+            config.pulseDuration = parseFloat(val);
+            document.getElementById('pulse-duration-val').textContent = val;
+            updateCodeSnippet();
+        }
+
+        // Showcase Tabs
+        let activeTab = 'html';
+        function showTab(tab) {
+            activeTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.code-panel').forEach(panel => panel.classList.remove('active'));
+
+            const event = window.event;
+            if (event) {
+                event.target.classList.add('active');
+            } else {
+                const btnIndex = tab === 'html' ? 0 : (tab === 'css' ? 1 : 2);
+                document.querySelectorAll('.tab-btn')[btnIndex].classList.add('active');
+            }
+
+            document.getElementById(`panel-${tab}`).classList.add('active');
+        }
+
+        // HTML base template
+        const htmlCodeBase = `<div class="art-element [LAYOUT-CLASS]">
+    <!-- Textové pole -->
+    <div class="art-text-container">
+        <span class="art-indicator-dot"></span>
+        <div class="art-text-lines">
+            <span class="art-title">Lůno</span>
+            <span class="art-subtitle">Barborky</span>
+            <span class="art-author">Ondřej Muroň</span>
+        </div>
+    </div>
+
+    <!-- Interaktivní kruhový obrázek se symbolem -->
+    <div class="art-svg-background">
+        <div class="art-svg-pulse">
+            <svg viewBox="0 0 988 1087" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                <g transform="matrix(1,0,0,1,-14385,-5935)">
+                    <g id="Artboard5" transform="matrix(0.722753,0,0,1,3988.065911,0)">
+                        <rect x="14385.176" y="5935" width="1366.176" height="1086.671" style="fill:none;"/>
+                        <g transform="matrix(-1.649062,-0,0,-1.191865,21491.630475,7862.046931)">
+                            <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                <path d="M75.446,97.272C71.782,99.956 73.561,106.908 79.865,115.549C86.425,124.537 93.558,129.861 101.777,133.118C104.129,134.053 106.12,135.697 107.402,137.868L108.548,139.814L107.402,141.759C106.12,143.931 104.129,145.574 101.777,146.509C93.573,149.767 86.44,155.09 79.865,164.078C73.561,172.704 71.782,179.671 75.446,182.356C80.197,185.824 91.205,186.593 96.876,178.827C100.676,173.624 104.099,164.953 108.804,152.195C109.422,150.536 110.418,149.028 111.73,147.821L120.084,140.115L120.084,139.542L111.73,131.836C110.433,130.63 109.422,129.122 108.804,127.463C104.099,114.705 100.676,106.033 96.876,100.831C91.205,93.064 80.181,93.833 75.446,97.302L75.446,97.272Z" />
+                            </g>
+                            <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                <path d="M205.696,97.272C209.361,99.956 207.581,106.908 201.278,115.549C194.718,124.537 187.585,129.861 179.366,133.118C177.013,134.053 175.023,135.697 173.741,137.868L172.595,139.814L173.741,141.759C175.023,143.931 177.013,145.574 179.366,146.509C187.57,149.767 194.703,155.09 201.278,164.078C207.581,172.704 209.361,179.671 205.696,182.356C200.946,185.824 189.937,186.593 184.267,178.827C180.467,173.624 177.043,164.953 172.338,152.195C171.72,150.536 170.725,149.028 169.413,147.821L161.058,140.115L161.058,139.542L169.413,131.836C170.71,130.63 171.72,129.122 172.338,127.463C177.043,114.705 180.467,106.033 184.267,100.831C189.937,93.064 200.961,93.833 205.696,97.302L205.696,97.272Z" />
+                            </g>
+                            <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                <path d="M183.091,74.666C180.406,71.001 173.454,72.781 164.813,79.085C155.825,85.645 150.502,92.778 147.244,100.997C146.309,103.349 144.666,105.34 142.494,106.622L140.549,107.768L138.603,106.622C136.432,105.34 134.788,103.349 133.853,100.997C130.596,92.793 125.272,85.66 116.284,79.085C107.658,72.781 100.691,71.001 98.007,74.666C94.538,79.416 93.769,90.425 101.535,96.095C106.738,99.896 115.41,103.319 128.168,108.024C129.826,108.642 131.335,109.638 132.541,110.95L140.247,119.304L140.82,119.304L148.526,110.95C149.733,109.653 151.241,108.642 152.9,108.024C165.658,103.319 174.329,99.896 179.532,96.095C187.298,90.425 186.529,79.401 183.061,74.666L183.091,74.666Z" />
+                            </g>
+                            <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
+                                <path d="M183.091,204.917C180.406,208.581 173.454,206.802 164.813,200.498C155.825,193.938 150.502,186.805 147.244,178.586C146.309,176.233 144.666,174.243 142.494,172.961L140.549,171.815L138.603,172.961C136.432,174.243 134.788,176.233 133.853,178.586C130.596,186.79 125.272,193.923 116.284,200.498C107.658,206.802 100.691,208.581 98.007,204.917C94.538,200.166 93.769,189.157 101.535,183.487C106.738,179.687 115.41,176.264 128.168,171.559C129.826,170.94 131.335,169.945 132.541,168.633L140.247,160.278L140.82,160.278L148.526,168.633C149.733,169.93 151.241,170.94 152.9,171.559C165.658,176.264 174.329,179.687 179.532,183.487C187.298,189.157 186.529,200.181 183.061,204.917L183.061,204.917Z" />
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </div>
+    <img src="grafika/circlephoto.png" class="art-photo" alt="Lůno - Barborky">
+</div>`;
+
+        const cssCodeBase = `/* CSS pro interaktivní element */
+.art-element {
+    display: grid;
+    grid-template-areas: "text visual";
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    user-select: none;
+}
+
+.art-element.layout-left {
+    grid-template-areas: "text visual";
+}
+
+.art-element.layout-right {
+    grid-template-areas: "visual text";
+}
+
+/* 1. TEXTOVÉ POLE */
+.art-text-container {
+    grid-area: text;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.art-indicator-dot {
+    width: 14px;
+    height: 14px;
+    background-color: currentColor;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.art-element:hover .art-indicator-dot {
+    transform: scale(1.25);
+}
+
+.art-text-lines {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.art-title {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #18191b;
+}
+
+.art-subtitle {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #18191b;
+    margin-top: 0.15rem;
+}
+
+.art-author {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #6c757d;
+    margin-top: 0.15rem;
+}
+
+[data-theme="dark"] .art-title,
+[data-theme="dark"] .art-subtitle {
+    color: #f1f3f5;
+}
+[data-theme="dark"] .art-author {
+    color: #a1a1aa;
+}
+
+/* 2. VIZUÁLNÍ BLOK (Obrázek + SVG symbol) */
+.art-photo {
+    grid-area: visual;
+    position: relative;
+    width: 420px; /* Upraveno dle slideru */
+    height: 420px;
+    object-fit: cover;
+    border-radius: 50%;
+    z-index: 2;
+    cursor: pointer;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    align-self: center;
+    justify-self: center;
+}
+
+.art-element:hover .art-photo {
+    transform: scale(1.02);
+}
+
+.art-svg-background {
+    grid-area: visual;
+    width: calc(420px * [SCALE]);
+    height: calc(420px * [SCALE]);
+    z-index: 1;
+    pointer-events: none;
+    transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+}
+
+.art-svg-pulse {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+}
+
+.art-svg-background svg {
+    width: 100%;
+    height: 100%;
+    fill: #000000;
+    transition: fill 0.4s ease;
+}
+
+[data-theme="dark"] .art-svg-background svg {
+    fill: #ffffff;
+}
+
+@media (max-width: 600px) {
+    .art-element,
+    .art-element.layout-left,
+    .art-element.layout-right {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 3rem;
+    }
+    .art-text-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+    .art-text-lines {
+        text-align: center;
+    }
+}`;
+
+        const jsCodeBase = `// JavaScript animace a plynulé přepínání stavů
+(function() {
+    const config = {
+        baseScale: [SCALE],
+        pulseMax: [PULSE],
+        pulseDuration: [PULSE_DURATION],
+        hoverScale: [HOVER],
+        hoverSpeed: [HOVER_SPEED],
+        returnSpeed: [RETURN_SPEED]
+    };
+
+    let state = 'pulsing'; // 'pulsing', 'hovering', 'returning'
+    let relativeScale = 1.0;
+    let phase = 0.0;
+    let lastTime = performance.now();
+
+    const element = document.querySelector('.art-element');
+    const svgBg = document.querySelector('.art-svg-background');
+
+    if (element && svgBg) {
+        element.addEventListener('mouseenter', () => {
+            state = 'hovering';
+        });
+
+        element.addEventListener('mouseleave', () => {
+            state = 'returning';
+        });
+
+        function animate(currentTime) {
+            let dt = (currentTime - lastTime) / 1000.0;
+            if (dt > 0.1) dt = 0.1;
+            lastTime = currentTime;
+
+            const amplitude = config.pulseMax - 1.0;
+
+            if (state === 'pulsing') {
+                phase += (2 * Math.PI / config.pulseDuration) * dt;
+                relativeScale = 1.0 + amplitude * Math.sin(phase);
+            } else if (state === 'hovering') {
+                relativeScale += (config.hoverScale - relativeScale) * (1.0 - Math.exp(-config.hoverSpeed * dt));
+            } else if (state === 'returning') {
+                const target = 1.0 - amplitude; // Nejnižší bod dýchání
+                relativeScale += (target - relativeScale) * (1.0 - Math.exp(-config.returnSpeed * dt));
+
+                if (Math.abs(relativeScale - target) < 0.001) {
+                    relativeScale = target;
+                    state = 'pulsing';
+                    phase = -Math.PI / 2.0; // Reset fáze přesně do minima
+                }
+            }
+
+            const totalScale = config.baseScale * relativeScale;
+            svgBg.style.transform = \`scale(\${totalScale})\`;
+
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+    }
+})();`;
+
+        // Update the code blocks with current settings
+        function updateCodeSnippet() {
+            const isLeft = document.getElementById('interactive-element').classList.contains('layout-left');
+            const layoutClass = isLeft ? 'layout-left' : 'layout-right';
+            const formattedHTML = htmlCodeBase.replace('[LAYOUT-CLASS]', layoutClass);
+
+            // Format CSS and JS snippets with the current config values
+            const formattedCSS = cssCodeBase
+                .replace('[SCALE]', config.baseScale.toFixed(2));
+
+            const formattedJS = jsCodeBase
+                .replace('[SCALE]', config.baseScale.toFixed(2))
+                .replace('[PULSE]', config.pulseMax.toFixed(2))
+                .replace('[PULSE_DURATION]', config.pulseDuration.toFixed(1))
+                .replace('[HOVER]', config.hoverScale.toFixed(2))
+                .replace('[HOVER_SPEED]', config.hoverSpeed.toFixed(1))
+                .replace('[RETURN_SPEED]', config.returnSpeed.toFixed(1));
+
+            document.getElementById('code-html').textContent = formattedHTML;
+            document.getElementById('code-css').textContent = formattedCSS;
+            document.getElementById('code-js').textContent = formattedJS;
+        }
+
+        // Copy active tab's contents
+        function copyCode() {
+            let textToCopy = '';
+            if (activeTab === 'html') {
+                textToCopy = document.getElementById('code-html').textContent;
+            } else if (activeTab === 'css') {
+                textToCopy = document.getElementById('code-css').textContent;
+            } else {
+                textToCopy = document.getElementById('code-js').textContent;
+            }
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyText = document.getElementById('copy-text');
+                const copyIcon = document.getElementById('copy-icon');
+                const checkIcon = document.getElementById('check-icon');
+
+                copyText.textContent = 'Zkopírováno!';
+                copyIcon.style.display = 'none';
+                checkIcon.style.display = 'inline-block';
+
+                setTimeout(() => {
+                    copyText.textContent = 'Kopírovat';
+                    copyIcon.style.display = 'inline-block';
+                    checkIcon.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        // Export settings to local storage to be read by index.html
+        function exportSettings() {
+            const settings = {
+                baseScale: config.baseScale,
+                pulseMax: config.pulseMax,
+                pulseDuration: config.pulseDuration,
+                hoverScale: config.hoverScale,
+                hoverSpeed: config.hoverSpeed,
+                returnSpeed: config.returnSpeed
+            };
+            try {
+                localStorage.setItem('koreny_gallery_settings', JSON.stringify(settings));
+                showToast("Nastavení uloženo a exportováno do Galerie!");
+            } catch (e) {
+                console.error("Export settings failed", e);
+                showToast("Chyba při ukládání nastavení.");
+            }
+        }
+
+        // Show a premium glassmorphic toast notification
+        function showToast(message) {
+            let toast = document.getElementById('koreny-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'koreny-toast';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 2rem;
+                    left: 50%;
+                    transform: translate(-50%, 100px);
+                    background-color: var(--text-main);
+                    color: var(--bg-color);
+                    padding: 0.8rem 1.6rem;
+                    border-radius: 50px;
+                    font-family: inherit;
+                    font-size: 0.85rem;
+                    font-weight: 500;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                    z-index: 10000;
+                    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+                    opacity: 0;
+                    pointer-events: none;
+                    border: 1px solid var(--border-color);
+                `;
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, 0)';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, 100px)';
+            }, 3000);
+        }
+
+        // Initialize Snippets
+        window.onload = () => {
+            updateCodeSnippet();
+        };
+    </script>
+</body>
+
+</html>
