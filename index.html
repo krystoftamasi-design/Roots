@@ -1381,6 +1381,7 @@
 
             // Variables for 3D rotation
             let targetRotX = 0, targetRotY = 0;
+            let tiltOffsetX = 0, tiltOffsetY = 0; // Added for additive tilt
             let currentRotXLeft = 0, currentRotYLeft = 0;
             let currentRotXRight = 0, currentRotYRight = 0;
             let isTilting = false;
@@ -1392,7 +1393,7 @@
 
             if (bgLinesWrapper) {
                 window.addEventListener('mousemove', (e) => {
-                    if (!document.body.classList.contains('rotate-3d-active') || isTilting) return;
+                    if (!document.body.classList.contains('rotate-3d-active')) return;
 
                     const rect = bgLinesWrapper.getBoundingClientRect();
                     const mx = e.clientX;
@@ -1415,7 +1416,6 @@
                     } else {
                         if (isMouseInside) {
                             isMouseInside = false;
-                            if (isTilting) return;
                             targetRotX = 0;
                             targetRotY = 0;
                         }
@@ -1424,7 +1424,6 @@
 
                 document.addEventListener('mouseleave', () => {
                     isMouseInside = false;
-                    if (isTilting) return;
                     targetRotX = 0;
                     targetRotY = 0;
                 });
@@ -1435,7 +1434,7 @@
             let initialGamma = null;
 
             function handleOrientation(event) {
-                if (!document.body.classList.contains('rotate-3d-active') || isTilting) return;
+                if (!document.body.classList.contains('rotate-3d-active')) return;
 
                 let beta = event.beta;   // front-to-back tilt (-180 to 180 deg)
                 let gamma = event.gamma; // left-to-right tilt (-90 to 90 deg)
@@ -1510,12 +1509,16 @@
                 }
 
                 if (document.body.classList.contains('rotate-3d-active')) {
-                    // Completely independent rotation scales
-                    currentRotXLeft += (targetRotX * 0.6 - currentRotXLeft) * speedL;
-                    currentRotYLeft += (targetRotY * 0.6 - currentRotYLeft) * speedL;
+                    // Apply additive tilt on top of target rotation
+                    let finalTargetX = targetRotX + tiltOffsetX;
+                    let finalTargetY = targetRotY + tiltOffsetY;
 
-                    currentRotXRight += (targetRotX * 1.4 - currentRotXRight) * speedR;
-                    currentRotYRight += (targetRotY * 1.4 - currentRotYRight) * speedR;
+                    // Completely independent rotation scales
+                    currentRotXLeft += (finalTargetX * 0.6 - currentRotXLeft) * speedL;
+                    currentRotYLeft += (finalTargetY * 0.6 - currentRotYLeft) * speedL;
+
+                    currentRotXRight += (finalTargetX * 1.4 - currentRotXRight) * speedR;
+                    currentRotYRight += (finalTargetY * 1.4 - currentRotYRight) * speedR;
                 } else {
                     currentRotXLeft += (0 - currentRotXLeft) * speedL;
                     currentRotYLeft += (0 - currentRotYLeft) * speedL;
@@ -1601,8 +1604,6 @@
                     stopAttention();
                     triggerVibration();
                     requestOrientationPermission();
-                    initialBeta = null; // Recalibrate gyroscope baseline
-                    initialGamma = null;
 
                     if (isTilting) return; // ignore click ONLY while the active tilt is running
 
@@ -1616,12 +1617,12 @@
                             clearTimeout(clickReturnTimeout);
                             clickReturnTimeout = null;
                         }
-                        targetRotX = 0;
-                        targetRotY = -config.tiltAngle; // elegant moderate tilt (dynamically configured)
+                        tiltOffsetX = 0;
+                        tiltOffsetY = -(config.tiltAngle * 2.5); // larger effect, applied additively
                         setTimeout(() => {
                             isTilting = false;
-                            targetRotX = 0; // Return to 0 immediately after tilting
-                            targetRotY = 0;
+                            tiltOffsetX = 0; // Reset only the offset immediately after tilting
+                            tiltOffsetY = 0;
                             isReturningFromClick = true;
                             clickReturnTimeout = setTimeout(() => {
                                 isReturningFromClick = false;
@@ -1636,8 +1637,6 @@
                     stopAttention();
                     triggerVibration();
                     requestOrientationPermission();
-                    initialBeta = null; // Recalibrate gyroscope baseline
-                    initialGamma = null;
 
                     if (isTilting) return; // ignore click ONLY while the active tilt is running
 
@@ -1651,12 +1650,12 @@
                             clearTimeout(clickReturnTimeout);
                             clickReturnTimeout = null;
                         }
-                        targetRotX = 0;
-                        targetRotY = config.tiltAngle; // elegant moderate tilt (dynamically configured)
+                        tiltOffsetX = 0;
+                        tiltOffsetY = config.tiltAngle * 2.5; // larger effect, applied additively
                         setTimeout(() => {
                             isTilting = false;
-                            targetRotX = 0; // Return to 0 immediately after tilting
-                            targetRotY = 0;
+                            tiltOffsetX = 0; // Reset only the offset immediately after tilting
+                            tiltOffsetY = 0;
                             isReturningFromClick = true;
                             clickReturnTimeout = setTimeout(() => {
                                 isReturningFromClick = false;
