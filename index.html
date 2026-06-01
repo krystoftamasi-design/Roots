@@ -1430,6 +1430,65 @@
                 });
             }
 
+            // Gyroscope tracking for mobile view
+            let initialBeta = null;
+            let initialGamma = null;
+
+            function handleOrientation(event) {
+                if (!document.body.classList.contains('rotate-3d-active') || isTilting) return;
+
+                let beta = event.beta;   // front-to-back tilt (-180 to 180 deg)
+                let gamma = event.gamma; // left-to-right tilt (-90 to 90 deg)
+
+                if (beta === null || gamma === null) return;
+
+                // Calibrate base holding angle on first trigger
+                if (initialBeta === null) {
+                    initialBeta = beta;
+                    initialGamma = gamma;
+                    return;
+                }
+
+                let deltaBeta = beta - initialBeta;
+                let deltaGamma = gamma - initialGamma;
+
+                // Restrict tilt angle max boundary
+                deltaBeta = Math.max(-30, Math.min(30, deltaBeta));
+                deltaGamma = Math.max(-30, Math.min(30, deltaGamma));
+
+                // Map tilt angle to rotation, 0.8 scale multiplier yields elegant visual movement
+                targetRotX = -deltaBeta * 0.8;
+                targetRotY = deltaGamma * 0.8;
+
+                isMouseInside = true; // prevent automatic snapping back to zero
+            }
+
+            function requestOrientationPermission() {
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(permissionState => {
+                            if (permissionState === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation, true);
+                            }
+                        })
+                        .catch(console.error);
+                } else {
+                    window.addEventListener('deviceorientation', handleOrientation, true);
+                }
+            }
+
+            // If permission is not required by browser, register listener instantly
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission !== 'function') {
+                window.addEventListener('deviceorientation', handleOrientation, true);
+            }
+
+            // Vibration feedback helper
+            function triggerVibration() {
+                if (navigator.vibrate) {
+                    navigator.vibrate(25); // short vibration burst
+                }
+            }
+
             function animate3D() {
                 // Rychlosti animací:
                 // - Při naklonění (kliknutí na šipku): velmi rychlý náklon (config.tiltSpeed)
@@ -1540,6 +1599,11 @@
             if (arrowLeft) {
                 arrowLeft.addEventListener('click', () => {
                     stopAttention();
+                    triggerVibration();
+                    requestOrientationPermission();
+                    initialBeta = null; // Recalibrate gyroscope baseline
+                    initialGamma = null;
+
                     if (isTilting) return; // ignore click ONLY while the active tilt is running
 
                     changePhoto('prev');
@@ -1570,6 +1634,11 @@
             if (arrowRight) {
                 arrowRight.addEventListener('click', () => {
                     stopAttention();
+                    triggerVibration();
+                    requestOrientationPermission();
+                    initialBeta = null; // Recalibrate gyroscope baseline
+                    initialGamma = null;
+
                     if (isTilting) return; // ignore click ONLY while the active tilt is running
 
                     changePhoto('next');
@@ -1600,6 +1669,7 @@
             if (arrowBack) {
                 arrowBack.addEventListener('click', () => {
                     stopAttention();
+                    triggerVibration();
                     // Navigate back to index.html with a subtle fade-out transition
                     document.body.style.transition = 'opacity 0.5s ease';
                     document.body.style.opacity = '0';
