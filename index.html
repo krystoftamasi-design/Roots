@@ -4,23 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Interaktivní online výstavní galerie prezentující dvacet jedinečných grafických elementů z umělecké sbírky Kořeny s plynulou animací a Montserrat typografií.">
-    <title>Kořeny — Výstava Grafických Elementů</title>
-    <!-- Google Fonts: Montserrat (only weight 400/regular as requested) -->
+    <title>Carp scale - O projektu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #f8f9fa;
-            --text-main: #18191b;
-            --text-muted: #6c757d;
-            --accent-glow: rgba(0, 0, 0, 0.02);
-            --svg-fill: #000000;
-            --comp-photo-size: 420px;
-            /* enlarged display */
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('The Seasons Light Italic.ttf') format('truetype');
+            font-weight: 300;
+            font-style: italic;
         }
 
         * {
@@ -30,296 +25,787 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* Bez scrollu */
+            background-color: #faf8f2;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            /* Force all text to regular */
-            min-height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 6rem 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            color: #000000;
+            position: relative;
             cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDxwYXRoIGQ9Ik0zOC42NjEsMjYuNDg1QzM4LjI2OCwyNy4wMTYgMzcuMjUyLDI2Ljc1OCAzNS45ODksMjUuODQ1QzM0LjY3NiwyNC44OTUgMzMuODk4LDIzLjg2MiAzMy40MjIsMjIuNjcxQzMzLjI4NSwyMi4zMyAzMy4wNDUsMjIuMDQyIDMyLjcyNywyMS44NTZMMzIuNDQzLDIxLjY5TDMyLjE1OSwyMS44NTZDMzEuODQxLDIyLjA0MiAzMS42MDEsMjIuMzMgMzEuNDY1LDIyLjY3MUMzMC45ODgsMjMuODU5IDMwLjIxLDI0Ljg5MyAyOC44OTcsMjUuODQ1QzI3LjYzNiwyNi43NTggMjYuNjE4LDI3LjAxNiAyNi4yMjYsMjYuNDg1QzI1LjcxOSwyNS43OTcgMjUuNjA2LDI0LjIwMiAyNi43NDEsMjMuMzgxQzI3LjUwMiwyMi44MzEgMjguNzY5LDIyLjMzNSAzMC42MzQsMjEuNjUzQzMwLjg3NiwyMS41NjQgMzEuMDk2LDIxLjQxOSAzMS4yNzMsMjEuMjI5TDMyLjM5OSwyMC4wMTlMMzIuNDgzLDIwLjAxOUwzMy42MDksMjEuMjI5QzMzLjc4NSwyMS40MTcgMzQuMDA2LDIxLjU2NCAzNC4yNDgsMjEuNjUzQzM2LjExMywyMi4zMzUgMzcuMzgsMjIuODMxIDM4LjE0MSwyMy4zODFDMzkuMjc2LDI0LjIwMiAzOS4xNjMsMjUuNzk5IDM4LjY1NiwyNi40ODVMMzguNjYxLDI2LjQ4NVoiIHN0eWxlPSJmaWxsOnJnYigyNTUsMzAsMCk7ZmlsbC1ydWxlOm5vbnplcm87Ii8+IDwvZz48L3N2Zz4=') 20 16, default !important;
         }
 
-        a, button, [role="button"], input, select, textarea, label, [onclick], .art-photo, #custom-settings-indicator button {
+        a,
+        button,
+        [role="button"],
+        input,
+        select,
+        textarea,
+        label,
+        [onclick],
+        .debug-btn,
+        input[type="range"],
+        input[type="range"]::-webkit-slider-thumb {
             cursor: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4gPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAsIDIwKSBzY2FsZSgyLjcpIHRyYW5zbGF0ZSgtMzIuNDQzLCAtMjEuNDcxKSI+IDwhLS0gQXJyb3doZWFkIC0tPiA8cGF0aCBkPSJNMzguNjYxLDI2LjQ4NUMzOC4yNjgsMjcuMDE2IDM3LjI1MiwyNi43NTggMzUuOTg5LDI1Ljg0NUMzNC42NzYsMjQuODk1IDMzLjg5OCwyMy44NjIgMzMuNDIyLDIyLjY3MUMzMy4yODUsMjIuMzMgMzMuMDQ1LDIyLjA0MiAzMi43MjcsMjEuODU2TDMyLjQ0MywyMS42OUwzMi4xNTksMjEuODU2QzMxLjg0MSwyMi4wNDIgMzEuNjAxLDIyLjMzIDMxLjQ2NSwyMi42NzFDMzAuOTg4LDIzLjg1OSAzMC4yMSwyNC44OTMgMjguODk3LDI1Ljg0NUMyNy42MzYsMjYuNzU4IDI2LjYxOCwyNy4wMTYgMjYuMjI2LDI2LjQ4NUMyNS43MTksMjUuNzk3IDI1LjYwNiwyNC4yMDIgMjYuNzQxLDIzLjM4MUMyNy41MDIsMjIuODMxIDI4Ljc2OSwyMi4zMzUgMzAuNjM0LDIxLjY1M0MzMC44NzYsMjEuNTY0IDMxLjA5NiwyMS40MTkgMzEuMjczLDIxLjIyOUwzMi4zOTksMjAuMDE5TDMyLjQ4MywyMC4wMTlMMzMuNjA5LDIxLjIyOUMzMy43ODUsMjEuNDE3IDM0LjAwNiwyMS41NjQgMzQuMjQ4LDIxLjY1M0MzNi4xMTMsMjIuMzM1IDM3LjM4LDIyLjgzMSAzOC4xNDEsMjMuMzgxQzM5LjI3NiwyNC4yMDIgMzkuMTYzLDI1Ljc5OSAzOC42NTYsMjYuNDg1TDM4LjY2MSwyNi40ODVaIiBzdHlsZT0iZmlsbDpyZ2IoMjU1LDMwLDApO2ZpbGwtcnVsZTpub256ZXJvOyIvPiA8IS0tIFRvcCBEb3QgLS0+IDxwYXRoIGQ9Ik0zMi40MjYsMTguMzYzQzMzLjE1NiwxOC4zNjMgMzMuNzQ4LDE3Ljc3NiAzMy43NDgsMTcuMDUyQzMzLjc0OCwxNi4zMjggMzMuMTU2LDE1Ljc0MiAzMi40MjYsMTUuNzQyQzMxLjY5NSwxNS43NDIgMzEuMTAzLDE2LjMyOCAzMS4xMDMsMTcuMDUyQzMxLjEwMywxNy43NzYgMzEuNjk1LDE4LjM2MyAzMi40MjYsMTguMzYzWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPCEtLSBCb3R0b20gRG90IC0tPiA8cGF0aCBkPSJNMzIuNDI2LDI3LjJDMzMuMDM0LDI3LjIgMzMuNTI4LDI2LjcxIDMzLjUyOCwyNi4xMDdDMzMuNTI4LDI1LjUwNCAzMy4wMzQsMjUuMDE1IDMyLjQyNiwyNS4wMTVDMzEuODE3LDI1LjAxNSAzMS4zMjQsMjUuNTA0IDMxLjMyNCwyNi4xMDdDMzEuMzI0LDI2LjcxIDMxLjgxNywyNy4yIDMyLjQyNiwyNy4yWiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz4gPC9nPjwvc3ZnPg==') 20 16, pointer !important;
         }
 
-        /* Ambient glows scattered in background */
-        .glow-point {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(0, 0, 0, 0.015) 0%, rgba(0, 0, 0, 0) 70%);
-            pointer-events: none;
-            z-index: -1;
-            filter: blur(50px);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        .arrow-top-left:hover,
+        .arrow-mid-left:hover,
+        .arrow-mid-right:hover {
+            cursor: none !important;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 6rem;
-            max-width: 700px;
+        .header-top-right {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 20;
+        }
+
+        .header-top-right h1 {
+            font-family: 'The Seasons', 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 24px;
+            letter-spacing: 0.02em;
+        }
+
+        .header-top-right .svg-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Large Bottom Text */
+        .bottom-container {
+            position: absolute;
+            bottom: 40px;
+            left: calc(4vw + 25px);
+            /* display: flex; */
+            align-items: baseline;
+            gap: 20px;
+            z-index: 20;
+        }
+
+        .bottom-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 30px;
+        }
+
+        .bottom-title {
+            font-family: 'The Seasons', serif;
+            font-size: 280px;
+            line-height: 1;
+            font-weight: 300;
+            font-style: italic;
+            color: #ff1e00;
+            padding-right: 50px;
+        }
+
+        /* Main center photo */
+        .center-photo-wrapper {
+            position: absolute;
+            top: 40%;
+            left: 34%;
+            transform: translate(-50%, -50%);
+            width: 42%;
+            aspect-ratio: 16/9;
+            z-index: 10;
+            background-color: #000;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            pointer-events: none;
+        }
+
+        .center-photo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: scale(1);
+            opacity: 0;
+        }
+
+        .center-photo.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+
+        /* Info column on the right */
+        .info-column {
+            position: absolute;
+            right: 50px;
+            top: 100px;
+            bottom: 80px;
+            width: 35vw;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            z-index: 20;
+        }
+
+        .info-block {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .info-block strong {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .info-specs {
+            margin-top: 150px;
+        }
+
+        .info-specs div {
+            margin-bottom: 5px;
+        }
+
+        .info-text p {
+            margin-bottom: 20px;
+        }
+
+        .info-text {
+            margin-top: auto;
+        }
+
+        .info-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bg-lines-wrapper {
+            position: absolute;
+            top: 40%;
+            left: 34%;
+            width: 78%;
+            height: 68%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+
+        .bg-line-left-wrap,
+        .bg-line-right-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+            transform-origin: center;
+        }
+
+        .bg-line-left-wrap {
+            transform: rotateX(var(--mouse-rot-x-left, 0deg)) rotateY(var(--mouse-rot-y-left, 0deg));
+        }
+
+        .bg-line-right-wrap {
+            transform: rotateX(var(--mouse-rot-x-right, 0deg)) rotateY(var(--mouse-rot-y-right, 0deg));
+        }
+
+        .bg-line-left,
+        .bg-line-right {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(agent/svg_symbol.svg);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.9;
+            will-change: transform;
+            transform-origin: center;
+        }
+
+        .bg-line-left {
+            clip-path: inset(0 50% 0 0);
+        }
+
+        .bg-line-right {
+            clip-path: inset(0 0 0 50%);
+        }
+
+        /* SVGs styling */
+        .svg-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff1e00;
+        }
+
+        .arrow-top-left {
+            position: absolute;
+            top: 50px;
+            left: 120px;
+            width: 40px;
+            height: 40px;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .arrow-top-left:hover {
+            transform: scale(1.15);
+        }
+
+        .arrow-mid-left {
+            position: absolute;
+            top: 40%;
+            left: calc(34% - 20.5vw - 220px);
+            width: 105px;
+            height: 105px;
+            transform: translateY(-50%);
+            transform-origin: center;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .arrow-mid-left:hover {
+            transform: translateY(-50%) scale(1.6);
+        }
+
+        .arrow-mid-right {
+            position: absolute;
+            top: 40%;
+            left: calc(34% + 20.5vw + 140px);
+            width: 105px;
+            height: 105px;
+            transform: translateY(-50%);
+            transform-origin: center;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .arrow-mid-right:hover {
+            transform: translateY(-50%) scale(1.6);
+        }
+
+        /* Expanded hover area for middle arrows */
+        .arrow-mid-left::before,
+        .arrow-mid-right::before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            left: -150px;
+            right: -150px;
+            bottom: -150px;
+            cursor: pointer;
+        }
+
+        /* The lines connecting the mid arrows to the edges */
+        .horizontal-line-left {
+            position: absolute;
+            top: 40%;
+            left: calc(-1 * var(--shift-x));
+            width: calc(34% - 20.5vw - 210px + var(--shift-x) + var(--horizontal-line-left-width-offset, 0px));
+            height: var(--horizontal-line-left-height, 210px);
             z-index: 10;
         }
 
-        header h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            /* Regular */
-            font-size: 3rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            color: var(--text-main);
+        .horizontal-line-right {
+            position: absolute;
+            bottom: calc(100vh - 40%);
+            left: calc(34% + 20.5vw + 255px + var(--horizontal-line-right-width-offset, 0px));
+            right: calc(var(--shift-x) - 3vw);
+            height: var(--horizontal-line-right-height, 134px);
+            z-index: 10;
         }
 
-        header p {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            /* Regular */
-            color: var(--text-muted);
-            font-size: 1rem;
-            letter-spacing: 0.05em;
-            line-height: 1.6;
-        }
-
-        /* Scattered Gallery Wrapper */
-        #gallery {
-            width: 95vw;
-            max-width: 1800px;
-            position: relative;
-            min-height: 4800px;
-            /* space for absolute scattered positioning */
-            margin-bottom: 6rem;
-        }
-
-        /* Custom Settings Indicator Bar */
-        #custom-settings-indicator {
-            position: fixed;
-            top: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            padding: 0.6rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        #custom-settings-indicator button {
-            background-color: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: inherit;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-family: inherit;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        #custom-settings-indicator button:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* THE COMPONENT STYLES */
-        .art-element {
-            display: grid;
-            grid-template-areas: "text visual";
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            user-select: none;
-            position: relative;
-        }
-
-        /* Layout direction modifiers */
-        .art-element.layout-left {
-            grid-template-areas: "text visual";
-        }
-
-        .art-element.layout-right {
-            grid-template-areas: "visual text";
-        }
-
-        /* Circle Photo */
-        .art-photo {
-            grid-area: visual;
-            position: relative;
-            width: var(--comp-photo-size);
-            height: var(--comp-photo-size);
-            object-fit: cover;
-            border-radius: 50%;
-            z-index: 2;
-            cursor: pointer;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-            align-self: center;
-            justify-self: center;
-        }
-
-        .art-element:hover .art-photo {
-            transform: scale(1.02);
-        }
-
-        /* SVG Background Container */
-        .art-svg-background {
-            grid-area: visual;
-            width: calc(var(--comp-photo-size) * 1.45);
-            height: calc(var(--comp-photo-size) * 1.45);
-            z-index: 1;
+        /* Container to shift the entire composition slightly to the right */
+        .composition-container {
+            --shift-x: calc(4vw - 35px);
+            /* Zde můžete měnit posun celé kompozice doprava/doleva bez rozpadnutí */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: translateX(var(--shift-x));
             pointer-events: none;
-            transform-origin: center center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            align-self: center;
-            justify-self: center;
+            z-index: 10;
         }
 
-        .art-svg-pulse {
+        .arrow-mid-left,
+        .arrow-mid-right,
+        .bg-lines-wrapper {
+            pointer-events: auto;
+        }
+
+        /* Debug Menu */
+        #debug-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 350px;
+            max-width: 80vw;
+            height: 100vh;
+            background: #000000;
+            color: #ffffff;
+            z-index: 9999;
+            padding: 40px 30px;
+            font-family: 'Montserrat', sans-serif;
+            overflow-y: auto;
+            border-right: 1px solid #333333;
+        }
+
+        #debug-menu h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ffffff;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .debug-toggle-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .debug-toggle-group label {
+            margin-left: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            user-select: none;
+            color: #ffffff;
+        }
+
+        .debug-toggle-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #000000;
+        }
+
+        .debug-submenu {
+            margin-top: 30px;
+            border-top: 1px solid #333333;
+            padding-top: 20px;
+        }
+
+        .debug-submenu h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888888;
+        }
+
+        .debug-slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .slider-label-row label {
+            font-size: 12px;
+            color: #cccccc;
+            font-weight: 400;
+        }
+
+        .slider-label-row span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ff1e00;
+            background: #111111;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid #222222;
+        }
+
+        .debug-slider-group input[type="range"] {
             width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform-origin: center center;
+            height: 6px;
+            background: #222222;
+            outline: none;
+            border-radius: 3px;
+            accent-color: #ff1e00;
+            cursor: pointer;
+            -webkit-appearance: none;
         }
 
-        .art-svg-background svg {
+        .debug-slider-group input[type="range"]::-webkit-slider-runnable-track {
             width: 100%;
-            height: 100%;
-            fill: var(--svg-fill);
-            opacity: 0.65;
-            transition: fill 0.4s ease, opacity 0.4s ease;
+            height: 6px;
+            cursor: pointer;
+            background: #222222;
+            border-radius: 3px;
         }
 
-        .art-element:hover svg {
-            opacity: 0.95;
-        }
-
-        /* 2. TEXT SECTION CONTAINER */
-        .art-text-container {
-            grid-area: text;
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-
-        /* Indicator dot (Pulsing micro-dot) */
-        .art-indicator-dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--text-main);
+        .debug-slider-group input[type="range"]::-webkit-slider-thumb {
+            height: 16px;
+            width: 16px;
             border-radius: 50%;
-            flex-shrink: 0;
-            display: inline-block;
-            transition: transform 0.3s ease;
+            background: #ff1e00;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -5px;
+            transition: transform 0.1s ease;
         }
 
-        .art-element:hover .art-indicator-dot {
-            transform: scale(1.3);
+        .debug-slider-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
-        /* Text lines: all styled as Montserrat Regular (400) */
-        .art-text-lines {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: left;
+        .debug-button-group {
+            margin-top: 30px;
         }
 
-        .art-title {
+        .debug-btn {
+            width: 100%;
+            padding: 12px;
+            background: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            font-size: 0.95rem;
-            line-height: 1.3;
-            letter-spacing: 0.05em;
-            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
 
-        .art-subtitle {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            font-size: 0.95rem;
-            line-height: 1.3;
-            letter-spacing: 0.03em;
-            color: var(--text-muted);
-            margin-top: 0.15rem;
+        .debug-btn:hover {
+            background: #ff1e00;
+            border-color: #ff1e00;
+            color: #ffffff;
         }
 
-        .art-author {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            font-size: 0.95rem;
-            line-height: 1.3;
-            letter-spacing: 0.03em;
-            color: rgba(0, 0, 0, 0.4);
-            margin-top: 0.15rem;
+        /* Pulsing Animation pro pozadí (každé zvlášť) */
+        @keyframes pulse-anim-bg-left {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
-        /* Footer styling */
-        footer {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            margin-top: auto;
-            color: rgba(0, 0, 0, 0.3);
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            text-align: center;
+        @keyframes pulse-anim-bg-right {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
-        /* Responsive collapse on smaller displays */
+        @keyframes pulse-anim-left {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse-anim-right {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        body.pulsing-active .bg-line-left {
+            animation: pulse-anim-bg-left 12s infinite ease-in-out;
+        }
+
+        body.pulsing-active .bg-line-right {
+            animation: pulse-anim-bg-right 14s infinite ease-in-out;
+        }
+
+        /* Arrow attention animation (grow 1.3x twice) */
+        .arrow-mid-right.attention svg {
+            animation: arrow-attention-pulse 1.2s ease-in-out;
+        }
+
+        @keyframes arrow-attention-pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.3);
+            }
+
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Mobile Responsive Viewport Overrides */
         @media (max-width: 768px) {
-            #gallery {
-                min-height: auto !important;
+            body {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+                overflow-x: hidden;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 5rem;
-                padding-bottom: 5rem;
+                padding-top: 110px;
+                padding-bottom: 60px;
             }
 
-            .art-element,
-            .art-element.layout-left,
-            .art-element.layout-right {
+            .arrow-top-left {
+                position: absolute;
+                top: 24px;
+                left: 24px;
+                width: 36px;
+                height: 36px;
+                z-index: 100;
+            }
+
+            .header-top-right {
+                position: absolute;
+                top: 24px;
+                right: 24px;
+                gap: 8px;
+                z-index: 100;
+            }
+
+            .header-top-right h1 {
+                font-size: 20px;
+            }
+
+            .header-top-right .svg-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            .bottom-container {
+                position: relative !important;
+                bottom: auto !important;
+                left: auto !important;
+                width: 100% !important;
+                text-align: center !important;
+                margin: 0 !important;
+                padding: 0 20px !important;
+                order: 1 !important;
+                z-index: 20 !important;
+            }
+
+            .bottom-label {
+                display: none !important;
+            }
+
+            .bottom-title {
+                font-size: clamp(50px, 18vw, 80px) !important;
+                color: #000000 !important;
+                padding-right: 0 !important;
+                line-height: 1.0 !important;
+                display: inline-block !important;
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+            .composition-container {
                 position: relative !important;
                 top: auto !important;
                 left: auto !important;
+                width: 100% !important;
+                height: 300px !important;
+                min-height: 300px !important;
+                max-height: none !important;
                 margin: 0 auto !important;
-                display: flex;
-                flex-direction: column-reverse;
-                gap: 2.5rem;
-                text-align: center;
+                transform: none !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                pointer-events: auto !important;
+                order: 2 !important;
+                overflow: visible !important;
             }
 
-            .art-text-container {
-                display: flex;
-                flex-direction: column;
-                gap: 0.6rem;
+            .center-photo-wrapper {
+                position: absolute !important;
+                top: 50% !important;
+                bottom: auto !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translate(-50%, -50%) !important;
+                width: 68% !important;
+                height: 38.3vw !important;
+                max-width: 290px !important;
+                max-height: 163px !important;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+                z-index: 15;
             }
 
-            .art-text-lines {
-                text-align: center;
+            .bg-lines-wrapper {
+                position: absolute !important;
+                top: 50% !important;
+                bottom: auto !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translate(-50%, -50%) !important;
+                width: 100% !important;
+                max-width: none !important;
+                height: 100% !important;
+                max-height: none !important;
+                z-index: 5;
+            }
+
+            .horizontal-line-left {
+                position: absolute !important;
+                display: block !important;
+                top: 50% !important;
+                bottom: auto !important;
+                left: 0 !important;
+                right: auto !important;
+                width: 10% !important;
+                height: 90px !important;
+                z-index: 10;
+            }
+
+            .horizontal-line-right {
+                position: absolute !important;
+                display: block !important;
+                top: 50% !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: 0 !important;
+                width: 10% !important;
+                height: 60px !important;
+                z-index: 10;
+            }
+
+            .arrow-mid-left {
+                position: absolute !important;
+                top: 50% !important;
+                bottom: auto !important;
+                left: 3% !important;
+                right: auto !important;
+                width: 10% !important;
+                height: 10vw !important;
+                max-width: 40px !important;
+                max-height: 40px !important;
+                min-width: 28px !important;
+                min-height: 28px !important;
+                transform: translateY(-50%) !important;
+                z-index: 25;
+            }
+
+            .arrow-mid-right {
+                position: absolute !important;
+                top: 50% !important;
+                bottom: auto !important;
+                left: auto !important;
+                right: 3% !important;
+                width: 10% !important;
+                height: 10vw !important;
+                max-width: 40px !important;
+                max-height: 40px !important;
+                min-width: 28px !important;
+                min-height: 28px !important;
+                transform: translateY(-50%) !important;
+                z-index: 25;
+            }
+
+            .arrow-mid-left:hover,
+            .arrow-mid-right:hover {
+                transform: translateY(-50%) scale(1) !important;
+            }
+
+            .info-column {
+                position: relative !important;
+                top: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 24px !important;
+                margin-top: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 30px !important;
+                align-items: center;
+                order: 3;
+            }
+
+            .info-specs {
+                margin-top: 0 !important;
+                text-align: center !important;
+                font-size: 15px !important;
+                line-height: normal !important;
+                width: 100% !important;
+            }
+
+            .info-text {
+                margin-top: 0 !important;
+                font-size: 14px !important;
+                line-height: 1.6 !important;
+                text-align: left !important;
+                width: 100% !important;
+                word-wrap: break-word !important;
+            }
+
+            .info-text p {
+                margin-bottom: 24px !important;
             }
         }
     </style>
@@ -327,257 +813,1084 @@
 
 <body>
 
-    <!-- Custom Settings Notification Bar -->
-    <div id="custom-settings-indicator" style="display: none;">
-        <span>Aktivní vlastní nastavení z konfigurátoru</span>
-        <button onclick="resetCustomSettings()">Obnovit výchozí</button>
-    </div>
+    <!-- Inline SVG definitions for the red motifs and black lines -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+        <defs>
+            <!-- Gradients for horizontal lines animation -->
+            <linearGradient id="grad-left" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop id="stop-left-1" offset="0%" stop-color="#000000" />
+                <stop id="stop-left-2" offset="100%" stop-color="#000000" />
+                <stop id="stop-left-3" offset="100%" stop-color="#ff1e00" />
+                <stop id="stop-left-4" offset="100%" stop-color="#ff1e00" />
+                <stop id="stop-left-5" offset="100%" stop-color="#000000" />
+                <stop id="stop-left-6" offset="100%" stop-color="#000000" />
+            </linearGradient>
+            <linearGradient id="grad-right" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop id="stop-right-1" offset="0%" stop-color="#000000" />
+                <stop id="stop-right-2" offset="0%" stop-color="#000000" />
+                <stop id="stop-right-3" offset="0%" stop-color="#ff1e00" />
+                <stop id="stop-right-4" offset="0%" stop-color="#ff1e00" />
+                <stop id="stop-right-5" offset="0%" stop-color="#000000" />
+                <stop id="stop-right-6" offset="100%" stop-color="#000000" />
+            </linearGradient>
 
-    <!-- Dynamic glows positioned behind elements -->
-    <div class="glow-point" style="top: 15%; left: 20%;"></div>
-    <div class="glow-point" style="top: 45%; left: 70%;"></div>
-    <div class="glow-point" style="top: 75%; left: 15%;"></div>
-
-    <header>
-        <h1>Kořeny</h1>
-        <p>Interaktivní výstavní galerie dvaceti organicky rozmístěných grafických prvků. Přejíždějte kurzorem po dílech
-            a sledujte chování animace.</p>
-    </header>
-
-    <!-- Scattered items container -->
-    <div id="gallery"></div>
-
-    <footer>
-        &copy; 2026 Kořeny &bull; Grafická Sbírka
-    </footer>
-
-    <script>
-        // Check for custom settings exported from component.html
-        let customSettings = null;
-        try {
-            const saved = localStorage.getItem('koreny_gallery_settings');
-            if (saved) {
-                customSettings = JSON.parse(saved);
-                document.getElementById('custom-settings-indicator').style.display = 'flex';
-            }
-        } catch (e) {
-            console.error("Failed to load customizer settings", e);
-        }
-
-        window.resetCustomSettings = function () {
-            localStorage.removeItem('koreny_gallery_settings');
-            window.location.reload();
-        };
-
-        // Word pool to generate unique combinations of art pieces
-        const poolTitles = ["Lůno", "Země", "Hlína", "Stín", "Křivka", "Dotek", "Ticho", "Popel", "Plamen", "Tvar", "Ozvěna", "Otisk", "Hlubina", "Vlna", "Pohyb", "Prostor", "Světlo", "Čas", "Návrat", "Zrod"];
-        const poolSubtitles = ["Barborky", "Prvoky", "Fragmenty", "Prameny", "Siluety", "Stopy", "Věky", "Kořeny", "Obrysy", "Odstíny"];
-        const poolAuthors = ["Ondřej Muroň", "Krystian M.", "Jan Novák", "Kateřina Š."];
-
-        const gallery = document.getElementById('gallery');
-        const elementsData = [];
-
-        // Inline SVG template string
-        const svgContent = `
-        <svg viewBox="0 0 988 1087" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-            <g transform="matrix(1,0,0,1,-14385,-5935)">
-                <g id="Artboard5" transform="matrix(0.722753,0,0,1,3988.065911,0)">
-                    <rect x="14385.176" y="5935" width="1366.176" height="1086.671" style="fill:none;"/>
-                    <g transform="matrix(-1.649062,-0,0,-1.191865,21491.630475,7862.046931)">
-                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
-                            <path d="M75.446,97.272C71.782,99.956 73.561,106.908 79.865,115.549C86.425,124.537 93.558,129.861 101.777,133.118C104.129,134.053 106.12,135.697 107.402,137.868L108.548,139.814L107.402,141.759C106.12,143.931 104.129,145.574 101.777,146.509C93.573,149.767 86.44,155.09 79.865,164.078C73.561,172.704 71.782,179.671 75.446,182.356C80.197,185.824 91.205,186.593 96.876,178.827C100.676,173.624 104.099,164.953 108.804,152.195C109.422,150.536 110.418,149.028 111.73,147.821L120.084,140.115L120.084,139.542L111.73,131.836C110.433,130.63 109.422,129.122 108.804,127.463C104.099,114.705 100.676,106.033 96.876,100.831C91.205,93.064 80.181,93.833 75.446,97.302L75.446,97.272Z" />
+            <g id="sipky-all">
+                <g transform="matrix(1,0,0,1,-1995,0)">
+                    <g id="Artboard2" transform="matrix(0.089755,0,0,0.145508,2116.152163,0)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(0,25.425732,-41.219529,0,3868.881944,-300.5466)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
                         </g>
-                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
-                            <path d="M205.696,97.272C209.361,99.956 207.581,106.908 201.278,115.549C194.718,124.537 187.585,129.861 179.366,133.118C177.013,134.053 175.023,135.697 173.741,137.868L172.595,139.814L173.741,141.759C175.023,143.931 177.013,145.574 179.366,146.509C187.57,149.767 194.703,155.09 201.278,164.078C207.581,172.704 209.361,179.671 205.696,182.356C200.946,185.824 189.937,186.593 184.267,178.827C180.467,173.624 177.043,164.953 172.338,152.195C171.72,150.536 170.725,149.028 169.413,147.821L161.058,140.115L161.058,139.542L169.413,131.836C170.71,130.63 171.72,129.122 172.338,127.463C177.043,114.705 180.467,106.033 184.267,100.831C189.937,93.064 200.961,93.833 205.696,97.302L205.696,97.272Z" />
+                        <g transform="matrix(0,25.425732,-41.219529,0,3868.881944,-300.5466)">
+                            <path
+                                d="M32.426,18.363C33.156,18.363 33.748,17.776 33.748,17.052C33.748,16.328 33.156,15.742 32.426,15.742C31.695,15.742 31.103,16.328 31.103,17.052C31.103,17.776 31.695,18.363 32.426,18.363Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
                         </g>
-                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
-                            <path d="M183.091,74.666C180.406,71.001 173.454,72.781 164.813,79.085C155.825,85.645 150.502,92.778 147.244,100.997C146.309,103.349 144.666,105.34 142.494,106.622L140.549,107.768L138.603,106.622C136.432,105.34 134.788,103.349 133.853,100.997C130.596,92.793 125.272,85.66 116.284,79.085C107.658,72.781 100.691,71.001 98.007,74.666C94.538,79.416 93.769,90.425 101.535,96.095C106.738,99.896 115.41,103.319 128.168,108.024C129.826,108.642 131.335,109.638 132.541,110.95L140.247,119.304L140.82,119.304L148.526,110.95C149.733,109.653 151.241,108.642 152.9,108.024C165.658,103.319 174.329,99.896 179.532,96.095C187.298,90.425 186.529,79.401 183.061,74.666L183.091,74.666Z" />
+                        <g transform="matrix(0,25.425732,-41.219529,0,3868.881944,-300.5466)">
+                            <path
+                                d="M32.426,27.2C33.034,27.2 33.528,26.71 33.528,26.107C33.528,25.504 33.034,25.015 32.426,25.015C31.817,25.015 31.324,25.504 31.324,26.107C31.324,26.71 31.817,27.2 32.426,27.2Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
                         </g>
-                        <g transform="matrix(0,2.657198,-2.657198,0,4266.616415,776.485642)">
-                            <path d="M183.091,204.917C180.406,208.581 173.454,206.802 164.813,200.498C155.825,193.938 150.502,186.805 147.244,178.586C146.309,176.233 144.666,174.243 142.494,172.961L140.549,171.815L138.603,172.961C136.432,174.243 134.788,176.233 133.853,178.586C130.596,186.79 125.272,193.923 116.284,200.498C107.658,206.802 100.691,208.581 98.007,204.917C94.538,200.166 93.769,189.157 101.535,183.487C106.738,179.687 115.41,176.264 128.168,171.559C129.826,170.94 131.335,169.945 132.541,168.633L140.247,160.278L140.82,160.278L148.526,168.633C149.733,169.93 151.241,170.94 152.9,171.559C165.658,176.264 174.329,179.687 179.532,183.487C187.298,189.157 186.529,200.181 183.061,204.917L183.091,204.917Z" />
+                    </g>
+                    <g id="Artboard21" serif:id="Artboard2"
+                        transform="matrix(0.089755,0,0,0.145508,1818.183144,202.043007)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(0,-29.339864,47.565017,0,1817.512733,1491.814514)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
+                        </g>
+                    </g>
+                    <g id="Artboard22" serif:id="Artboard2" transform="matrix(0.089755,0,0,0.145508,1818.183144,0)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(0,29.339864,-47.565017,0,4042.487267,-411.814514)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
+                        </g>
+                    </g>
+                    <g id="Artboard23" serif:id="Artboard2"
+                        transform="matrix(0.089755,0,0,0.145508,2116.152163,202.043007)">
+                        <rect x="1970" y="0" width="1920" height="1080" style="fill:none;" />
+                        <g transform="matrix(41.219529,0,-0,25.425732,1592.79726,-5.905714)">
+                            <path
+                                d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
+                        </g>
+                        <g transform="matrix(41.219529,0,-0,25.425732,1592.79726,-5.905714)">
+                            <path
+                                d="M32.426,18.363C33.156,18.363 33.748,17.776 33.748,17.052C33.748,16.328 33.156,15.742 32.426,15.742C31.695,15.742 31.103,16.328 31.103,17.052C31.103,17.776 31.695,18.363 32.426,18.363Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
+                        </g>
+                        <g transform="matrix(41.219529,0,-0,25.425732,1592.79726,-5.905714)">
+                            <path
+                                d="M32.426,27.2C33.034,27.2 33.528,26.71 33.528,26.107C33.528,25.504 33.034,25.015 32.426,25.015C31.817,25.015 31.324,25.504 31.324,26.107C31.324,26.71 31.817,27.2 32.426,27.2Z"
+                                style="fill:currentColor;fill-rule:nonzero;" />
                         </g>
                     </g>
                 </g>
             </g>
-        </svg>`;
+            <g id="cara-leva">
+                <g transform="matrix(1,0,0,1,-3663.537432,-0)">
+                    <g id="Artboard5_left" transform="matrix(0.498804,0,0,0.365218,2093.353315,72.426468)">
+                        <rect x="3147.895" y="-198.31" width="1479.957" height="731.935" style="fill:none;" />
+                        <g transform="matrix(2.012625,0,0,2.73809,4479.200461,-1156.49081)">
+                            <path
+                                d="M-663.291,617.624C-663.436,616.891 -663.427,616.855 -663.013,616.233C-662.422,615.345 -662.257,615.528 -661.216,615.314C-623.094,607.494 -607.963,587.193 -574.273,567.344C-548.013,551.873 -525.958,546.14 -509.63,541.258C-495.848,537.137 -469.119,529.023 -428.612,517.653C-397.348,508.877 -376.471,503.701 -371.59,502.605C-311.798,489.177 -271.979,483.876 -259.741,481.87C-258.767,481.71 -234.921,476.884 -203.051,472.184C-201.512,471.957 -201.519,471.928 -194.859,471.373C-160.792,468.532 -128.45,467.931 -117.292,467.541C-109.256,467.261 -99.959,466.882 -58.391,466.283C-25.801,465.814 9.545,465.9 14.031,465.845L73.859,465.175C74.604,465.166 74.64,465.183 75.166,465.71C75.177,465.722 75.712,467.033 75.709,467.041C75.53,467.478 75.499,468.016 75.166,468.35C74.835,468.682 74.329,468.802 73.87,468.887C73.817,468.897 46.614,468.534 14.036,468.269C11.194,468.246 -44.48,468.414 -77.581,469.604C-99.733,470.4 -114.751,471.261 -121.216,471.636C-121.235,471.637 -131.269,472.337 -143.597,473.404C-175.105,476.129 -199.306,479.326 -200.505,479.415C-206.074,479.83 -226.463,480.993 -258.664,484.671C-259.375,484.752 -293.87,489.866 -348.478,502.653C-364.567,506.421 -364.551,506.471 -372.366,508.356C-377.783,509.662 -415.431,517.83 -458.361,529.362C-480.308,535.257 -516.681,545.34 -531.619,550.515C-586.175,569.412 -603.877,597.037 -637.762,611.781C-648.63,616.509 -657.72,618.393 -661.113,619.081C-661.224,619.103 -661.862,619.232 -662.503,618.803C-663.124,618.387 -663.145,618.357 -663.291,617.624Z"
+                                fill="inherit" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="cara-prava">
+                <g transform="matrix(1,0,0,1,-3663.537432,-440.769768)">
+                    <g id="Artboard5_right" transform="matrix(0.498804,0,0,0.365218,2093.353315,513.196236)">
+                        <rect x="3147.895" y="-198.31" width="1479.957" height="731.935" style="fill:none;" />
+                        <g transform="matrix(-2.012625,-0,0,-2.73809,3296.547139,1491.805859)">
+                            <path
+                                d="M-663.291,617.624C-663.436,616.891 -663.427,616.855 -663.013,616.233C-662.422,615.345 -662.257,615.528 -661.216,615.314C-623.094,607.494 -607.963,587.193 -574.273,567.344C-548.013,551.873 -525.958,546.14 -509.63,541.258C-495.848,537.137 -469.119,529.023 -428.612,517.653C-397.348,508.877 -376.471,503.701 -371.59,502.605C-311.798,489.177 -271.979,483.876 -259.741,481.87C-258.767,481.71 -234.921,476.884 -203.051,472.184C-201.512,471.957 -201.519,471.928 -194.859,471.373C-160.792,468.532 -128.45,467.931 -117.292,467.541C-109.256,467.261 -99.959,466.882 -58.391,466.283C-25.801,465.814 9.545,465.9 14.031,465.845L73.859,465.175C74.604,465.166 74.64,465.183 75.166,465.71C75.177,465.722 75.712,467.033 75.709,467.041C75.53,467.478 75.499,468.016 75.166,468.35C74.835,468.682 74.329,468.802 73.87,468.887C73.817,468.897 46.614,468.534 14.036,468.269C11.194,468.246 -44.48,468.414 -77.581,469.604C-99.733,470.4 -114.751,471.261 -121.216,471.636C-121.235,471.637 -131.269,472.337 -143.597,473.404C-175.105,476.129 -199.306,479.326 -200.505,479.415C-206.074,479.83 -226.463,480.993 -258.664,484.671C-259.375,484.752 -293.87,489.866 -348.478,502.653C-364.567,506.421 -364.551,506.471 -372.366,508.356C-377.783,509.662 -415.431,517.83 -458.361,529.362C-480.308,535.257 -516.681,545.34 -531.619,550.515C-586.175,569.412 -603.877,597.037 -637.762,611.781C-648.63,616.509 -657.72,618.393 -661.113,619.081C-661.224,619.103 -661.862,619.232 -662.503,618.803C-663.124,618.387 -663.145,618.357 -663.291,617.624Z"
+                                fill="inherit" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </defs>
+    </svg>
 
-        // Generate 20 random elements
-        let elementIdx = 0;
-        let rowIndex = 0;
-        const rowHeight = 720;
-        const verticalOffsetRange = 80;
+    <!-- Top Left Arrow -->
+    <div class="arrow-top-left svg-icon">
+        <svg viewBox="357.134 253.611 54 54" width="100%" height="100%">
+            <use href="#sipky-all" />
+        </svg>
+    </div>
 
-        while (elementIdx < 20) {
-            // Decide how many elements in this row: 1, 2, or 3
-            const rand = Math.random();
-            let countInRow = 2;
-            if (rand < 0.25) {
-                countInRow = 1;
-            } else if (rand < 0.65) {
-                countInRow = 2;
-            } else {
-                countInRow = 3;
-            }
+    <!-- Top Right: O projektu -->
+    <div class="header-top-right">
+        <h1>O projektu</h1>
+        <div class="svg-icon">
+            <svg viewBox="361.975 49.288 54 54" width="100%" height="100%">
+                <use href="#sipky-all" />
+            </svg>
+        </div>
+    </div>
 
-            if (elementIdx + countInRow > 20) {
-                countInRow = 20 - elementIdx;
-            }
+    <!-- Wrapper containing arrows, lines, background lines, and photo to shift them left together -->
+    <div class="composition-container">
+        <!-- Background wavy lines -->
+        <div class="bg-lines-wrapper">
+            <div class="bg-line-left-wrap">
+                <div class="bg-line-left"></div>
+            </div>
+            <div class="bg-line-right-wrap">
+                <div class="bg-line-right"></div>
+            </div>
+        </div>
 
-            for (let j = 0; j < countInRow; j++) {
-                const title = poolTitles[elementIdx % poolTitles.length];
-                const subtitle = poolSubtitles[Math.floor(Math.random() * poolSubtitles.length)];
-                const author = poolAuthors[Math.floor(Math.random() * poolAuthors.length)];
-                const layoutDirection = Math.random() > 0.5 ? 'layout-left' : 'layout-right';
+        <!-- Horizontal Lines connecting to edges -->
+        <svg class="horizontal-line-left" viewBox="-1.83 115.22 740.03 152.44" preserveAspectRatio="none">
+            <use href="#cara-leva" fill="url(#grad-left)" />
+        </svg>
+        <svg class="horizontal-line-right" viewBox="0 -0.35 740.02 152.43" preserveAspectRatio="none">
+            <use href="#cara-prava" fill="url(#grad-right)" />
+        </svg>
 
-                // Calculate vertical position
-                const top = rowIndex * rowHeight + 100 + Math.floor(Math.random() * verticalOffsetRange);
+        <!-- Mid Left Arrow -->
+        <div class="arrow-mid-left svg-icon">
+            <svg viewBox="55.715 249.617 62 62" width="100%" height="100%">
+                <use href="#sipky-all" />
+            </svg>
+        </div>
 
-                // Calculate horizontal position (left percentage)
-                let left = 0;
-                if (countInRow === 1) {
-                    left = 25 + Math.floor(Math.random() * 20); // 25% to 45%
-                } else if (countInRow === 2) {
-                    if (j === 0) {
-                        left = 5 + Math.floor(Math.random() * 15); // 5% to 20%
-                    } else {
-                        left = 52 + Math.floor(Math.random() * 15); // 52% to 67%
-                    }
-                } else {
-                    if (j === 0) {
-                        left = 0 + Math.floor(Math.random() * 6); // 0% to 6%
-                    } else if (j === 1) {
-                        left = 34 + Math.floor(Math.random() * 6); // 34% to 40%
-                    } else {
-                        left = 68 + Math.floor(Math.random() * 6); // 68% to 74%
-                    }
+        <!-- Center Photo with dual layer layout for premium crossfading -->
+        <div class="center-photo-wrapper">
+            <div id="photo-layer-1" class="center-photo active" style="background-image: url('kapr_foto1.jpg');"></div>
+            <div id="photo-layer-2" class="center-photo" style="background-image: url('kapr_foto2.jpg');"></div>
+        </div>
+
+        <!-- Mid Right Arrow -->
+        <div class="arrow-mid-right svg-icon">
+            <svg viewBox="54.616 47.574 62 62" width="100%" height="100%">
+                <use href="#sipky-all" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Right Info Column -->
+    <div class="info-column">
+        <div class="info-block info-specs">
+            <div>Author: <strong>Veronika Konečná</strong></div>
+            <div>Object: <strong>Jewelry stand</strong></div>
+            <div>Event: <strong>Carp scale May 15</strong></div>
+        </div>
+
+        <div class="info-block info-text">
+            <p>
+                <strong>CZ</strong><br>
+                Projekt Kapr je stojan na šperky, který se věnuje interpretaci štědrovečerní večeře, konkrétně zvyku
+                uschování kapřích šupin. Jejich nošení dle tradice přináší finanční stabilitu a v českém prostředí jsou
+                jedny z nejznámějších lidových symbolů bohatství, štěstí a ochrany. V konceptu dochází k posunu tohoto
+                zvyku do moderního kontextu. Šupina už neschovává peníze v kapse, ale samotný objekt střeží jiný druh
+                cennosti - šperky, které pro nás mají často silný osobní a emocionální význam.
+            </p>
+            <p>
+                <strong>ENG</strong><br>
+                The "Kapr" (Carp) project is a jewelry holder dedicated to the interpretation of the Christmas Eve
+                dinner, specifically the custom of keeping carp scales. According to tradition, carrying them brings
+                financial stability, and in the Czech environment, they are among the most well known folk symbols of
+                wealth, good fortune, and protection. The concept shifts this custom into a modern context. Instead of a
+                scale saving up money in a pocket, the object itself guards a different kind of valuables - jewelry,
+                which often carries a strong personal and emotional significance for us.
+            </p>
+        </div>
+    </div>
+
+    <!-- Bottom Left Title -->
+    <div class="bottom-container">
+        <div class="bottom-label">Název:</div>
+        <div class="bottom-title">Carp scale</div>
+    </div>
+
+    <!-- Debug Menu -->
+    <div id="debug-menu">
+        <h2>DEBUG MENU</h2>
+        <p style="margin-bottom: 20px; color: #888888; font-size: 12px;">Stiskněte klávesu "d" pro zavření/otevření.</p>
+        <div id="debug-toggles-container">
+            <div class="debug-toggle-group">
+                <input type="checkbox" id="toggle-pulsing" checked>
+                <label for="toggle-pulsing">Pulzování pozadí</label>
+            </div>
+            <div class="debug-toggle-group">
+                <input type="checkbox" id="toggle-3d" checked>
+                <label for="toggle-3d">3D rotace na myš</label>
+            </div>
+        </div>
+
+        <div class="debug-submenu">
+            <h3>Pokročilé Nastavení</h3>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-tilt-speed">Rychlost náklonu po kliku</label>
+                    <span id="val-tilt-speed">0.045</span>
+                </div>
+                <input type="range" id="slider-tilt-speed" min="0.01" max="0.2" step="0.005" value="0.045">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-tilt-angle">Úhel náklonu (stupně)</label>
+                    <span id="val-tilt-angle">15</span>
+                </div>
+                <input type="range" id="slider-tilt-angle" min="5" max="45" step="1" value="15">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-tilt-duration">Doba setrvání náklonu (ms)</label>
+                    <span id="val-tilt-duration">250</span>
+                </div>
+                <input type="range" id="slider-tilt-duration" min="100" max="2000" step="50" value="250">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-return-click">Rychlost návratu po kliku</label>
+                    <span id="val-return-click">0.01</span>
+                </div>
+                <input type="range" id="slider-return-click" min="0.01" max="0.2" step="0.005" value="0.01">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-return-leave">Rychlost návratu po opuštění</label>
+                    <span id="val-return-leave">0.019</span>
+                </div>
+                <input type="range" id="slider-return-leave" min="0.001" max="0.05" step="0.001" value="0.019">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-pulse-duration">Doba pulzu čar (ms)</label>
+                    <span id="val-pulse-duration">1300</span>
+                </div>
+                <input type="range" id="slider-pulse-duration" min="100" max="2000" step="50" value="1300">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-attention-interval">Interval časovače šipky (s)</label>
+                    <span id="val-attention-interval">10</span>
+                </div>
+                <input type="range" id="slider-attention-interval" min="2" max="60" step="1" value="10">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-line-left-width-offset">Šířka levé čáry (délka offset v px)</label>
+                    <span id="val-line-left-width-offset">0</span>
+                </div>
+                <input type="range" id="slider-line-left-width-offset" min="-150" max="300" step="5" value="0">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-line-left-height">Tloušťka levé čáry (px)</label>
+                    <span id="val-line-left-height">210</span>
+                </div>
+                <input type="range" id="slider-line-left-height" min="50" max="400" step="5" value="210">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-line-right-width-offset">Šířka pravé čáry (délka offset v px)</label>
+                    <span id="val-line-right-width-offset">0</span>
+                </div>
+                <input type="range" id="slider-line-right-width-offset" min="-150" max="300" step="5" value="0">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-line-right-height">Tloušťka pravé čáry (px)</label>
+                    <span id="val-line-right-height">134</span>
+                </div>
+                <input type="range" id="slider-line-right-height" min="30" max="300" step="5" value="134">
+            </div>
+
+            <div class="debug-submenu-divider"
+                style="margin: 25px 0 15px; border-top: 1px solid #333333; padding-top: 15px;">
+                <h3 style="font-size: 14px; text-transform: uppercase; color: #888888; margin-bottom: 15px;">Barvy a
+                    Název</h3>
+            </div>
+
+            <div class="debug-slider-group"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <label for="picker-bg-color" style="font-size: 13px; color: #ccc;">Barva pozadí</label>
+                <input type="color" id="picker-bg-color" value="#faf8f2"
+                    style="background: none; border: none; cursor: pointer; width: 40px; height: 25px; padding: 0;">
+            </div>
+
+            <div class="debug-slider-group"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <label for="picker-title-color" style="font-size: 13px; color: #ccc;">Barva spodního názvu</label>
+                <input type="color" id="picker-title-color" value="#ff1e00"
+                    style="background: none; border: none; cursor: pointer; width: 40px; height: 25px; padding: 0;">
+            </div>
+
+            <div class="debug-slider-group"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <label for="select-title-text" style="font-size: 13px; color: #ccc;">Text názvu</label>
+                <select id="select-title-text"
+                    style="background: #222; color: #fff; border: 1px solid #444; padding: 4px 8px; font-size: 12px; border-radius: 4px; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif;">
+                    <option value="Carp scale" selected>Carp scale</option>
+                    <option value="Dust">Dust</option>
+                </select>
+            </div>
+
+            <div class="debug-button-group">
+                <button id="btn-reset-defaults" class="debug-btn">Obnovit výchozí</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slideshow and Line Animation Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Výchozí konfigurace pro animace (uložená navždy v localStorage)
+            const DEFAULTS = {
+                pulsingActive: true,
+                rotate3DActive: true,
+                tiltSpeed: 0.045,
+                tiltAngle: 15,
+                tiltDuration: 250,
+                returnClickSpeed: 0.01,
+                returnLeaveSpeed: 0.019,
+                pulseDuration: 1300,
+                attentionIntervalDuration: 10,
+                lineLeftWidthOffset: 0,
+                lineLeftHeight: 210,
+                lineRightWidthOffset: 0,
+                lineRightHeight: 134,
+                bgColor: '#faf8f2',
+                titleColor: '#ff1e00',
+                titleText: 'Carp scale'
+            };
+
+            let config = { ...DEFAULTS };
+
+            // Funkce pro dynamické přebarvení SVG kurzorů
+            function updateCursorColor(color) {
+                const hexColor = color || '#ff1e00';
+
+                // SVG pro běžný kurzor
+                const svgBody = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><g transform="translate(20, 20) scale(2.7) translate(-32.443, -21.471)"><path d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z" style="fill:${hexColor};fill-rule:nonzero;"/></g></svg>`;
+
+                // SVG pro ukazatel (pointer)
+                const svgPointer = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><g transform="translate(20, 20) scale(2.7) translate(-32.443, -21.471)"><path d="M38.661,26.485C38.268,27.016 37.252,26.758 35.989,25.845C34.676,24.895 33.898,23.862 33.422,22.671C33.285,22.33 33.045,22.042 32.727,21.856L32.443,21.69L32.159,21.856C31.841,22.042 31.601,22.33 31.465,22.671C30.988,23.859 30.21,24.893 28.897,25.845C27.636,26.758 26.618,27.016 26.226,26.485C25.719,25.797 25.606,24.202 26.741,23.381C27.502,22.831 28.769,22.335 30.634,21.653C30.876,21.564 31.096,21.419 31.273,21.229L32.399,20.019L32.483,20.019L33.609,21.229C33.785,21.417 34.006,21.564 34.248,21.653C36.113,22.335 37.38,22.831 38.141,23.381C39.276,24.202 39.163,25.799 38.656,26.485L38.661,26.485Z" style="fill:${hexColor};fill-rule:nonzero;"/><path d="M32.426,18.363C33.156,18.363 33.748,17.776 33.748,17.052C33.748,16.328 33.156,15.742 32.426,15.742C31.695,15.742 31.103,16.328 31.103,17.052C31.103,17.776 31.695,18.363 32.426,18.363Z" style="fill:${hexColor};fill-rule:nonzero;"/><path d="M32.426,27.2C33.034,27.2 33.528,26.71 33.528,26.107C33.528,25.504 33.034,25.015 32.426,25.015C31.817,25.015 31.324,25.504 31.324,26.107C31.324,26.71 31.817,27.2 32.426,27.2Z" style="fill:${hexColor};fill-rule:nonzero;"/></g></svg>`;
+
+                // Kódování do base64 (bezpečné pro CSS)
+                const encodedBody = btoa(unescape(encodeURIComponent(svgBody)));
+                const encodedPointer = btoa(unescape(encodeURIComponent(svgPointer)));
+
+                const cursorStyleId = 'dynamic-cursor-style';
+                let styleEl = document.getElementById(cursorStyleId);
+                if (!styleEl) {
+                    styleEl = document.createElement('style');
+                    styleEl.id = cursorStyleId;
+                    document.head.appendChild(styleEl);
                 }
 
-                // Build element block with absolute coordinates (no art-visual-container wrapper)
-                const elHtml = `
-                <div class="art-element ${layoutDirection}" id="art-el-${elementIdx}" style="position: absolute; top: ${top}px; left: ${left}%;">
-                    <div class="art-text-container">
-                        <span class="art-indicator-dot"></span>
-                        <div class="art-text-lines">
-                            <span class="art-title">${title}</span>
-                            <span class="art-subtitle">${subtitle}</span>
-                            <span class="art-author">${author}</span>
-                        </div>
-                    </div>
-                    <div class="art-svg-background">
-                        <div class="art-svg-pulse">
-                            ${svgContent}
-                        </div>
-                    </div>
-                    <img src="grafika/circlephoto.png" class="art-photo" alt="${title} - ${subtitle}">
-                </div>`;
+                styleEl.innerHTML = `
+                    body {
+                        cursor: url('data:image/svg+xml;base64,${encodedBody}') 20 16, default !important;
+                    }
+                    a, button, [role="button"], input, select, textarea, label, [onclick], .debug-btn, input[type="range"], input[type="range"]::-webkit-slider-thumb {
+                        cursor: url('data:image/svg+xml;base64,${encodedPointer}') 20 16, pointer !important;
+                    }
+                `;
+            }
 
-                gallery.insertAdjacentHTML('beforeend', elHtml);
+            // Funkce pro dynamické přebarvení světelných pulzů na čarách
+            function updatePulseColor(color) {
+                const hexColor = color || '#ff1e00';
+                const stops = document.querySelectorAll('#stop-left-3, #stop-left-4, #stop-right-3, #stop-right-4');
+                stops.forEach(stop => {
+                    stop.setAttribute('stop-color', hexColor);
+                });
+            }
 
-                // Fetch the generated element and its children to map configuration
-                const elDom = document.getElementById(`art-el-${elementIdx}`);
-                const svgBg = elDom.querySelector('.art-svg-background');
+            // Načtení konfigurace z localStorage
+            function loadConfig() {
+                try {
+                    const saved = localStorage.getItem('kapr_anim_config');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        config = { ...DEFAULTS, ...parsed };
+                    }
+                } catch (e) {
+                    console.error("Chyba při načítání konfigurace:", e);
+                }
+            }
 
-                // Set configuration (use custom exported values or random defaults)
-                let config;
-                if (customSettings) {
-                    config = {
-                        baseScale: customSettings.baseScale,
-                        pulseMax: customSettings.pulseMax,
-                        pulseDuration: customSettings.pulseDuration,
-                        hoverScale: customSettings.hoverScale,
-                        hoverSpeed: customSettings.hoverSpeed,
-                        returnSpeed: customSettings.returnSpeed
-                    };
+            // Uložení konfigurace do localStorage
+            function saveConfig() {
+                try {
+                    localStorage.setItem('kapr_anim_config', JSON.stringify(config));
+                } catch (e) {
+                    console.error("Chyba při ukládání konfigurace:", e);
+                }
+            }
+
+            const photos = ['kapr_foto1.jpg', 'kapr_foto2.jpg'];
+            let currentIdx = 0;
+
+            const layer1 = document.getElementById('photo-layer-1');
+            const layer2 = document.getElementById('photo-layer-2');
+            let activeLayer = layer1;
+            let inactiveLayer = layer2;
+
+            function changePhoto(direction) {
+                if (direction === 'next') {
+                    currentIdx = (currentIdx + 1) % photos.length;
                 } else {
-                    config = {
-                        baseScale: 1.15 + Math.random() * 0.3,       // 1.15 to 1.45
-                        pulseMax: 1.04 + Math.random() * 0.04,        // 1.04 to 1.08
-                        pulseDuration: 3.5 + Math.random() * 2.5,     // 3.5s to 6.0s (cycle duration)
-                        hoverScale: 1.25 + Math.random() * 0.15,      // 1.25 to 1.40
-                        hoverSpeed: 3.0 + Math.random() * 2.5,        // Grow lerp speed (3.0 to 5.5)
-                        returnSpeed: 1.2 + Math.random() * 1.0        // Return lerp speed (1.2 to 2.2)
-                    };
+                    currentIdx = (currentIdx - 1 + photos.length) % photos.length;
                 }
 
-                const data = {
-                    el: elDom,
-                    svgBg: svgBg,
-                    config: config,
-                    state: 'pulsing', // 'pulsing', 'hovering', 'returning'
-                    relativeScale: 1.0,
-                    phase: Math.random() * Math.PI * 2 // Randomized starting phase (out-of-sync breathing)
-                };
+                const nextLayer = inactiveLayer;
+                const prevLayer = activeLayer;
 
-                // Setup listeners for individual hover state machine tracking
-                elDom.addEventListener('mouseenter', () => {
-                    data.state = 'hovering';
+                // Set image src
+                nextLayer.style.backgroundImage = `url('${photos[currentIdx]}')`;
+
+                // Set styles instantly with no transition
+                nextLayer.style.transition = 'none';
+                nextLayer.style.transform = 'scale(1)';
+                nextLayer.style.opacity = '1';
+                nextLayer.style.zIndex = '2';
+
+                prevLayer.style.transition = 'none';
+                prevLayer.style.transform = 'scale(1)';
+                prevLayer.style.opacity = '0';
+                prevLayer.style.zIndex = '1';
+
+                // Swap layers
+                activeLayer = nextLayer;
+                inactiveLayer = prevLayer;
+            }
+
+            // Left Line animation function (R to L)
+            let animLeftFrame = null;
+            function animateLeftLine() {
+                if (animLeftFrame) cancelAnimationFrame(animLeftFrame);
+
+                const duration = config.pulseDuration; // dynamically configured
+                const startTime = performance.now();
+
+                const stop2 = document.getElementById('stop-left-2');
+                const stop3 = document.getElementById('stop-left-3');
+                const stop4 = document.getElementById('stop-left-4');
+                const stop5 = document.getElementById('stop-left-5');
+
+                if (!stop2 || !stop3 || !stop4 || !stop5) return;
+
+                function update(time) {
+                    const elapsed = time - startTime;
+                    const linearP = Math.min(elapsed / duration, 1);
+                    // Ease-out cubic/quartic: very fast start, decelerating end
+                    const p = 1 - Math.pow(1 - linearP, 3.5);
+
+                    const lead = 1.0 - p * 1.25;
+                    const trail = 1.25 - p * 1.25;
+
+                    const t_lead = Math.max(0, Math.min(1, lead));
+                    const t_trail = Math.max(0, Math.min(1, trail));
+
+                    const offset2 = t_lead;
+                    const offset3 = t_lead;
+                    const offset4 = t_trail;
+                    const offset5 = t_trail;
+
+                    stop2.setAttribute('offset', (offset2 * 100) + '%');
+                    stop3.setAttribute('offset', (offset3 * 100) + '%');
+                    stop4.setAttribute('offset', (offset4 * 100) + '%');
+                    stop5.setAttribute('offset', (offset5 * 100) + '%');
+
+                    if (p < 1) {
+                        animLeftFrame = requestAnimationFrame(update);
+                    } else {
+                        // Reset to black
+                        stop2.setAttribute('offset', '100%');
+                        stop3.setAttribute('offset', '100%');
+                        stop4.setAttribute('offset', '100%');
+                        stop5.setAttribute('offset', '100%');
+                    }
+                }
+                animLeftFrame = requestAnimationFrame(update);
+            }
+
+            // Right Line animation function (L to R)
+            let animRightFrame = null;
+            function animateRightLine() {
+                if (animRightFrame) cancelAnimationFrame(animRightFrame);
+
+                const duration = config.pulseDuration; // dynamically configured
+                const startTime = performance.now();
+
+                const stop2 = document.getElementById('stop-right-2');
+                const stop3 = document.getElementById('stop-right-3');
+                const stop4 = document.getElementById('stop-right-4');
+                const stop5 = document.getElementById('stop-right-5');
+
+                if (!stop2 || !stop3 || !stop4 || !stop5) return;
+
+                function update(time) {
+                    const elapsed = time - startTime;
+                    const linearP = Math.min(elapsed / duration, 1);
+                    // Ease-out cubic/quartic: very fast start, decelerating end
+                    const p = 1 - Math.pow(1 - linearP, 3.5);
+
+                    const lead = 1.0 - p * 1.25;
+                    const trail = 1.25 - p * 1.25;
+
+                    const t_lead = Math.max(0, Math.min(1, lead));
+                    const t_trail = Math.max(0, Math.min(1, trail));
+
+                    const offset2 = t_lead;
+                    const offset3 = t_lead;
+                    const offset4 = t_trail;
+                    const offset5 = t_trail;
+
+                    stop2.setAttribute('offset', (offset2 * 100) + '%');
+                    stop3.setAttribute('offset', (offset3 * 100) + '%');
+                    stop4.setAttribute('offset', (offset4 * 100) + '%');
+                    stop5.setAttribute('offset', (offset5 * 100) + '%');
+
+                    if (p < 1) {
+                        animRightFrame = requestAnimationFrame(update);
+                    } else {
+                        // Reset to black
+                        stop2.setAttribute('offset', '100%');
+                        stop3.setAttribute('offset', '100%');
+                        stop4.setAttribute('offset', '100%');
+                        stop5.setAttribute('offset', '100%');
+                    }
+                }
+                animRightFrame = requestAnimationFrame(update);
+            }
+
+            // Variables for 3D rotation
+            let targetRotX = 0, targetRotY = 0;
+            let currentRotXLeft = 0, currentRotYLeft = 0;
+            let currentRotXRight = 0, currentRotYRight = 0;
+            let isTilting = false;
+            let isMouseInside = false;
+            let isReturningFromClick = false;
+            let clickReturnTimeout = null;
+
+            const bgLinesWrapper = document.querySelector('.bg-lines-wrapper');
+
+            if (bgLinesWrapper) {
+                window.addEventListener('mousemove', (e) => {
+                    if (!document.body.classList.contains('rotate-3d-active') || isTilting) return;
+
+                    const rect = bgLinesWrapper.getBoundingClientRect();
+                    const mx = e.clientX;
+                    const my = e.clientY;
+
+                    // Active only within the bounds of bgLinesWrapper
+                    if (mx >= rect.left && mx <= rect.right && my >= rect.top && my <= rect.bottom) {
+                        isReturningFromClick = false;
+                        if (clickReturnTimeout) {
+                            clearTimeout(clickReturnTimeout);
+                            clickReturnTimeout = null;
+                        }
+
+                        const x = ((mx - rect.left) / rect.width - 0.5) * 2;
+                        const y = ((my - rect.top) / rect.height - 0.5) * 2;
+
+                        isMouseInside = true;
+                        targetRotX = -y * 15;
+                        targetRotY = x * 15;
+                    } else {
+                        if (isMouseInside) {
+                            isMouseInside = false;
+                            if (isTilting) return;
+                            targetRotX = 0;
+                            targetRotY = 0;
+                        }
+                    }
                 });
 
-                elDom.addEventListener('mouseleave', () => {
-                    data.state = 'returning';
+                document.addEventListener('mouseleave', () => {
+                    isMouseInside = false;
+                    if (isTilting) return;
+                    targetRotX = 0;
+                    targetRotY = 0;
                 });
-
-                elementsData.push(data);
-                elementIdx++;
             }
-            rowIndex++;
-        }
 
-        // Set dynamic height for absolute positioning container based on row count
-        gallery.style.height = (rowIndex * rowHeight + 200) + 'px';
+            function animate3D() {
+                // Rychlosti animací:
+                // - Při naklonění (kliknutí na šipku): velmi rychlý náklon (config.tiltSpeed)
+                // - Při vracení z kliknutí: rychlejší návrav (config.returnClickSpeed)
+                // - Při opuštění wrapperu: trochu pomalejší (config.returnLeaveSpeed)
+                // - Při běžném sledování myši: střední/plynulé (0.02)
+                let speedL = 0.02;
+                let speedR = 0.02;
 
-        // Global animation loop driving all 20 elements with frame-independent math
-        let lastTime = performance.now();
+                if (isTilting) {
+                    speedL = config.tiltSpeed;
+                    speedR = config.tiltSpeed;
+                } else if (isReturningFromClick) {
+                    speedL = config.returnClickSpeed;
+                    speedR = config.returnClickSpeed;
+                } else if (!isMouseInside) {
+                    speedL = config.returnLeaveSpeed;
+                    speedR = config.returnLeaveSpeed;
+                }
 
-        function animate(currentTime) {
-            let dt = (currentTime - lastTime) / 1000.0;
-            if (dt > 0.1) dt = 0.1; // Cap time step
-            lastTime = currentTime;
+                if (document.body.classList.contains('rotate-3d-active')) {
+                    // Completely independent rotation scales
+                    currentRotXLeft += (targetRotX * 0.6 - currentRotXLeft) * speedL;
+                    currentRotYLeft += (targetRotY * 0.6 - currentRotYLeft) * speedL;
 
-            elementsData.forEach(item => {
-                const amplitude = item.config.pulseMax - 1.0;
+                    currentRotXRight += (targetRotX * 1.4 - currentRotXRight) * speedR;
+                    currentRotYRight += (targetRotY * 1.4 - currentRotYRight) * speedR;
+                } else {
+                    currentRotXLeft += (0 - currentRotXLeft) * speedL;
+                    currentRotYLeft += (0 - currentRotYLeft) * speedL;
+                    currentRotXRight += (0 - currentRotXRight) * speedR;
+                    currentRotYRight += (0 - currentRotYRight) * speedR;
+                }
 
-                if (item.state === 'pulsing') {
-                    // Out-of-sync breathing pulse using the element's custom duration
-                    item.phase += (2 * Math.PI / item.config.pulseDuration) * dt;
-                    item.relativeScale = 1.0 + amplitude * Math.sin(item.phase);
-                } else if (item.state === 'hovering') {
-                    // Grow to target hoverScale from current scale
-                    item.relativeScale += (item.config.hoverScale - item.relativeScale) * (1.0 - Math.exp(-item.config.hoverSpeed * dt));
-                } else if (item.state === 'returning') {
-                    // Shrink slowly back to the minimum pulse scale
-                    const target = 1.0 - amplitude;
-                    item.relativeScale += (target - item.relativeScale) * (1.0 - Math.exp(-item.config.returnSpeed * dt));
+                document.body.style.setProperty('--mouse-rot-x-left', currentRotXLeft + 'deg');
+                document.body.style.setProperty('--mouse-rot-y-left', currentRotYLeft + 'deg');
+                document.body.style.setProperty('--mouse-rot-x-right', currentRotXRight + 'deg');
+                document.body.style.setProperty('--mouse-rot-y-right', currentRotYRight + 'deg');
 
-                    // Once reached, transition back to the breathing loop cleanly
-                    if (Math.abs(item.relativeScale - target) < 0.0015) {
-                        item.relativeScale = target;
-                        item.state = 'pulsing';
-                        item.phase = -Math.PI / 2.0; // Reset phase to minimum of sine wave (-90deg)
+                requestAnimationFrame(animate3D);
+            }
+            animate3D();
+
+            // Click triggers
+            const arrowLeft = document.querySelector('.arrow-mid-left');
+            const arrowRight = document.querySelector('.arrow-mid-right');
+            const arrowBack = document.querySelector('.arrow-top-left');
+
+            // Attention pulse logic for the right arrow
+            let hasClickedArrow = false;
+            let attentionTimeout = null;
+            let attentionAnimationTimeout = null;
+
+            function stopAttention() {
+                if (hasClickedArrow) return;
+                hasClickedArrow = true;
+                clearTimeout(attentionTimeout);
+                clearTimeout(attentionAnimationTimeout);
+                if (arrowRight) {
+                    arrowRight.classList.remove('attention');
+                }
+            }
+
+            function restartAttentionTimer() {
+                if (hasClickedArrow) return;
+                clearTimeout(attentionTimeout);
+
+                const getDurationMs = () => (config.attentionIntervalDuration || 10) * 1000;
+
+                // Rekurzivní setTimeout řeší spolehlivě zasekávání v neaktivních záložkách
+                attentionTimeout = setTimeout(function tick() {
+                    if (hasClickedArrow) return;
+
+                    triggerAttentionPulse();
+
+                    // Další cyklus
+                    attentionTimeout = setTimeout(tick, getDurationMs());
+                }, getDurationMs());
+            }
+
+            function triggerAttentionPulse() {
+                if (!arrowRight || hasClickedArrow || isArrowHovered) return;
+
+                // Odstranění a znovupřidání třídy s vynuceným překreslením (reflow) zaručí spuštění animace pokaždé
+                arrowRight.classList.remove('attention');
+                void arrowRight.offsetWidth;
+                arrowRight.classList.add('attention');
+
+                clearTimeout(attentionAnimationTimeout);
+                attentionAnimationTimeout = setTimeout(() => {
+                    if (arrowRight) arrowRight.classList.remove('attention');
+                }, 1200); // odpovídá délce animace 1.2s
+            }
+
+            restartAttentionTimer();
+
+            let isArrowHovered = false;
+            if (arrowRight) {
+                arrowRight.addEventListener('mouseenter', () => {
+                    isArrowHovered = true;
+                    arrowRight.classList.remove('attention');
+                });
+                arrowRight.addEventListener('mouseleave', () => {
+                    isArrowHovered = false;
+                });
+            }
+
+            if (arrowLeft) {
+                arrowLeft.addEventListener('click', () => {
+                    stopAttention();
+                    if (isTilting) return; // ignore click ONLY while the active tilt is running
+
+                    changePhoto('prev');
+                    animateLeftLine();
+
+                    if (document.body.classList.contains('rotate-3d-active')) {
+                        isTilting = true;
+                        isReturningFromClick = false;
+                        if (clickReturnTimeout) {
+                            clearTimeout(clickReturnTimeout);
+                            clickReturnTimeout = null;
+                        }
+                        targetRotX = 0;
+                        targetRotY = -config.tiltAngle; // elegant moderate tilt (dynamically configured)
+                        setTimeout(() => {
+                            isTilting = false;
+                            targetRotX = 0; // Return to 0 immediately after tilting
+                            targetRotY = 0;
+                            isReturningFromClick = true;
+                            clickReturnTimeout = setTimeout(() => {
+                                isReturningFromClick = false;
+                            }, 1500); // 1.5 seconds is enough to return to center
+                        }, config.tiltDuration); // Snappy tilt holds for tiltDuration then returns
+                    }
+                });
+            }
+
+            if (arrowRight) {
+                arrowRight.addEventListener('click', () => {
+                    stopAttention();
+                    if (isTilting) return; // ignore click ONLY while the active tilt is running
+
+                    changePhoto('next');
+                    animateRightLine();
+
+                    if (document.body.classList.contains('rotate-3d-active')) {
+                        isTilting = true;
+                        isReturningFromClick = false;
+                        if (clickReturnTimeout) {
+                            clearTimeout(clickReturnTimeout);
+                            clickReturnTimeout = null;
+                        }
+                        targetRotX = 0;
+                        targetRotY = config.tiltAngle; // elegant moderate tilt (dynamically configured)
+                        setTimeout(() => {
+                            isTilting = false;
+                            targetRotX = 0; // Return to 0 immediately after tilting
+                            targetRotY = 0;
+                            isReturningFromClick = true;
+                            clickReturnTimeout = setTimeout(() => {
+                                isReturningFromClick = false;
+                            }, 1500); // 1.5 seconds is enough to return to center
+                        }, config.tiltDuration); // Snappy tilt holds for tiltDuration then returns
+                    }
+                });
+            }
+
+            if (arrowBack) {
+                arrowBack.addEventListener('click', () => {
+                    stopAttention();
+                    // Navigate back to index.html with a subtle fade-out transition
+                    document.body.style.transition = 'opacity 0.5s ease';
+                    document.body.style.opacity = '0';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 500);
+                });
+            }
+
+            // Debug Menu Toggle Logic
+            document.addEventListener('keydown', (e) => {
+                // Ignore keydown if user is typing in an input
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+                if (e.key === 'd' || e.key === 'D') {
+                    const debugMenu = document.getElementById('debug-menu');
+                    if (debugMenu.style.display === 'none' || debugMenu.style.display === '') {
+                        debugMenu.style.display = 'block';
+                    } else {
+                        debugMenu.style.display = 'none';
+                    }
+                }
+            });
+
+            // Toggle Pulzování
+            const togglePulsing = document.getElementById('toggle-pulsing');
+            if (togglePulsing) {
+                togglePulsing.addEventListener('change', (e) => {
+                    config.pulsingActive = e.target.checked;
+                    if (e.target.checked) {
+                        document.body.classList.add('pulsing-active');
+                    } else {
+                        document.body.classList.remove('pulsing-active');
+                    }
+                    saveConfig();
+                });
+            }
+
+            // Toggle 3D Rotace
+            const toggle3D = document.getElementById('toggle-3d');
+            if (toggle3D) {
+                toggle3D.addEventListener('change', (e) => {
+                    config.rotate3DActive = e.target.checked;
+                    if (e.target.checked) {
+                        document.body.classList.add('rotate-3d-active');
+                    } else {
+                        document.body.classList.remove('rotate-3d-active');
+                    }
+                    saveConfig();
+                });
+            }
+
+            // Slider UI references
+            const sliderTiltSpeed = document.getElementById('slider-tilt-speed');
+            const sliderTiltAngle = document.getElementById('slider-tilt-angle');
+            const sliderTiltDuration = document.getElementById('slider-tilt-duration');
+            const sliderReturnClick = document.getElementById('slider-return-click');
+            const sliderReturnLeave = document.getElementById('slider-return-leave');
+            const sliderPulseDuration = document.getElementById('slider-pulse-duration');
+
+            const valTiltSpeed = document.getElementById('val-tilt-speed');
+            const valTiltAngle = document.getElementById('val-tilt-angle');
+            const valTiltDuration = document.getElementById('val-tilt-duration');
+            const valReturnClick = document.getElementById('val-return-click');
+            const valReturnLeave = document.getElementById('val-return-leave');
+            const valPulseDuration = document.getElementById('val-pulse-duration');
+            const sliderAttentionInterval = document.getElementById('slider-attention-interval');
+            const valAttentionInterval = document.getElementById('val-attention-interval');
+
+            const sliderLineLeftWidthOffset = document.getElementById('slider-line-left-width-offset');
+            const valLineLeftWidthOffset = document.getElementById('val-line-left-width-offset');
+            const sliderLineLeftHeight = document.getElementById('slider-line-left-height');
+            const valLineLeftHeight = document.getElementById('val-line-left-height');
+            const sliderLineRightWidthOffset = document.getElementById('slider-line-right-width-offset');
+            const valLineRightWidthOffset = document.getElementById('val-line-right-width-offset');
+            const sliderLineRightHeight = document.getElementById('slider-line-right-height');
+            const valLineRightHeight = document.getElementById('val-line-right-height');
+
+            const pickerBgColor = document.getElementById('picker-bg-color');
+            const pickerTitleColor = document.getElementById('picker-title-color');
+            const selectTitleText = document.getElementById('select-title-text');
+
+            const btnResetDefaults = document.getElementById('btn-reset-defaults');
+
+            // Přímé aplikování stylu na prvky (pro stoprocentní spolehlivost na všech zařízeních)
+            function applyLineStyles() {
+                const lineLeftEl = document.querySelector('.horizontal-line-left');
+                const lineRightEl = document.querySelector('.horizontal-line-right');
+
+                if (lineLeftEl) {
+                    lineLeftEl.style.width = `calc(34% - 20.5vw - 210px + var(--shift-x) + ${config.lineLeftWidthOffset || 0}px)`;
+                    lineLeftEl.style.height = `${config.lineLeftHeight || 210}px`;
+                }
+                if (lineRightEl) {
+                    lineRightEl.style.left = `calc(34% + 20.5vw + 255px + ${config.lineRightWidthOffset || 0}px)`;
+                    lineRightEl.style.height = `${config.lineRightHeight || 134}px`;
+                }
+            }
+
+            // Synchronizace UI s konfigurací
+            function updateUIFromConfig() {
+                if (togglePulsing) {
+                    togglePulsing.checked = config.pulsingActive;
+                    if (config.pulsingActive) {
+                        document.body.classList.add('pulsing-active');
+                    } else {
+                        document.body.classList.remove('pulsing-active');
+                    }
+                }
+                if (toggle3D) {
+                    toggle3D.checked = config.rotate3DActive;
+                    if (config.rotate3DActive) {
+                        document.body.classList.add('rotate-3d-active');
+                    } else {
+                        document.body.classList.remove('rotate-3d-active');
                     }
                 }
 
-                // Apply total scale (centered automatically by Grid layout)
-                const totalScale = item.config.baseScale * item.relativeScale;
-                item.svgBg.style.transform = `scale(${totalScale})`;
-            });
+                if (sliderTiltSpeed) { sliderTiltSpeed.value = config.tiltSpeed; valTiltSpeed.textContent = config.tiltSpeed; }
+                if (sliderTiltAngle) { sliderTiltAngle.value = config.tiltAngle; valTiltAngle.textContent = config.tiltAngle; }
+                if (sliderTiltDuration) { sliderTiltDuration.value = config.tiltDuration; valTiltDuration.textContent = config.tiltDuration; }
+                if (sliderReturnClick) { sliderReturnClick.value = config.returnClickSpeed; valReturnClick.textContent = config.returnClickSpeed; }
+                if (sliderReturnLeave) { sliderReturnLeave.value = config.returnLeaveSpeed; valReturnLeave.textContent = config.returnLeaveSpeed; }
+                if (sliderPulseDuration) { sliderPulseDuration.value = config.pulseDuration; valPulseDuration.textContent = config.pulseDuration; }
+                if (sliderAttentionInterval) { sliderAttentionInterval.value = config.attentionIntervalDuration; valAttentionInterval.textContent = config.attentionIntervalDuration; }
 
-            requestAnimationFrame(animate);
-        }
+                if (sliderLineLeftWidthOffset) { sliderLineLeftWidthOffset.value = config.lineLeftWidthOffset; valLineLeftWidthOffset.textContent = config.lineLeftWidthOffset; }
+                if (sliderLineLeftHeight) { sliderLineLeftHeight.value = config.lineLeftHeight; valLineLeftHeight.textContent = config.lineLeftHeight; }
+                if (sliderLineRightWidthOffset) { sliderLineRightWidthOffset.value = config.lineRightWidthOffset; valLineRightWidthOffset.textContent = config.lineRightWidthOffset; }
+                if (sliderLineRightHeight) { sliderLineRightHeight.value = config.lineRightHeight; valLineRightHeight.textContent = config.lineRightHeight; }
 
-        requestAnimationFrame(animate);
+                // Nastavení CSS proměnných
+                document.body.style.setProperty('--horizontal-line-left-width-offset', (config.lineLeftWidthOffset || 0) + 'px');
+                document.body.style.setProperty('--horizontal-line-left-height', (config.lineLeftHeight || 210) + 'px');
+                document.body.style.setProperty('--horizontal-line-right-width-offset', (config.lineRightWidthOffset || 0) + 'px');
+                document.body.style.setProperty('--horizontal-line-right-height', (config.lineRightHeight || 134) + 'px');
 
-        // Smooth parallax effect for ambient background glow points
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 45;
-            const y = (e.clientY / window.innerHeight - 0.5) * 45;
-            const glows = document.querySelectorAll('.glow-point');
-            glows.forEach((glow, idx) => {
-                const speed = (idx + 1) * 0.4;
-                glow.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
-            });
+                // Přímé aplikování stylu na prvky
+                applyLineStyles();
+
+                // Synchronizace barev a názvu
+                document.body.style.backgroundColor = config.bgColor || '#faf8f2';
+
+                const titleEl = document.querySelector('.bottom-title');
+                if (titleEl) {
+                    titleEl.style.color = config.titleColor || '#ff1e00';
+                    titleEl.textContent = config.titleText || 'Dust';
+                }
+
+                // Synchronizace barvy šipek s barvou názvu
+                const arrowContainers = document.querySelectorAll('.arrow-top-left, .arrow-mid-left, .arrow-mid-right, .header-top-right .svg-icon');
+                arrowContainers.forEach(container => {
+                    container.style.color = config.titleColor || '#ff1e00';
+                });
+
+                // Aktualizace barvy kurzoru
+                updateCursorColor(config.titleColor);
+
+                // Aktualizace barvy pulzu čar
+                updatePulseColor(config.titleColor);
+
+                if (pickerBgColor) pickerBgColor.value = config.bgColor || '#faf8f2';
+                if (pickerTitleColor) pickerTitleColor.value = config.titleColor || '#ff1e00';
+                if (selectTitleText) selectTitleText.value = config.titleText || 'Dust';
+            }
+
+            // Načtení a inicializace nastavení při startu
+            loadConfig();
+            updateUIFromConfig();
+
+            // Pomocná funkce pro nastavení eventů sliderů
+            function setupSlider(sliderEl, valEl, key, isFloat = false) {
+                if (!sliderEl) return;
+                sliderEl.addEventListener('input', (e) => {
+                    const val = isFloat ? parseFloat(e.target.value) : parseInt(e.target.value, 10);
+                    config[key] = val;
+                    valEl.textContent = e.target.value;
+                    saveConfig();
+                });
+            }
+
+            setupSlider(sliderTiltSpeed, valTiltSpeed, 'tiltSpeed', true);
+            setupSlider(sliderTiltAngle, valTiltAngle, 'tiltAngle', false);
+            setupSlider(sliderTiltDuration, valTiltDuration, 'tiltDuration', false);
+            setupSlider(sliderReturnClick, valReturnClick, 'returnClickSpeed', true);
+            setupSlider(sliderReturnLeave, valReturnLeave, 'returnLeaveSpeed', true);
+            setupSlider(sliderPulseDuration, valPulseDuration, 'pulseDuration', false);
+
+            if (sliderAttentionInterval) {
+                sliderAttentionInterval.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    config.attentionIntervalDuration = val;
+                    valAttentionInterval.textContent = e.target.value;
+                    saveConfig();
+                    if (typeof restartAttentionTimer === 'function') {
+                        restartAttentionTimer();
+                    }
+                });
+            }
+
+            if (sliderLineLeftWidthOffset) {
+                sliderLineLeftWidthOffset.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    config.lineLeftWidthOffset = val;
+                    valLineLeftWidthOffset.textContent = val;
+                    document.body.style.setProperty('--horizontal-line-left-width-offset', val + 'px');
+                    applyLineStyles();
+                    saveConfig();
+                });
+            }
+            if (sliderLineLeftHeight) {
+                sliderLineLeftHeight.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    config.lineLeftHeight = val;
+                    valLineLeftHeight.textContent = val;
+                    document.body.style.setProperty('--horizontal-line-left-height', val + 'px');
+                    applyLineStyles();
+                    saveConfig();
+                });
+            }
+            if (sliderLineRightWidthOffset) {
+                sliderLineRightWidthOffset.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    config.lineRightWidthOffset = val;
+                    valLineRightWidthOffset.textContent = val;
+                    document.body.style.setProperty('--horizontal-line-right-width-offset', val + 'px');
+                    applyLineStyles();
+                    saveConfig();
+                });
+            }
+            if (sliderLineRightHeight) {
+                sliderLineRightHeight.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value, 10);
+                    config.lineRightHeight = val;
+                    valLineRightHeight.textContent = val;
+                    document.body.style.setProperty('--horizontal-line-right-height', val + 'px');
+                    applyLineStyles();
+                    saveConfig();
+                });
+            }
+
+            // Nastavení eventů pro barvy a název
+            if (pickerBgColor) {
+                pickerBgColor.addEventListener('input', (e) => {
+                    config.bgColor = e.target.value;
+                    document.body.style.backgroundColor = config.bgColor;
+                    saveConfig();
+                });
+            }
+
+            if (pickerTitleColor) {
+                pickerTitleColor.addEventListener('input', (e) => {
+                    config.titleColor = e.target.value;
+                    const titleEl = document.querySelector('.bottom-title');
+                    if (titleEl) {
+                        titleEl.style.color = config.titleColor;
+                    }
+                    const arrowContainers = document.querySelectorAll('.arrow-top-left, .arrow-mid-left, .arrow-mid-right, .header-top-right .svg-icon');
+                    arrowContainers.forEach(container => {
+                        container.style.color = config.titleColor;
+                    });
+                    updateCursorColor(config.titleColor);
+                    updatePulseColor(config.titleColor);
+                    saveConfig();
+                });
+            }
+
+            if (selectTitleText) {
+                selectTitleText.addEventListener('change', (e) => {
+                    config.titleText = e.target.value;
+                    const titleEl = document.querySelector('.bottom-title');
+                    if (titleEl) {
+                        titleEl.textContent = config.titleText;
+                    }
+                    saveConfig();
+                });
+            }
+
+            if (btnResetDefaults) {
+                btnResetDefaults.addEventListener('click', () => {
+                    config = { ...DEFAULTS };
+                    saveConfig();
+                    updateUIFromConfig();
+                    if (typeof restartAttentionTimer === 'function') {
+                        restartAttentionTimer();
+                    }
+                });
+            }
         });
     </script>
+
 </body>
 
 </html>
