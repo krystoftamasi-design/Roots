@@ -927,11 +927,11 @@
                             let dBeta = gyroBeta - (item.baseBeta || 0);
                             let dGamma = gyroGamma - (item.baseGamma || 0);
                             
-                            dBeta = Math.max(-45, Math.min(45, dBeta));
-                            dGamma = Math.max(-45, Math.min(45, dGamma));
+                            dBeta = Math.max(-30, Math.min(30, dBeta));
+                            dGamma = Math.max(-30, Math.min(30, dGamma));
                             
-                            item.targetX = -(dBeta / 45) * config.tiltIntensity * 1.5;
-                            item.targetY = (dGamma / 45) * config.tiltIntensity * 1.5;
+                            item.targetX = -(dBeta / 30) * config.tiltIntensity * 3.0;
+                            item.targetY = (dGamma / 30) * config.tiltIntensity * 3.0;
 
                         } else {
                             if (item.isMouseInside) {
