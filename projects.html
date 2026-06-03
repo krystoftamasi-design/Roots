@@ -116,9 +116,9 @@
             font-style: italic;
             color: #000;
             margin-top: 150px;
-            margin-left: 8vw;
             margin-bottom: 20px;
             letter-spacing: -0.01em;
+            text-align: center;
         }
 
         /* Projects Grid */
@@ -149,7 +149,7 @@
             /* Proměnná pro počet sloupců */
             grid-template-columns: repeat(var(--cols, 3), 1fr);
             column-gap: 2vw;
-            row-gap: 6vw;
+            row-gap: var(--row-gap, 6vw);
             padding: 0 4vw;
             width: 100%;
             position: relative;
@@ -170,10 +170,10 @@
         }
 
         .hero-logo {
-            width: 480px;
-            max-width: 85%;
+            width: 620px;
+            max-width: 90%;
             height: auto;
-            margin-bottom: 45px;
+            margin-bottom: 50px;
         }
 
         .hero-text {
@@ -402,7 +402,7 @@
             .page-title {
                 font-size: 80px;
                 margin-top: 100px;
-                margin-left: 5vw;
+                margin-left: 0;
             }
             .projects-grid {
                 grid-template-columns: 1fr !important;
@@ -513,10 +513,8 @@
     <div class="hero-section" id="hero">
         <img src="grafika/logo.svg" alt="ROOTS Logo" class="hero-logo">
         <div class="hero-text">The ROOTS project brings together five creative studios from Tomas Bata University in Zlín with a single goal: to transform Czech and Slavic traditions into modern product design. This interdisciplinary collaboration results in a unique fusion of cultural heritage and the contemporary visual language of the younger generation. Spanning a collection of original porcelain, jewelry, and footwear, custom-designed packaging, and a complex architectural exhibition layout, the ROOTS project demonstrates how traditional identity can be preserved, redefined, and passed on in modern society.</div>
-        <a href="#projects-section" class="hero-arrow-down svg-icon">
-            <svg viewBox="357.134 253.611 54 54" width="40" height="40" style="transform: rotate(-90deg);">
-                <use href="#sipky-all" />
-            </svg>
+        <a href="#projects-section" class="hero-arrow-down">
+            <img src="agent/cursor_hover.svg" alt="Scroll Down" style="transform: rotate(-90deg); width: 45px; height: 45px; display: block;">
         </a>
     </div>
 
@@ -740,6 +738,14 @@
                 <input type="range" id="slider-photo-size" min="20" max="80" step="1" value="45">
             </div>
 
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-row-gap">Vzdálenost řádků projektů (vw)</label>
+                    <span id="val-row-gap">6vw</span>
+                </div>
+                <input type="range" id="slider-row-gap" min="2" max="15" step="1" value="6">
+            </div>
+
             <h3>Pokročilé Nastavení 3D</h3>
 
             <div class="debug-slider-group">
@@ -797,7 +803,8 @@
                 bgColor: '#faf8f2',
                 accentColor: '#ff1e00',
                 textSize: 20,
-                photoSize: 45
+                photoSize: 45,
+                rowGap: 6
             };
 
             let config = { ...DEFAULTS };
@@ -908,6 +915,9 @@
             const sliderPhotoSize = document.getElementById('slider-photo-size');
             const valPhotoSize = document.getElementById('val-photo-size');
 
+            const sliderRowGap = document.getElementById('slider-row-gap');
+            const valRowGap = document.getElementById('val-row-gap');
+
             const sliderTiltSpeed = document.getElementById('slider-tilt-speed');
             const valTiltSpeed = document.getElementById('val-tilt-speed');
 
@@ -943,6 +953,14 @@
                     valPhotoSize.textContent = config.photoSize + '%';
                 }
                 document.body.style.setProperty('--photo-size', config.photoSize + '%');
+
+                if (sliderRowGap && valRowGap) {
+                    sliderRowGap.value = config.rowGap;
+                    valRowGap.textContent = config.rowGap + 'vw';
+                }
+                if (gridEl) {
+                    gridEl.style.setProperty('--row-gap', config.rowGap + 'vw');
+                }
 
                 sliderTiltSpeed.value = config.tiltSpeed;
                 valTiltSpeed.textContent = config.tiltSpeed;
@@ -988,6 +1006,14 @@
             if (sliderPhotoSize) {
                 sliderPhotoSize.addEventListener('input', (e) => {
                     config.photoSize = parseInt(e.target.value, 10);
+                    updateUI();
+                    saveConfig();
+                });
+            }
+
+            if (sliderRowGap) {
+                sliderRowGap.addEventListener('input', (e) => {
+                    config.rowGap = parseInt(e.target.value, 10);
                     updateUI();
                     saveConfig();
                 });
