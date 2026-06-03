@@ -1465,11 +1465,11 @@
                 deltaBeta = Math.max(-30, Math.min(30, deltaBeta));
                 deltaGamma = Math.max(-30, Math.min(30, deltaGamma));
 
-                // Map tilt angle to rotation, 0.8 scale multiplier yields elegant visual movement
-                targetRotXLeft = -deltaBeta * 0.8;
-                targetRotYLeft = deltaGamma * 0.8;
-                targetRotXRight = -deltaBeta * 0.8;
-                targetRotYRight = deltaGamma * 0.8;
+                // Map tilt angle to rotation, 2.4 scale multiplier yields elegant visual movement
+                targetRotXLeft = -deltaBeta * 2.4;
+                targetRotYLeft = deltaGamma * 2.4;
+                targetRotXRight = -deltaBeta * 2.4;
+                targetRotYRight = deltaGamma * 2.4;
 
                 isMouseInsideLeft = true; // prevent automatic snapping back to zero
                 isMouseInsideRight = true;
