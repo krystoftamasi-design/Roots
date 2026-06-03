@@ -848,6 +848,16 @@
             let mouseX = -9999;
             let mouseY = -9999;
             
+            let gyroBeta = 0;
+            let gyroGamma = 0;
+            window.addEventListener('deviceorientation', (e) => {
+                gyroBeta = e.beta || 0;
+                gyroGamma = e.gamma || 0;
+                if (window.innerWidth <= 768) {
+                    updateHoverStates();
+                }
+            });
+
             function setupItems() {
                 const projectEls = document.querySelectorAll('.project-item');
                 items = Array.from(projectEls).map(el => {
@@ -859,7 +869,9 @@
                         rotY: 0,
                         targetX: 0,
                         targetY: 0,
-                        isMouseInside: false
+                        isMouseInside: false,
+                        baseBeta: null,
+                        baseGamma: null
                     };
                 });
 
@@ -876,29 +888,67 @@
             }
 
             function updateHoverStates() {
+                const isMobile = window.innerWidth <= 768;
+                const centerY = window.innerHeight / 2;
+                const mobileThreshold = window.innerHeight * 0.35; // 35% od středu
+
                 items.forEach(item => {
                     const rect = item.el.getBoundingClientRect();
-                    const isInside = (
-                        mouseX >= rect.left &&
-                        mouseX <= rect.right &&
-                        mouseY >= rect.top &&
-                        mouseY <= rect.bottom
-                    );
+                    
+                    if (isMobile) {
+                        const itemCenterY = rect.top + rect.height / 2;
+                        const dist = Math.abs(itemCenterY - centerY);
+                        const isInside = dist < mobileThreshold;
 
-                    if (isInside) {
-                        const x = ((mouseX - rect.left) / rect.width - 0.5) * 2;
-                        const y = ((mouseY - rect.top) / rect.height - 0.5) * 2;
+                        if (isInside) {
+                            if (!item.isMouseInside) {
+                                item.isMouseInside = true;
+                                item.baseBeta = gyroBeta;
+                                item.baseGamma = gyroGamma;
+                                item.el.classList.add('hovered');
+                            }
+                            
+                            // Gyroskop delta
+                            let dBeta = gyroBeta - (item.baseBeta || 0);
+                            let dGamma = gyroGamma - (item.baseGamma || 0);
+                            
+                            dBeta = Math.max(-45, Math.min(45, dBeta));
+                            dGamma = Math.max(-45, Math.min(45, dGamma));
+                            
+                            item.targetX = -(dBeta / 45) * config.tiltIntensity * 1.5;
+                            item.targetY = (dGamma / 45) * config.tiltIntensity * 1.5;
 
-                        item.isMouseInside = true;
-                        item.targetX = -y * config.tiltIntensity;
-                        item.targetY = x * config.tiltIntensity;
-                        item.el.classList.add('hovered');
+                        } else {
+                            if (item.isMouseInside) {
+                                item.isMouseInside = false;
+                                item.targetX = 0;
+                                item.targetY = 0;
+                                item.el.classList.remove('hovered');
+                            }
+                        }
                     } else {
-                        if (item.isMouseInside) {
-                            item.isMouseInside = false;
-                            item.targetX = 0;
-                            item.targetY = 0;
-                            item.el.classList.remove('hovered');
+                        const isInside = (
+                            mouseX >= rect.left &&
+                            mouseX <= rect.right &&
+                            mouseY >= rect.top &&
+                            mouseY <= rect.bottom
+                        );
+
+                        if (isInside) {
+                            const x = ((mouseX - rect.left) / rect.width - 0.5) * 2;
+                            const y = ((mouseY - rect.top) / rect.height - 0.5) * 2;
+
+                            item.isMouseInside = true;
+                            item.targetX = -y * config.tiltIntensity;
+                            item.targetY = x * config.tiltIntensity;
+                            item.el.classList.add('hovered');
+                        } else {
+                            if (item.isMouseInside) {
+                                item.isMouseInside = false;
+                                item.targetX = 0;
+                                item.targetY = 0;
+                                item.el.classList.remove('hovered');
+                            }
                         }
                     }
                 });
