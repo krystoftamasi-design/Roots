@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Carp scale - Projects</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -115,8 +115,8 @@
             font-weight: 300;
             font-style: italic;
             color: #000;
-            margin-top: 80px;
-            margin-bottom: 120px;
+            margin-top: 20px;
+            margin-bottom: 60px;
             letter-spacing: -0.01em;
             text-align: center;
         }
@@ -418,8 +418,9 @@
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .page-title {
-                font-size: 110px;
-                margin-top: 60px;
+                font-size: 48px;
+                margin-top: 20px;
+                margin-bottom: 30px;
                 margin-left: 0;
             }
             .projects-grid {
@@ -441,6 +442,22 @@
             .header-top-right {
                 top: 24px;
                 right: 24px;
+            }
+            .hero-section {
+                min-height: 100vh;
+                padding-top: 90px;
+                padding-bottom: 40px;
+                justify-content: flex-start;
+            }
+            .hero-logo {
+                margin-top: 40px;
+                margin-bottom: 30px;
+                max-width: 75%;
+            }
+            .hero-text {
+                font-size: 15px;
+                line-height: 1.6;
+                margin-bottom: 30px;
             }
         }
     </style>
