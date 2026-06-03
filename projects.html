@@ -208,8 +208,8 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 1.2;
-            width: var(--project-size, 100%);
-            margin: 0 auto;
+            transform: scale(var(--project-scale, 1));
+            transform-origin: center;
         }
 
         .project-bg-wrap {
@@ -993,7 +993,7 @@
                     sliderProjectSize.value = config.projectSize;
                     valProjectSize.textContent = config.projectSize + '%';
                 }
-                document.body.style.setProperty('--project-size', config.projectSize + '%');
+                document.body.style.setProperty('--project-scale', config.projectSize / 100);
 
                 if (sliderRowGap && valRowGap) {
                     sliderRowGap.value = config.rowGap;
