@@ -242,9 +242,14 @@
             fill: #000000;
         }
 
-        .project-item:hover .project-bg-svg,
         .project-item.hovered .project-bg-svg {
             --bottom-circle-fill: var(--accent-color, #ff1e00);
+        }
+
+        @media (hover: hover) {
+            .project-item:hover .project-bg-svg {
+                --bottom-circle-fill: var(--accent-color, #ff1e00);
+            }
         }
 
         .project-photo {
@@ -283,10 +288,16 @@
             transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .project-item:hover .project-text,
         .project-item.hovered .project-text {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        @media (hover: hover) {
+            .project-item:hover .project-text {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Debug Menu */
