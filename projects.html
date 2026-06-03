@@ -208,6 +208,8 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 1.2;
+            width: var(--project-size, 100%);
+            margin: 0 auto;
         }
 
         .project-bg-wrap {
@@ -740,6 +742,14 @@
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
+                    <label for="slider-project-size">Velikost celých projektů (%)</label>
+                    <span id="val-project-size">100%</span>
+                </div>
+                <input type="range" id="slider-project-size" min="50" max="100" step="1" value="100">
+            </div>
+
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
                     <label for="slider-row-gap">Vzdálenost řádků projektů (vw)</label>
                     <span id="val-row-gap">6vw</span>
                 </div>
@@ -804,7 +814,8 @@
                 accentColor: '#ff1e00',
                 textSize: 20,
                 photoSize: 45,
-                rowGap: 6
+                rowGap: 6,
+                projectSize: 100
             };
 
             let config = { ...DEFAULTS };
@@ -915,6 +926,9 @@
             const sliderPhotoSize = document.getElementById('slider-photo-size');
             const valPhotoSize = document.getElementById('val-photo-size');
 
+            const sliderProjectSize = document.getElementById('slider-project-size');
+            const valProjectSize = document.getElementById('val-project-size');
+
             const sliderRowGap = document.getElementById('slider-row-gap');
             const valRowGap = document.getElementById('val-row-gap');
 
@@ -953,6 +967,12 @@
                     valPhotoSize.textContent = config.photoSize + '%';
                 }
                 document.body.style.setProperty('--photo-size', config.photoSize + '%');
+
+                if (sliderProjectSize && valProjectSize) {
+                    sliderProjectSize.value = config.projectSize;
+                    valProjectSize.textContent = config.projectSize + '%';
+                }
+                document.body.style.setProperty('--project-size', config.projectSize + '%');
 
                 if (sliderRowGap && valRowGap) {
                     sliderRowGap.value = config.rowGap;
@@ -1006,6 +1026,14 @@
             if (sliderPhotoSize) {
                 sliderPhotoSize.addEventListener('input', (e) => {
                     config.photoSize = parseInt(e.target.value, 10);
+                    updateUI();
+                    saveConfig();
+                });
+            }
+
+            if (sliderProjectSize) {
+                sliderProjectSize.addEventListener('input', (e) => {
+                    config.projectSize = parseInt(e.target.value, 10);
                     updateUI();
                     saveConfig();
                 });
