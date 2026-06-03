@@ -246,7 +246,7 @@
             --bottom-circle-fill: var(--accent-color, #ff1e00);
         }
 
-        @media (hover: hover) {
+        @media (min-width: 769px) {
             .project-item:hover .project-bg-svg {
                 --bottom-circle-fill: var(--accent-color, #ff1e00);
             }
@@ -293,7 +293,7 @@
             transform: translateY(0);
         }
 
-        @media (hover: hover) {
+        @media (min-width: 769px) {
             .project-item:hover .project-text {
                 opacity: 1;
                 transform: translateY(0);
@@ -1023,6 +1023,7 @@
 
             // Spuštění animací
             setupItems();
+            updateHoverStates();
             animate3D();
             updateDividers();
 
