@@ -745,7 +745,7 @@
                     <label for="slider-project-size">Velikost celých projektů (%)</label>
                     <span id="val-project-size">100%</span>
                 </div>
-                <input type="range" id="slider-project-size" min="50" max="100" step="1" value="100">
+                <input type="range" id="slider-project-size" min="50" max="150" step="1" value="100">
             </div>
 
             <div class="debug-slider-group">
@@ -757,6 +757,11 @@
             </div>
 
             <h3>Pokročilé Nastavení 3D</h3>
+
+            <div class="debug-toggle-group" style="display: flex; align-items: center; margin-bottom: 20px; padding: 5px 0;">
+                <input type="checkbox" id="check-rotate-photo" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-color, #ff1e00);">
+                <label for="check-rotate-photo" style="margin-left: 12px; font-size: 13px; cursor: pointer; color: #ccc; user-select: none;">Rotovat i fotku (3D efekt)</label>
+            </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
@@ -815,7 +820,8 @@
                 textSize: 20,
                 photoSize: 45,
                 rowGap: 6,
-                projectSize: 100
+                projectSize: 100,
+                rotatePhoto: false
             };
 
             let config = { ...DEFAULTS };
@@ -846,6 +852,7 @@
                     return {
                         el: el,
                         wrap: el.querySelector('.project-bg-wrap'),
+                        photo: el.querySelector('.project-photo'),
                         rotX: 0,
                         rotY: 0,
                         targetX: 0,
@@ -905,6 +912,14 @@
                     if (item.wrap) {
                         item.wrap.style.transform = `translate(-50%, -50%) rotateX(${item.rotX}deg) rotateY(${item.rotY}deg)`;
                     }
+
+                    if (item.photo) {
+                        if (config.rotatePhoto) {
+                            item.photo.style.transform = `rotateX(${item.rotX * 0.7}deg) rotateY(${item.rotY * 0.7}deg)`;
+                        } else {
+                            item.photo.style.transform = '';
+                        }
+                    }
                 });
                 requestAnimationFrame(animate3D);
             }
@@ -928,6 +943,8 @@
 
             const sliderProjectSize = document.getElementById('slider-project-size');
             const valProjectSize = document.getElementById('val-project-size');
+
+            const checkRotatePhoto = document.getElementById('check-rotate-photo');
 
             const sliderRowGap = document.getElementById('slider-row-gap');
             const valRowGap = document.getElementById('val-row-gap');
@@ -955,6 +972,10 @@
                 sliderCols.value = config.columns;
                 valCols.textContent = config.columns;
                 applyColumns();
+
+                if (checkRotatePhoto) {
+                    checkRotatePhoto.checked = config.rotatePhoto;
+                }
 
                 if (sliderTextSize && valTextSize) {
                     sliderTextSize.value = config.textSize;
@@ -1026,6 +1047,14 @@
             if (sliderPhotoSize) {
                 sliderPhotoSize.addEventListener('input', (e) => {
                     config.photoSize = parseInt(e.target.value, 10);
+                    updateUI();
+                    saveConfig();
+                });
+            }
+
+            if (checkRotatePhoto) {
+                checkRotatePhoto.addEventListener('change', (e) => {
+                    config.rotatePhoto = e.target.checked;
                     updateUI();
                     saveConfig();
                 });
