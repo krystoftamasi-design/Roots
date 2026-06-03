@@ -115,7 +115,7 @@
             font-weight: 300;
             font-style: italic;
             color: #000;
-            margin-top: 200px;
+            margin-top: 80px;
             margin-bottom: 120px;
             letter-spacing: -0.01em;
             text-align: center;
@@ -129,16 +129,16 @@
             margin-bottom: 100px;
         }
 
-        /* Continuous Wavy Row Dividers */
+        /* Continuous Wavy Row Dividers (positioned behind project items) */
         .grid-row-divider {
-            grid-column: 1 / -1;
+            position: absolute;
+            left: 0;
             width: 100%;
             height: auto;
-            margin-top: calc(-1 * var(--row-gap, 6vw) / 2);
-            margin-bottom: calc(-1 * var(--row-gap, 6vw) / 2);
             pointer-events: none;
-            z-index: 5;
-            padding: 0 4vw; /* align with grid padding */
+            z-index: 1;
+            transform: translateY(-50%);
+            box-sizing: border-box;
         }
 
         .grid-row-divider img {
@@ -213,6 +213,7 @@
             aspect-ratio: 1.2;
             transform: scale(var(--project-scale, 1));
             transform-origin: center;
+            z-index: 2;
         }
 
         .project-bg-wrap {
@@ -406,7 +407,7 @@
         @media (max-width: 768px) {
             .page-title {
                 font-size: 110px;
-                margin-top: 150px;
+                margin-top: 60px;
                 margin-left: 0;
             }
             .projects-grid {
@@ -417,11 +418,6 @@
             }
             .project-item {
                 aspect-ratio: 1;
-            }
-            .grid-row-divider {
-                margin-top: -25px;
-                margin-bottom: -25px;
-                padding: 0;
             }
             .project-photo {
                 width: 60%;
@@ -732,33 +728,33 @@
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-text-size">Velikost textu projektů (px)</label>
-                    <span id="val-text-size">20</span>
+                    <span id="val-text-size">18</span>
                 </div>
-                <input type="range" id="slider-text-size" min="12" max="36" step="1" value="20">
+                <input type="range" id="slider-text-size" min="12" max="36" step="1" value="18">
             </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-photo-size">Velikost fotek projektů (%)</label>
-                    <span id="val-photo-size">45%</span>
+                    <span id="val-photo-size">62%</span>
                 </div>
-                <input type="range" id="slider-photo-size" min="20" max="80" step="1" value="45">
+                <input type="range" id="slider-photo-size" min="20" max="80" step="1" value="62">
             </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-project-size">Velikost celých projektů (%)</label>
-                    <span id="val-project-size">100%</span>
+                    <span id="val-project-size">90%</span>
                 </div>
-                <input type="range" id="slider-project-size" min="50" max="150" step="1" value="100">
+                <input type="range" id="slider-project-size" min="50" max="150" step="1" value="90">
             </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-row-gap">Vzdálenost řádků projektů (vw)</label>
-                    <span id="val-row-gap">6vw</span>
+                    <span id="val-row-gap">10vw</span>
                 </div>
-                <input type="range" id="slider-row-gap" min="2" max="15" step="1" value="6">
+                <input type="range" id="slider-row-gap" min="2" max="15" step="1" value="10">
             </div>
 
             <h3>Pokročilé Nastavení 3D</h3>
@@ -822,10 +818,10 @@
                 tiltIntensity: 15,
                 bgColor: '#faf8f2',
                 accentColor: '#ff1e00',
-                textSize: 20,
-                photoSize: 45,
-                rowGap: 6,
-                projectSize: 100,
+                textSize: 18,
+                photoSize: 62,
+                rowGap: 10,
+                projectSize: 90,
                 rotatePhoto: false
             };
 
@@ -833,7 +829,7 @@
 
             function loadConfig() {
                 try {
-                    const saved = localStorage.getItem('projects_anim_config');
+                    const saved = localStorage.getItem('projects_anim_config_v2');
                     if (saved) {
                         config = { ...DEFAULTS, ...JSON.parse(saved) };
                     }
@@ -842,7 +838,7 @@
 
             function saveConfig() {
                 try {
-                    localStorage.setItem('projects_anim_config', JSON.stringify(config));
+                    localStorage.setItem('projects_anim_config_v2', JSON.stringify(config));
                 } catch (e) { console.error(e); }
             }
 
@@ -915,21 +911,28 @@
                 if (!gridEl) return;
                 
                 const projectItems = Array.from(gridEl.querySelectorAll('.project-item'));
+                if (projectItems.length === 0) return;
                 
                 const isMobile = window.innerWidth <= 768;
                 const cols = isMobile ? 1 : config.columns;
 
-                for (let i = cols; i <= projectItems.length; i += cols) {
-                    const targetItem = projectItems[i - 1];
-                    if (targetItem) {
+                for (let i = 0; i < projectItems.length; i += cols) {
+                    const item = projectItems[i];
+                    if (item) {
                         const divider = document.createElement('div');
                         divider.className = 'grid-row-divider';
-                        divider.style.gridColumn = `1 / -1`;
                         
-                        const lineSrc = ((i / cols) % 2 === 1) ? 'grafika/čara.svg' : 'grafika/čara2.svg';
+                        const lineSrc = ((i / cols) % 2 === 0) ? 'grafika/čara.svg' : 'grafika/čara2.svg';
+                        divider.innerHTML = `<img src="${lineSrc}" alt="Row Line">`;
                         
-                        divider.innerHTML = `<img src="${lineSrc}" alt="Row Divider">`;
-                        targetItem.after(divider);
+                        gridEl.appendChild(divider);
+
+                        // Position at horizontal center of the project row
+                        const itemHeight = item.offsetHeight;
+                        const itemTop = item.offsetTop;
+                        const centerY = itemTop + itemHeight / 2;
+
+                        divider.style.top = `${centerY}px`;
                     }
                 }
             }
