@@ -170,8 +170,8 @@
         }
 
         .hero-logo {
-            width: 180px;
-            max-width: 60%;
+            width: 320px;
+            max-width: 70%;
             height: auto;
             margin-bottom: 40px;
         }
@@ -241,7 +241,7 @@
 
         .project-photo {
             position: relative;
-            width: 45%;
+            width: var(--photo-size, 45%);
             aspect-ratio: 1/1; /* Čtvercová fotka */
             background-color: #333;
             background-size: cover;
@@ -730,6 +730,14 @@
                 <input type="range" id="slider-text-size" min="12" max="36" step="1" value="20">
             </div>
 
+            <div class="debug-slider-group">
+                <div class="slider-label-row">
+                    <label for="slider-photo-size">Velikost fotek projektů (%)</label>
+                    <span id="val-photo-size">45%</span>
+                </div>
+                <input type="range" id="slider-photo-size" min="20" max="80" step="1" value="45">
+            </div>
+
             <h3>Pokročilé Nastavení 3D</h3>
 
             <div class="debug-slider-group">
@@ -786,7 +794,8 @@
                 tiltIntensity: 15,
                 bgColor: '#faf8f2',
                 accentColor: '#ff1e00',
-                textSize: 20
+                textSize: 20,
+                photoSize: 45
             };
 
             let config = { ...DEFAULTS };
@@ -873,6 +882,9 @@
             const sliderTextSize = document.getElementById('slider-text-size');
             const valTextSize = document.getElementById('val-text-size');
 
+            const sliderPhotoSize = document.getElementById('slider-photo-size');
+            const valPhotoSize = document.getElementById('val-photo-size');
+
             const sliderTiltSpeed = document.getElementById('slider-tilt-speed');
             const valTiltSpeed = document.getElementById('val-tilt-speed');
 
@@ -902,6 +914,12 @@
                     valTextSize.textContent = config.textSize;
                 }
                 document.body.style.setProperty('--text-size', config.textSize + 'px');
+
+                if (sliderPhotoSize && valPhotoSize) {
+                    sliderPhotoSize.value = config.photoSize;
+                    valPhotoSize.textContent = config.photoSize + '%';
+                }
+                document.body.style.setProperty('--photo-size', config.photoSize + '%');
 
                 sliderTiltSpeed.value = config.tiltSpeed;
                 valTiltSpeed.textContent = config.tiltSpeed;
@@ -939,6 +957,14 @@
             if (sliderTextSize) {
                 sliderTextSize.addEventListener('input', (e) => {
                     config.textSize = parseInt(e.target.value, 10);
+                    updateUI();
+                    saveConfig();
+                });
+            }
+
+            if (sliderPhotoSize) {
+                sliderPhotoSize.addEventListener('input', (e) => {
+                    config.photoSize = parseInt(e.target.value, 10);
                     updateUI();
                     saveConfig();
                 });
