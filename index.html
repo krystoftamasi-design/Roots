@@ -29,7 +29,7 @@
             height: 100vh;
             overflow: hidden;
             /* Bez scrollu */
-            background-color: #faf8f2;
+            background-color: #ffffff;
             font-family: 'Montserrat', sans-serif;
             color: #000000;
             position: relative;
@@ -1139,7 +1139,7 @@
             <div class="debug-slider-group"
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <label for="picker-bg-color" style="font-size: 13px; color: #ccc;">Barva pozadí</label>
-                <input type="color" id="picker-bg-color" value="#faf8f2"
+                <input type="color" id="picker-bg-color" value="#ffffff"
                     style="background: none; border: none; cursor: pointer; width: 40px; height: 25px; padding: 0;">
             </div>
 
@@ -1184,7 +1184,7 @@
                 lineLeftHeight: 210,
                 lineRightWidthOffset: 0,
                 lineRightHeight: 134,
-                bgColor: '#faf8f2',
+                bgColor: '#ffffff',
                 titleColor: '#ff1e00',
                 titleText: 'Carp scale'
             };
@@ -1825,7 +1825,7 @@
                 applyLineStyles();
 
                 // Synchronizace barev a názvu
-                document.body.style.backgroundColor = config.bgColor || '#faf8f2';
+                document.body.style.backgroundColor = config.bgColor || '#ffffff';
 
                 const titleEl = document.querySelector('.bottom-title');
                 if (titleEl) {
@@ -1845,7 +1845,7 @@
                 // Aktualizace barvy pulzu čar
                 updatePulseColor(config.titleColor);
 
-                if (pickerBgColor) pickerBgColor.value = config.bgColor || '#faf8f2';
+                if (pickerBgColor) pickerBgColor.value = config.bgColor || '#ffffff';
                 if (pickerTitleColor) pickerTitleColor.value = config.titleColor || '#ff1e00';
                 if (selectTitleText) selectTitleText.value = config.titleText || 'Dust';
             }
