@@ -133,15 +133,6 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            transform: scale(1);
-            opacity: 0;
-        }
-
-        .center-photo.active {
-            opacity: 1;
-            transform: scale(1);
-            z-index: 2;
         }
 
         /* Info column on the right */
@@ -182,7 +173,7 @@
         }
 
         .info-text {
-            margin-top: 20px;
+            margin-top: auto;
         }
 
         .info-text p:last-child {
@@ -203,18 +194,19 @@
         .bg-line-right-wrap {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            width: 50%;
             height: 100%;
             will-change: transform;
             transform-origin: center;
         }
 
         .bg-line-left-wrap {
+            left: 5%;
             transform: rotateX(var(--mouse-rot-x-left, 0deg)) rotateY(var(--mouse-rot-y-left, 0deg));
         }
 
         .bg-line-right-wrap {
+            left: 45%;
             transform: rotateX(var(--mouse-rot-x-right, 0deg)) rotateY(var(--mouse-rot-y-right, 0deg));
         }
 
@@ -225,21 +217,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url(agent/svg_symbol.svg);
+            background-image: url('kytka.svg');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             opacity: 0.9;
             will-change: transform;
             transform-origin: center;
-        }
-
-        .bg-line-left {
-            clip-path: inset(0 50% 0 0);
-        }
-
-        .bg-line-right {
-            clip-path: inset(0 0 0 50%);
         }
 
         /* SVGs styling */
@@ -256,11 +240,25 @@
             position: absolute;
             top: 50px;
             left: 120px;
-            width: 40px;
-            height: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             z-index: 20;
             cursor: pointer;
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .arrow-top-left h1 {
+            font-family: 'The Seasons', 'Montserrat', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 24px;
+            letter-spacing: 0.02em;
+        }
+
+        .arrow-top-left .svg-icon {
+            width: 40px;
+            height: 40px;
         }
 
         .arrow-top-left:hover {
@@ -271,8 +269,8 @@
             position: absolute;
             top: 40%;
             left: calc(34% - 20.5vw - 220px);
-            width: 105px;
-            height: 105px;
+            width: 80px;
+            height: 80px;
             transform: translateY(-50%);
             transform-origin: center;
             z-index: 20;
@@ -281,15 +279,15 @@
         }
 
         .arrow-mid-left:hover {
-            transform: translateY(-50%) scale(1.6);
+            transform: translateY(-50%) scale(1.3);
         }
 
         .arrow-mid-right {
             position: absolute;
             top: 40%;
             left: calc(34% + 20.5vw + 140px);
-            width: 105px;
-            height: 105px;
+            width: 80px;
+            height: 80px;
             transform: translateY(-50%);
             transform-origin: center;
             z-index: 20;
@@ -298,7 +296,7 @@
         }
 
         .arrow-mid-right:hover {
-            transform: translateY(-50%) scale(1.6);
+            transform: translateY(-50%) scale(1.3);
         }
 
         /* Expanded hover area for middle arrows */
@@ -580,7 +578,7 @@
             }
 
             25% {
-                transform: scale(1.3);
+                transform: scale(1.15);
             }
 
             50% {
@@ -588,7 +586,7 @@
             }
 
             75% {
-                transform: scale(1.3);
+                transform: scale(1.15);
             }
 
             100% {
@@ -615,9 +613,21 @@
                 position: absolute;
                 top: 24px;
                 left: 24px;
-                width: 36px;
-                height: 36px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 z-index: 100;
+                width: auto;
+                height: auto;
+            }
+
+            .arrow-top-left h1 {
+                font-size: 20px;
+            }
+
+            .arrow-top-left .svg-icon {
+                width: 24px;
+                height: 24px;
             }
 
             .header-top-right {
@@ -919,11 +929,14 @@
         </defs>
     </svg>
 
-    <!-- Top Left Arrow -->
-    <div class="arrow-top-left svg-icon">
-        <svg viewBox="357.134 253.611 54 54" width="100%" height="100%">
-            <use href="#sipky-all" />
-        </svg>
+    <!-- Top Left: Projekty -->
+    <div class="arrow-top-left">
+        <div class="svg-icon">
+            <svg viewBox="357.134 253.611 54 54" width="100%" height="100%">
+                <use href="#sipky-all" />
+            </svg>
+        </div>
+        <h1>Projekty</h1>
     </div>
 
     <!-- Top Right: O projektu -->
@@ -965,8 +978,7 @@
 
         <!-- Center Photo with dual layer layout for premium crossfading -->
         <div class="center-photo-wrapper">
-            <div id="photo-layer-1" class="center-photo active" style="background-image: url('kapr_foto1.jpg');"></div>
-            <div id="photo-layer-2" class="center-photo" style="background-image: url('kapr_foto2.jpg');"></div>
+            <div class="center-photo" style="background-image: url('kapr_foto1.jpg');"></div>
         </div>
 
         <!-- Mid Right Arrow -->
@@ -1242,42 +1254,7 @@
                 }
             }
 
-            const photos = ['kapr_foto1.jpg', 'kapr_foto2.jpg'];
-            let currentIdx = 0;
 
-            const layer1 = document.getElementById('photo-layer-1');
-            const layer2 = document.getElementById('photo-layer-2');
-            let activeLayer = layer1;
-            let inactiveLayer = layer2;
-
-            function changePhoto(direction) {
-                if (direction === 'next') {
-                    currentIdx = (currentIdx + 1) % photos.length;
-                } else {
-                    currentIdx = (currentIdx - 1 + photos.length) % photos.length;
-                }
-
-                const nextLayer = inactiveLayer;
-                const prevLayer = activeLayer;
-
-                // Set image src
-                nextLayer.style.backgroundImage = `url('${photos[currentIdx]}')`;
-
-                // Set styles instantly with no transition
-                nextLayer.style.transition = 'none';
-                nextLayer.style.transform = 'scale(1)';
-                nextLayer.style.opacity = '1';
-                nextLayer.style.zIndex = '2';
-
-                prevLayer.style.transition = 'none';
-                prevLayer.style.transform = 'scale(1)';
-                prevLayer.style.opacity = '0';
-                prevLayer.style.zIndex = '1';
-
-                // Swap layers
-                activeLayer = nextLayer;
-                inactiveLayer = prevLayer;
-            }
 
             // Left Line animation function (R to L)
             let animLeftFrame = null;
@@ -1380,52 +1357,85 @@
             }
 
             // Variables for 3D rotation
-            let targetRotX = 0, targetRotY = 0;
-            let tiltOffsetX = 0, tiltOffsetY = 0; // Added for additive tilt
+            let targetRotXLeft = 0, targetRotYLeft = 0;
+            let targetRotXRight = 0, targetRotYRight = 0;
+            let tiltOffsetXLeft = 0, tiltOffsetYLeft = 0;
+            let tiltOffsetXRight = 0, tiltOffsetYRight = 0;
             let currentRotXLeft = 0, currentRotYLeft = 0;
             let currentRotXRight = 0, currentRotYRight = 0;
-            let isTilting = false;
-            let isMouseInside = false;
-            let isReturningFromClick = false;
-            let clickReturnTimeout = null;
+            let isTiltingLeft = false;
+            let isTiltingRight = false;
+            let isMouseInsideLeft = false;
+            let isMouseInsideRight = false;
+            let isReturningFromClickLeft = false;
+            let isReturningFromClickRight = false;
+            let clickReturnTimeoutLeft = null;
+            let clickReturnTimeoutRight = null;
 
-            const bgLinesWrapper = document.querySelector('.bg-lines-wrapper');
+            const bgLineLeftWrap = document.querySelector('.bg-line-left-wrap');
+            const bgLineRightWrap = document.querySelector('.bg-line-right-wrap');
 
-            if (bgLinesWrapper) {
+            if (bgLineLeftWrap && bgLineRightWrap) {
                 window.addEventListener('mousemove', (e) => {
                     if (!document.body.classList.contains('rotate-3d-active')) return;
 
-                    const rect = bgLinesWrapper.getBoundingClientRect();
                     const mx = e.clientX;
                     const my = e.clientY;
 
-                    // Active only within the bounds of bgLinesWrapper
-                    if (mx >= rect.left && mx <= rect.right && my >= rect.top && my <= rect.bottom) {
-                        isReturningFromClick = false;
-                        if (clickReturnTimeout) {
-                            clearTimeout(clickReturnTimeout);
-                            clickReturnTimeout = null;
+                    // Left wrap
+                    const rectLeft = bgLineLeftWrap.getBoundingClientRect();
+                    if (mx >= rectLeft.left && mx <= rectLeft.right && my >= rectLeft.top && my <= rectLeft.bottom) {
+                        isReturningFromClickLeft = false;
+                        if (clickReturnTimeoutLeft) {
+                            clearTimeout(clickReturnTimeoutLeft);
+                            clickReturnTimeoutLeft = null;
                         }
 
-                        const x = ((mx - rect.left) / rect.width - 0.5) * 2;
-                        const y = ((my - rect.top) / rect.height - 0.5) * 2;
+                        const x = ((mx - rectLeft.left) / rectLeft.width - 0.5) * 2;
+                        const y = ((my - rectLeft.top) / rectLeft.height - 0.5) * 2;
 
-                        isMouseInside = true;
-                        targetRotX = -y * 15;
-                        targetRotY = x * 15;
+                        isMouseInsideLeft = true;
+                        targetRotXLeft = -y * 15;
+                        targetRotYLeft = x * 15;
                     } else {
-                        if (isMouseInside) {
-                            isMouseInside = false;
-                            targetRotX = 0;
-                            targetRotY = 0;
+                        if (isMouseInsideLeft) {
+                            isMouseInsideLeft = false;
+                            targetRotXLeft = 0;
+                            targetRotYLeft = 0;
+                        }
+                    }
+
+                    // Right wrap
+                    const rectRight = bgLineRightWrap.getBoundingClientRect();
+                    if (mx >= rectRight.left && mx <= rectRight.right && my >= rectRight.top && my <= rectRight.bottom) {
+                        isReturningFromClickRight = false;
+                        if (clickReturnTimeoutRight) {
+                            clearTimeout(clickReturnTimeoutRight);
+                            clickReturnTimeoutRight = null;
+                        }
+
+                        const x = ((mx - rectRight.left) / rectRight.width - 0.5) * 2;
+                        const y = ((my - rectRight.top) / rectRight.height - 0.5) * 2;
+
+                        isMouseInsideRight = true;
+                        targetRotXRight = -y * 15;
+                        targetRotYRight = x * 15;
+                    } else {
+                        if (isMouseInsideRight) {
+                            isMouseInsideRight = false;
+                            targetRotXRight = 0;
+                            targetRotYRight = 0;
                         }
                     }
                 });
 
                 document.addEventListener('mouseleave', () => {
-                    isMouseInside = false;
-                    targetRotX = 0;
-                    targetRotY = 0;
+                    isMouseInsideLeft = false;
+                    isMouseInsideRight = false;
+                    targetRotXLeft = 0;
+                    targetRotYLeft = 0;
+                    targetRotXRight = 0;
+                    targetRotYRight = 0;
                 });
             }
 
@@ -1456,10 +1466,13 @@
                 deltaGamma = Math.max(-30, Math.min(30, deltaGamma));
 
                 // Map tilt angle to rotation, 0.8 scale multiplier yields elegant visual movement
-                targetRotX = -deltaBeta * 0.8;
-                targetRotY = deltaGamma * 0.8;
+                targetRotXLeft = -deltaBeta * 0.8;
+                targetRotYLeft = deltaGamma * 0.8;
+                targetRotXRight = -deltaBeta * 0.8;
+                targetRotYRight = deltaGamma * 0.8;
 
-                isMouseInside = true; // prevent automatic snapping back to zero
+                isMouseInsideLeft = true; // prevent automatic snapping back to zero
+                isMouseInsideRight = true;
             }
 
             function requestOrientationPermission() {
@@ -1490,35 +1503,39 @@
 
             function animate3D() {
                 // Rychlosti animací:
-                // - Při naklonění (kliknutí na šipku): velmi rychlý náklon (config.tiltSpeed)
-                // - Při vracení z kliknutí: rychlejší návrav (config.returnClickSpeed)
-                // - Při opuštění wrapperu: trochu pomalejší (config.returnLeaveSpeed)
-                // - Při běžném sledování myši: střední/plynulé (0.02)
                 let speedL = 0.02;
                 let speedR = 0.02;
 
-                if (isTilting) {
+                if (isTiltingLeft) {
                     speedL = config.tiltSpeed;
-                    speedR = config.tiltSpeed;
-                } else if (isReturningFromClick) {
+                } else if (isReturningFromClickLeft) {
                     speedL = config.returnClickSpeed;
-                    speedR = config.returnClickSpeed;
-                } else if (!isMouseInside) {
+                } else if (!isMouseInsideLeft) {
                     speedL = config.returnLeaveSpeed;
+                }
+
+                if (isTiltingRight) {
+                    speedR = config.tiltSpeed;
+                } else if (isReturningFromClickRight) {
+                    speedR = config.returnClickSpeed;
+                } else if (!isMouseInsideRight) {
                     speedR = config.returnLeaveSpeed;
                 }
 
                 if (document.body.classList.contains('rotate-3d-active')) {
                     // Apply additive tilt on top of target rotation
-                    let finalTargetX = targetRotX + tiltOffsetX;
-                    let finalTargetY = targetRotY + tiltOffsetY;
+                    let finalTargetXLeft = targetRotXLeft + tiltOffsetXLeft;
+                    let finalTargetYLeft = targetRotYLeft + tiltOffsetYLeft;
+
+                    let finalTargetXRight = targetRotXRight + tiltOffsetXRight;
+                    let finalTargetYRight = targetRotYRight + tiltOffsetYRight;
 
                     // Completely independent rotation scales
-                    currentRotXLeft += (finalTargetX * 0.6 - currentRotXLeft) * speedL;
-                    currentRotYLeft += (finalTargetY * 0.6 - currentRotYLeft) * speedL;
+                    currentRotXLeft += (finalTargetXLeft * 1.4 - currentRotXLeft) * speedL;
+                    currentRotYLeft += (finalTargetYLeft * 1.4 - currentRotYLeft) * speedL;
 
-                    currentRotXRight += (finalTargetX * 1.4 - currentRotXRight) * speedR;
-                    currentRotYRight += (finalTargetY * 1.4 - currentRotYRight) * speedR;
+                    currentRotXRight += (finalTargetXRight * 1.4 - currentRotXRight) * speedR;
+                    currentRotYRight += (finalTargetYRight * 1.4 - currentRotYRight) * speedR;
                 } else {
                     currentRotXLeft += (0 - currentRotXLeft) * speedL;
                     currentRotYLeft += (0 - currentRotYLeft) * speedL;
@@ -1605,27 +1622,26 @@
                     triggerVibration();
                     requestOrientationPermission();
 
-                    if (isTilting) return; // ignore click ONLY while the active tilt is running
+                    if (isTiltingLeft) return; // ignore click ONLY while the active tilt is running
 
-                    changePhoto('prev');
                     animateLeftLine();
 
                     if (document.body.classList.contains('rotate-3d-active')) {
-                        isTilting = true;
-                        isReturningFromClick = false;
-                        if (clickReturnTimeout) {
-                            clearTimeout(clickReturnTimeout);
-                            clickReturnTimeout = null;
+                        isTiltingLeft = true;
+                        isReturningFromClickLeft = false;
+                        if (clickReturnTimeoutLeft) {
+                            clearTimeout(clickReturnTimeoutLeft);
+                            clickReturnTimeoutLeft = null;
                         }
-                        tiltOffsetX = 0;
-                        tiltOffsetY = -(config.tiltAngle * 2.5); // larger effect, applied additively
+                        tiltOffsetXLeft = 0;
+                        tiltOffsetYLeft = -(config.tiltAngle * 2.5); // larger effect, applied additively
                         setTimeout(() => {
-                            isTilting = false;
-                            tiltOffsetX = 0; // Reset only the offset immediately after tilting
-                            tiltOffsetY = 0;
-                            isReturningFromClick = true;
-                            clickReturnTimeout = setTimeout(() => {
-                                isReturningFromClick = false;
+                            isTiltingLeft = false;
+                            tiltOffsetXLeft = 0; // Reset only the offset immediately after tilting
+                            tiltOffsetYLeft = 0;
+                            isReturningFromClickLeft = true;
+                            clickReturnTimeoutLeft = setTimeout(() => {
+                                isReturningFromClickLeft = false;
                             }, 1500); // 1.5 seconds is enough to return to center
                         }, config.tiltDuration); // Snappy tilt holds for tiltDuration then returns
                     }
@@ -1638,27 +1654,26 @@
                     triggerVibration();
                     requestOrientationPermission();
 
-                    if (isTilting) return; // ignore click ONLY while the active tilt is running
+                    if (isTiltingRight) return; // ignore click ONLY while the active tilt is running
 
-                    changePhoto('next');
                     animateRightLine();
 
                     if (document.body.classList.contains('rotate-3d-active')) {
-                        isTilting = true;
-                        isReturningFromClick = false;
-                        if (clickReturnTimeout) {
-                            clearTimeout(clickReturnTimeout);
-                            clickReturnTimeout = null;
+                        isTiltingRight = true;
+                        isReturningFromClickRight = false;
+                        if (clickReturnTimeoutRight) {
+                            clearTimeout(clickReturnTimeoutRight);
+                            clickReturnTimeoutRight = null;
                         }
-                        tiltOffsetX = 0;
-                        tiltOffsetY = config.tiltAngle * 2.5; // larger effect, applied additively
+                        tiltOffsetXRight = 0;
+                        tiltOffsetYRight = config.tiltAngle * 2.5; // larger effect, applied additively
                         setTimeout(() => {
-                            isTilting = false;
-                            tiltOffsetX = 0; // Reset only the offset immediately after tilting
-                            tiltOffsetY = 0;
-                            isReturningFromClick = true;
-                            clickReturnTimeout = setTimeout(() => {
-                                isReturningFromClick = false;
+                            isTiltingRight = false;
+                            tiltOffsetXRight = 0; // Reset only the offset immediately after tilting
+                            tiltOffsetYRight = 0;
+                            isReturningFromClickRight = true;
+                            clickReturnTimeoutRight = setTimeout(() => {
+                                isReturningFromClickRight = false;
                             }, 1500); // 1.5 seconds is enough to return to center
                         }, config.tiltDuration); // Snappy tilt holds for tiltDuration then returns
                     }
@@ -1669,11 +1684,11 @@
                 arrowBack.addEventListener('click', () => {
                     stopAttention();
                     triggerVibration();
-                    // Navigate back to index.html with a subtle fade-out transition
+                    // Navigate back to projects.html with a subtle fade-out transition
                     document.body.style.transition = 'opacity 0.5s ease';
                     document.body.style.opacity = '0';
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'projects.html';
                     }, 500);
                 });
             }
@@ -1819,7 +1834,7 @@
                 }
 
                 // Synchronizace barvy šipek s barvou názvu
-                const arrowContainers = document.querySelectorAll('.arrow-top-left, .arrow-mid-left, .arrow-mid-right, .header-top-right .svg-icon');
+                const arrowContainers = document.querySelectorAll('.arrow-top-left .svg-icon, .arrow-mid-left, .arrow-mid-right, .header-top-right .svg-icon');
                 arrowContainers.forEach(container => {
                     container.style.color = config.titleColor || '#ff1e00';
                 });
@@ -1926,7 +1941,7 @@
                     if (titleEl) {
                         titleEl.style.color = config.titleColor;
                     }
-                    const arrowContainers = document.querySelectorAll('.arrow-top-left, .arrow-mid-left, .arrow-mid-right, .header-top-right .svg-icon');
+                    const arrowContainers = document.querySelectorAll('.arrow-top-left .svg-icon, .arrow-mid-left, .arrow-mid-right, .header-top-right .svg-icon');
                     arrowContainers.forEach(container => {
                         container.style.color = config.titleColor;
                     });
