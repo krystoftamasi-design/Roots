@@ -1237,6 +1237,15 @@
                 updateDividers();
                 saveConfig();
             });
+
+            // Redirect any project click to index.html for now
+            document.querySelectorAll('.project-photo').forEach(photo => {
+                if (photo.tagName !== 'A') {
+                    photo.addEventListener('click', () => {
+                        window.location.href = 'index.html';
+                    });
+                }
+            });
         });
     </script>
 </body>
