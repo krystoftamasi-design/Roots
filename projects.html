@@ -170,10 +170,10 @@
         }
 
         .hero-logo {
-            width: 320px;
-            max-width: 70%;
+            width: 480px;
+            max-width: 85%;
             height: auto;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
         }
 
         .hero-text {
@@ -235,7 +235,8 @@
             fill: #000000;
         }
 
-        .project-item:hover .project-bg-svg {
+        .project-item:hover .project-bg-svg,
+        .project-item.hovered .project-bg-svg {
             --bottom-circle-fill: var(--accent-color, #ff1e00);
         }
 
@@ -275,7 +276,8 @@
             transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .project-item:hover .project-text {
+        .project-item:hover .project-text,
+        .project-item.hovered .project-text {
             opacity: 1;
             transform: translateY(0);
         }
@@ -817,6 +819,8 @@
 
             // Nastavení elementů projektu pro animaci
             let items = [];
+            let mouseX = -9999;
+            let mouseY = -9999;
             
             function setupItems() {
                 const projectEls = document.querySelectorAll('.project-item');
@@ -832,25 +836,44 @@
                     };
                 });
 
+                // Track mouse position globally
+                window.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    updateHoverStates();
+                });
+
+                window.addEventListener('scroll', () => {
+                    updateHoverStates();
+                });
+            }
+
+            function updateHoverStates() {
                 items.forEach(item => {
-                    item.el.addEventListener('mousemove', (e) => {
-                        const rect = item.el.getBoundingClientRect();
-                        const mx = e.clientX;
-                        const my = e.clientY;
-                        
-                        const x = ((mx - rect.left) / rect.width - 0.5) * 2;
-                        const y = ((my - rect.top) / rect.height - 0.5) * 2;
+                    const rect = item.el.getBoundingClientRect();
+                    const isInside = (
+                        mouseX >= rect.left &&
+                        mouseX <= rect.right &&
+                        mouseY >= rect.top &&
+                        mouseY <= rect.bottom
+                    );
+
+                    if (isInside) {
+                        const x = ((mouseX - rect.left) / rect.width - 0.5) * 2;
+                        const y = ((mouseY - rect.top) / rect.height - 0.5) * 2;
 
                         item.isMouseInside = true;
                         item.targetX = -y * config.tiltIntensity;
                         item.targetY = x * config.tiltIntensity;
-                    });
-
-                    item.el.addEventListener('mouseleave', () => {
-                        item.isMouseInside = false;
-                        item.targetX = 0;
-                        item.targetY = 0;
-                    });
+                        item.el.classList.add('hovered');
+                    } else {
+                        if (item.isMouseInside) {
+                            item.isMouseInside = false;
+                            item.targetX = 0;
+                            item.targetY = 0;
+                            item.el.classList.remove('hovered');
+                        }
+                    }
                 });
             }
 
