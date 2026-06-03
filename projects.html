@@ -901,15 +901,19 @@
             function updateHoverStates() {
                 const isMobile = window.innerWidth <= 768;
                 const centerY = window.innerHeight / 2;
-                const mobileThreshold = window.innerHeight * 0.35; // 35% od středu
 
                 items.forEach(item => {
                     const rect = item.el.getBoundingClientRect();
                     
                     if (isMobile) {
                         const itemCenterY = rect.top + rect.height / 2;
-                        const dist = Math.abs(itemCenterY - centerY);
-                        const isInside = dist < mobileThreshold;
+                        
+                        // Kousek pod střed (např. 15% výšky obrazovky pod středem)
+                        const lowerBound = centerY + (window.innerHeight * 0.15);
+                        // Větší kousek nad střed (např. 35% výšky obrazovky nad středem)
+                        const upperBound = centerY - (window.innerHeight * 0.35);
+
+                        const isInside = (itemCenterY < lowerBound) && (itemCenterY > upperBound);
 
                         if (isInside) {
                             if (!item.isMouseInside) {
