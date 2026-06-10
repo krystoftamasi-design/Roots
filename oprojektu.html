@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kořeny - O projektu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('The Seasons Light Italic.ttf') format('truetype');
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMCwgMjApIHJvdGF0ZSgtNDUpIHNjYWxlKDIuNykgdHJhbnNsYXRlKC0zMi40NDMsIC0yMS40NzEpIj48cGF0aCBkPSJNMzguNjYxLDI2LjQ4NUMzOC4yNjgsMjcuMDE2IDM3LjI1MiwyNi43NTggMzUuOTg5LDI1Ljg0NUMzNC42NzYsMjQuODk1IDMzLjg5OCwyMy4arrayMzMyLjQyMiwyMi42NzFDMzMuMjg1LDIyLjMzIDMzLjA0NSwyMi4wNDIgMzIuNzI3LDIxLjg1NkwzMi40NDMsMjEuNjlMMzIuMTU5LDIxLjg1NkMzMS44NDEsMjIuMDQyIDMxLjYwMSwyMi4zMyAxMS40NjUsMjIuNjcxQzMwLjk4OCwyMy4arrayMzAuMjEsMjQuODkzIDI4Ljg5NywyNS44NDVDMjcuNjM2LDI2LjA1OCAyNi42MTgsMjcuMDE2IDI2LjIyNiwyNi40ODVDMjU_{R1OSwyNS43OTcgMjUuNjA2LDI0LjIwMiAyNi43NDEsMjMuMzgxQzM3LjUwMiwyMi44MzEgMjguNzY5LDIyLjMzNSAzMC42MzQsMjEuNjUzQzMwLjg3NiwyMS41NjQgMzEuMDk2LDIxLjE5IDMxLjI3MywyMS4yMjlMMzIuMzk5LDIwLjAxOUwzMy40ODMsMjAuMDE5TDMzLjYwOSwyMS4yMjlDMzMuNzg1LDIxLjQxNyAzNC4wMDYsMjEuNTY0IDM0LjI0OCwyMS42NTNDMzYuMTEzLDIyLjMzNSAzNy4zOCwyMi44MzEgMzguMTQxLDIzLjM4MUMzOS4yNzYsMjQuMjAyIDM5LjE2MywyNS43OTkgMzguNjU2LDI2LjQ4NkwzOC42NjEsMjYuNDg1WiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz48L2c+PC9zdmc+') 17 17, default !important;
+        }
+
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            color: #000000;
+            position: relative;
+        }
+
+        /* Top Header Navigation */
+        .header-top {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            right: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #000000;
+            transition: opacity 0.3s ease;
+        }
+
+        .header-logo:hover {
+            opacity: 0.8;
+        }
+
+        .header-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .header-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: transparent;
+            color: #001eff;
+            font-size: 28px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .header-close:hover {
+            background-color: #001eff;
+            color: #ffffff;
+            border-color: #001eff;
+            transform: scale(1.1);
+        }
+
+        /* Background Wavy Lines */
+        .bg-decor-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 35vw;
+            max-width: 500px;
+            height: 400px;
+            pointer-events: none;
+            z-index: 2;
+            overflow: visible;
+        }
+
+        .decor-line {
+            position: absolute;
+            top: -50px;
+            right: -120px;
+            width: 140%;
+            height: auto;
+            transform: rotate(50deg);
+            transform-origin: top right;
+            opacity: 0.85;
+            transition: opacity 0.8s ease;
+        }
+
+        .decor-line-2 {
+            top: -20px;
+            right: -90px;
+        }
+
+        /* Main 3-Column Layout */
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            padding: 160px 4vw 80px 4vw;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+        }
+
+        /* Columns Base */
+        .col-about,
+        .col-team {
+            flex: 0 0 38vw;
+            max-width: 560px;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .col-about {
+            justify-content: flex-start;
+        }
+
+        .col-team {
+            justify-content: space-between;
+            animation-delay: 0.2s;
+            opacity: 0;
+            /* set to animate */
+        }
+
+        .col-divider {
+            flex: 0 0 12vw;
+            max-width: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 20px;
+            animation: fadeIn 1.2s ease-out forwards;
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+
+        .divider-svg {
+            width: 100%;
+            height: 100%;
+            max-height: 85vh;
+        }
+
+        /* Typography & Headings */
+        .cursive-title {
+            font-family: 'The Seasons', serif;
+            font-weight: 300;
+            font-style: italic;
+            font-size: clamp(65px, 7.5vw, 115px);
+            line-height: 0.95;
+            margin-bottom: 25px;
+            user-select: none;
+        }
+
+        .col-about .cursive-title {
+            color: #000000;
+        }
+
+        .col-team .cursive-title {
+            color: #001eff;
+            text-align: right;
+            align-self: flex-end;
+            margin-top: 30px;
+        }
+
+        .section-heading {
+            font-size: 19px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 35px;
+            color: #000000;
+        }
+
+        /* About Text Paragraphs */
+        .about-text p {
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: #333333;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Team Listing Column */
+        .team-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .team-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .team-group:hover {
+            transform: translateX(4px);
+        }
+
+        .team-role {
+            font-size: 15px;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .team-names {
+            font-size: 15px;
+            font-weight: 300;
+            color: #333333;
+            line-height: 1.5;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .main-container {
+                padding-top: 140px;
+            }
+
+            .cursive-title {
+                font-size: 110px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+            }
+
+            .header-top {
+                top: 25px;
+                left: 25px;
+                right: 25px;
+            }
+
+            .bg-decor-wrapper {
+                width: 60vw;
+                height: 250px;
+            }
+
+            .decor-line {
+                top: -30px;
+                right: -70px;
+                width: 120%;
+            }
+
+            .main-container {
+                flex-direction: column;
+                padding: 110px 24px 60px 24px;
+                min-height: auto;
+                gap: 50px;
+            }
+
+            .col-about,
+            .col-team {
+                flex: 1 1 auto;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .col-divider {
+                display: none;
+                /* Hide center divider on mobile */
+            }
+
+            .cursive-title {
+                font-size: 90px;
+                margin-bottom: 15px;
+            }
+
+            .section-heading {
+                font-size: 17px;
+                margin-bottom: 20px;
+            }
+
+            .about-text p {
+                font-size: 14px;
+                line-height: 1.6;
+                margin-bottom: 18px;
+                text-align: left;
+            }
+
+            .team-content {
+                gap: 18px;
+                margin-top: 10px;
+            }
+
+            .team-role,
+            .team-names {
+                font-size: 14px;
+            }
+
+            .col-team .cursive-title {
+                text-align: center;
+                align-self: center;
+                margin-top: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header class="header-top">
+        <a href="projects.html" class="header-logo" title="Zpět na projekty">
+            <img src="grafika/logo.svg" alt="Kořeny Logo">
+        </a>
+        <a href="projects.html" class="header-close" title="Zavřít">
+            &times;
+        </a>
+    </header>
+
+    <!-- Background Wavy Lines -->
+    <div class="bg-decor-wrapper">
+        <img src="grafika/%C4%8Dara.svg" class="decor-line decor-line-1" alt="">
+        <img src="grafika/%C4%8Dara2.svg" class="decor-line decor-line-2" alt="">
+    </div>
+
+    <!-- Main Content Grid -->
+    <main class="main-container">
+
+        <!-- Column 1: About the Project -->
+        <section class="col-about">
+            <h1 class="cursive-title">About</h1>
+            <h2 class="section-heading">Projekt KOŘENY</h2>
+            <div class="about-text">
+                <p>
+                    Kultura je způsob života, který nás formuje, definuje a ukazuje, co všechno pověstné „zlaté české
+                    ručičky“ dokážou. Jak ale vypadají české tradice v 21. století? Na tuto otázku odpovídá projekt
+                    <strong>KOŘENY</strong> studentů Fakulty multimediálních komunikací Univerzity Tomáše Bati ve Zlíně.
+                    Jeho hlavní myšlenkou je transformovat české a slovanské zvyky do moderního pojetí a připomenout si,
+                    odkud pocházíme, kde máme své kořeny a co nás definuje jako společenský celek. Vzniká tak fúze
+                    historie a mladistvé interpretace, která otevírá diskuzi o uchování kulturního dědictví v dnešní
+                    společnosti.
+                </p>
+                <p>
+                    Síla celého projektu spočívá v unikátní mezioborové spolupráci pěti univerzitních ateliérů. Celý
+                    proces odstartovali studenti Průmyslového designu, kteří navrhli kolekci porcelánových výrobků úzce
+                    spjatých s českými svátky. Tuto základní řadu následně doplnili svými autorskými produkty studenti
+                    ateliérů Design šperku a Design obuvi. Aby byl vizuální dojem dokonalý, studenti Produktového
+                    designu vytvořili pro každý předmět obal přímo na míru. Všechna tato rozmanitá díla nakonec propojí
+                    ateliér Tvorba prostoru, který se postará o kompletní architektonické řešení a prezentaci prací na
+                    společné výstavě.
+                </p>
+                <p>
+                    Inspirační zdroje mladých tvůrců jsou široké a sahají od duchovních tradic až po ikony české
+                    gastronomie. Kolekce tak reflektuje tradiční svátky a zvyky, jako je Otvírání studánek, Dušičky,
+                    masopust či Hromnice. Vedle lidového folklóru však designéři vzdávají hold i typicky českým
+                    vynálezům a fenoménům, bez kterých si náš stůl neumíme představit. V projektu tak potkáte nový
+                    pohled na světový unikát v podobě kostkového cukru, fenomén českého obloženého chlebíčku nebo
+                    tradiční pečivo a pivo. Projekt KOŘENY jasně dokazuje, že tradice nejsou mrtvou minulostí, ale živou
+                    inspirací pro dnešní dobu.
+                </p>
+            </div>
+        </section>
+
+        <!-- Column 2: Divider with Flower Motifs -->
+        <div class="col-divider">
+            <img src="grafika/prvek.svg" class="divider-svg" alt="">
+        </div>
+
+        <!-- Column 3: Project Team -->
+        <section class="col-team">
+            <div class="team-content">
+
+                <div class="team-group">
+                    <div class="team-role">Vedoucí projektu:</div>
+                    <div class="team-names">Jana Jagošová</div>
+                </div>
+
+                <div class="team-group">
+                    <div class="team-role">Projektový tým:</div>
+                    <div class="team-names">
+                        Gabriela Metzová<br>
+                        Karolína Borýsková<br>
+                        Jakub Hunal<br>
+                        Kateřina Rabinská<br>
+                        Adam Keprta
+                    </div>
+                </div>
+
+                <div class="team-group">
+                    <div class="team-role">Grafika:</div>
+                    <div class="team-names">Anna Drozenová</div>
+                </div>
+
+                <div class="team-group">
+                    <div class="team-role">Fotografie:</div>
+                    <div class="team-names">Vojtěch Kapounek</div>
+                </div>
+
+                <div class="team-group">
+                    <div class="team-role">Marketing:</div>
+                    <div class="team-names">PLACEHOLDER</div>
+                </div>
+
+                <div class="team-group">
+                    <div class="team-role">Tvorba Prostoru:</div>
+                    <div class="team-names">Eva Martinková</div>
+                </div>
+
+                <div class="team-group">
+                    <div class="team-role">Web:</div>
+                    <div class="team-names">Kryštof Tamaši</div>
+                </div>
+
+            </div>
+
+            <h1 class="cursive-title">Team</h1>
+        </section>
+
+    </main>
+
+
+<!-- Page Transition Overlay -->
+<div id="page-transition-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: auto; z-index: 999999; display: flex; justify-content: center; align-items: center; background-color: #ffffff; transition: background-color 0.8s ease;">
+    <div id="page-transition-flower" style="width: 100px; height: 100px; background-image: url('kytka_blue.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale(10); opacity: 1; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;"></div>
+</div>
+
+<script>
+    window.triggerPageTransition = function(url) {
+        const overlay = document.getElementById('page-transition-overlay');
+        const flower = document.getElementById('page-transition-flower');
+        if(!overlay || !flower) {
+            window.location.href = url;
+            return;
+        }
+        
+        flower.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease';
+        overlay.style.transition = 'background-color 0.8s ease';
+        
+        overlay.style.pointerEvents = 'auto';
+        overlay.style.backgroundColor = '#ffffff';
+        flower.style.opacity = '1';
+        flower.style.transform = 'scale(10)';
+        
+        setTimeout(() => {
+            window.location.href = url;
+        }, 800);
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('page-transition-overlay');
+        const flower = document.getElementById('page-transition-flower');
+        
+        if (overlay && flower) {
+            void flower.offsetWidth; // force reflow
+            
+            overlay.style.transition = 'background-color 0.6s ease 0.4s';
+            flower.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease';
+            
+            requestAnimationFrame(() => {
+                overlay.style.backgroundColor = 'transparent';
+                flower.style.transform = 'scale(0)';
+                flower.style.opacity = '0';
+                
+                setTimeout(() => {
+                    overlay.style.pointerEvents = 'none';
+                }, 1000);
+            });
+        }
+
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const target = link.getAttribute('href');
+                const isNewTab = link.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey;
+                if (target && !isNewTab && !target.startsWith('#') && !target.startsWith('mailto:') && !target.startsWith('javascript:')) {
+                    e.preventDefault();
+                    window.triggerPageTransition(target);
+                }
+            });
+        });
+    });
+</script>
+</body>
+
+
+</html>
