@@ -20,12 +20,16 @@
 
         html {
             scroll-behavior: smooth;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
 
-        html::-webkit-scrollbar, body::-webkit-scrollbar {
-            display: none;             /* Chrome, Safari and Opera */
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari and Opera */
         }
 
         *,
@@ -45,8 +49,10 @@
             font-family: 'Montserrat', sans-serif;
             color: #000000;
             position: relative;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
 
 
@@ -215,15 +221,19 @@
             0% {
                 transform: scale(1);
             }
+
             25% {
                 transform: scale(1.25);
             }
+
             50% {
                 transform: scale(1);
             }
+
             75% {
                 transform: scale(1.25);
             }
+
             100% {
                 transform: scale(1);
             }
@@ -305,10 +315,12 @@
             .projects-footer {
                 padding: 50px 10vw;
             }
+
             .footer-content {
                 flex-direction: column;
                 gap: 30px;
             }
+
             .contact-column {
                 text-align: left;
             }
@@ -1475,7 +1487,7 @@
                 heroArrow.classList.remove('attention');
                 void heroArrow.offsetWidth; // force reflow
                 heroArrow.classList.add('attention');
-                
+
                 clearTimeout(attentionAnimationTimeout);
                 attentionAnimationTimeout = setTimeout(() => {
                     if (heroArrow) heroArrow.classList.remove('attention');
@@ -1494,66 +1506,69 @@
         });
     </script>
 
-<!-- Page Transition Overlay -->
-<div id="page-transition-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: auto; z-index: 999999; display: flex; justify-content: center; align-items: center; background-color: #ffffff; transition: background-color 0.8s ease;">
-    <div id="page-transition-flower" style="width: 100px; height: 100px; background-image: url('kytka_blue.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale(10); opacity: 1; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;"></div>
-</div>
+    <!-- Page Transition Overlay -->
+    <div id="page-transition-overlay"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: auto; z-index: 999999; display: flex; justify-content: center; align-items: center; background-color: #ffffff; transition: background-color 0.8s ease;">
+        <div id="page-transition-flower"
+            style="width: 100px; height: 100px; background-image: url('kytka_blue.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale(10); opacity: 1; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;">
+        </div>
+    </div>
 
-<script>
-    window.triggerPageTransition = function(url) {
-        const overlay = document.getElementById('page-transition-overlay');
-        const flower = document.getElementById('page-transition-flower');
-        if(!overlay || !flower) {
-            window.location.href = url;
-            return;
-        }
-        
-        flower.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease';
-        overlay.style.transition = 'background-color 0.8s ease';
-        
-        overlay.style.pointerEvents = 'auto';
-        overlay.style.backgroundColor = '#ffffff';
-        flower.style.opacity = '1';
-        flower.style.transform = 'scale(10)';
-        
-        setTimeout(() => {
-            window.location.href = url;
-        }, 800);
-    };
+    <script>
+        window.triggerPageTransition = function (url) {
+            const overlay = document.getElementById('page-transition-overlay');
+            const flower = document.getElementById('page-transition-flower');
+            if (!overlay || !flower) {
+                window.location.href = url;
+                return;
+            }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const overlay = document.getElementById('page-transition-overlay');
-        const flower = document.getElementById('page-transition-flower');
-        
-        if (overlay && flower) {
-            void flower.offsetWidth; // force reflow
-            
-            overlay.style.transition = 'background-color 0.6s ease 0.4s';
-            flower.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease';
-            
-            requestAnimationFrame(() => {
-                overlay.style.backgroundColor = 'transparent';
-                flower.style.transform = 'scale(0)';
-                flower.style.opacity = '0';
-                
-                setTimeout(() => {
-                    overlay.style.pointerEvents = 'none';
-                }, 1000);
-            });
-        }
+            flower.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease';
+            overlay.style.transition = 'background-color 0.8s ease';
 
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const target = link.getAttribute('href');
-                const isNewTab = link.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey;
-                if (target && !isNewTab && !target.startsWith('#') && !target.startsWith('mailto:') && !target.startsWith('javascript:')) {
-                    e.preventDefault();
-                    window.triggerPageTransition(target);
-                }
+            overlay.style.pointerEvents = 'auto';
+            overlay.style.backgroundColor = '#ffffff';
+            flower.style.opacity = '1';
+            flower.style.transform = 'scale(10)';
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('page-transition-overlay');
+            const flower = document.getElementById('page-transition-flower');
+
+            if (overlay && flower) {
+                void flower.offsetWidth; // force reflow
+
+                overlay.style.transition = 'background-color 0.6s ease 0.4s';
+                flower.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease';
+
+                requestAnimationFrame(() => {
+                    overlay.style.backgroundColor = 'transparent';
+                    flower.style.transform = 'scale(0)';
+                    flower.style.opacity = '0';
+
+                    setTimeout(() => {
+                        overlay.style.pointerEvents = 'none';
+                    }, 1000);
+                });
+            }
+
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const target = link.getAttribute('href');
+                    const isNewTab = link.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey;
+                    if (target && !isNewTab && !target.startsWith('#') && !target.startsWith('mailto:') && !target.startsWith('javascript:')) {
+                        e.preventDefault();
+                        window.triggerPageTransition(target);
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 
 

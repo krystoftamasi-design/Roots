@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -27,11 +27,11 @@
             cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMCwgMjApIHJvdGF0ZSgtNDUpIHNjYWxlKDIuNykgdHJhbnNsYXRlKC0zMi40NDMsIC0yMS40NzEpIj48cGF0aCBkPSJNMzguNjYxLDI2LjQ4NUMzOC4yNjgsMjcuMDE2IDM3LjI1MiwyNi43NTggMzUuOTg5LDI1Ljg0NUMzNC42NzYsMjQuODk1IDMzLjg5OCwyMy4arrayMzMyLjQyMiwyMi42NzFDMzMuMjg1LDIyLjMzIDMzLjA0NSwyMi4wNDIgMzIuNzI3LDIxLjg1NkwzMi40NDMsMjEuNjlMMzIuMTU5LDIxLjg1NkMzMS44NDEsMjIuMDQyIDMxLjYwMSwyMi4zMyAxMS40NjUsMjIuNjcxQzMwLjk4OCwyMy4arrayMzAuMjEsMjQuODkzIDI4Ljg5NywyNS44NDVDMjcuNjM2LDI2LjA1OCAyNi42MTgsMjcuMDE2IDI2LjIyNiwyNi40ODVDMjU_{R1OSwyNS43OTcgMjUuNjA2LDI0LjIwMiAyNi43NDEsMjMuMzgxQzM3LjUwMiwyMi44MzEgMjguNzY5LDIyLjMzNSAzMC42MzQsMjEuNjUzQzMwLjg3NiwyMS41NjQgMzEuMDk2LDIxLjE5IDMxLjI3MywyMS4yMjlMMzIuMzk5LDIwLjAxOUwzMy40ODMsMjAuMDE5TDMzLjYwOSwyMS4yMjlDMzMuNzg1LDIxLjQxNyAzNC4wMDYsMjEuNTY0IDM0LjI0OCwyMS42NTNDMzYuMTEzLDIyLjMzNSAzNy4zOCwyMi44MzEgMzguMTQxLDIzLjM4MUMzOS4yNzYsMjQuMjAyIDM5LjE2MywyNS43OTkgMzguNjU2LDI2LjQ4NkwzOC42NjEsMjYuNDg1WiIgc3R5bGU9ImZpbGw6cmdiKDI1NSwzMCwwKTtmaWxsLXJ1bGU6bm9uemVybzsiLz48L2c+PC9zdmc+') 17 17, default !important;
         }
 
+        html,
         body {
             width: 100vw;
-            min-height: 100vh;
-            overflow-x: hidden;
-            overflow-y: auto;
+            height: 100vh;
+            overflow: hidden;
             background-color: #ffffff;
             font-family: 'Montserrat', sans-serif;
             color: #000000;
@@ -124,34 +124,39 @@
             display: flex;
             justify-content: space-between;
             align-items: stretch;
-            padding: 160px 4vw 80px 4vw;
+            padding: 120px 4vw 40px 4vw;
             width: 100%;
             max-width: 1600px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
-            min-height: 100vh;
+            height: 100vh;
         }
 
         /* Columns Base */
-        .col-about,
-        .col-team {
-            flex: 0 0 38vw;
-            max-width: 560px;
+        .col-about {
+            flex: 0 0 46vw;
+            max-width: 750px;
             display: flex;
             flex-direction: column;
             animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        .col-about {
             justify-content: flex-start;
+            position: relative;
+            left: -80px;
+            top: 50px;
         }
 
         .col-team {
-            justify-content: space-between;
+            flex: 0 0 28vw;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease-out forwards;
             animation-delay: 0.2s;
             opacity: 0;
-            /* set to animate */
+            justify-content: space-between;
+            padding-top: 80px;
+            padding-bottom: 80px;
         }
 
         .col-divider {
@@ -170,6 +175,7 @@
             width: 100%;
             height: 100%;
             max-height: 85vh;
+            transform: scale(1.3) translateX(-15px);
         }
 
         /* Typography & Headings */
@@ -179,7 +185,7 @@
             font-style: italic;
             font-size: clamp(65px, 7.5vw, 115px);
             line-height: 0.95;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
             user-select: none;
         }
 
@@ -189,9 +195,9 @@
 
         .col-team .cursive-title {
             color: #001eff;
-            text-align: right;
-            align-self: flex-end;
-            margin-top: 30px;
+            text-align: left;
+            align-self: flex-start;
+            margin-top: 10px;
         }
 
         .section-heading {
@@ -199,7 +205,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 35px;
+            margin-bottom: 15px;
             color: #000000;
         }
 
@@ -207,9 +213,9 @@
         .about-text p {
             font-size: 15px;
             font-weight: 300;
-            line-height: 1.7;
+            line-height: 1.6;
             color: #333333;
-            margin-bottom: 25px;
+            margin-bottom: 12px;
             text-align: justify;
         }
 
@@ -221,7 +227,7 @@
         .team-content {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 12px;
         }
 
         .team-group {
@@ -361,13 +367,9 @@
 
 <body>
 
-    <!-- Header Navigation -->
     <header class="header-top">
         <a href="projects.html" class="header-logo" title="Back to projects">
             <img src="grafika/logo.svg" alt="Kořeny Logo">
-        </a>
-        <a href="projects.html" class="header-close" title="Close">
-            &times;
         </a>
     </header>
 
@@ -383,34 +385,35 @@
         <!-- Column 1: About the Project -->
         <section class="col-about">
             <h1 class="cursive-title">About</h1>
-            <h2 class="section-heading">Projekt KOŘENY</h2>
+            <h2 class="section-heading">Project ROOTS</h2>
             <div class="about-text">
                 <p>
-                    Kultura je způsob života, který nás formuje, definuje a ukazuje, co všechno pověstné „zlaté české
-                    ručičky“ dokážou. Jak ale vypadají české tradice v 21. století? Na tuto otázku odpovídá projekt
-                    <strong>KOŘENY</strong> studentů Fakulty multimediálních komunikací Univerzity Tomáše Bati ve Zlíně.
-                    Jeho hlavní myšlenkou je transformovat české a slovanské zvyky do moderního pojetí a připomenout si,
-                    odkud pocházíme, kde máme své kořeny a co nás definuje jako společenský celek. Vzniká tak fúze
-                    historie a mladistvé interpretace, která otevírá diskuzi o uchování kulturního dědictví v dnešní
-                    společnosti.
+                    Culture is a way of life that shapes us, defines us, and demonstrates what the renowned "golden
+                    Czech hands" can achieve. But what do Czech traditions look like in the 21st century? The
+                    <strong>ROOTS</strong> project, created by students of the Faculty of Multimedia Communications at
+                    Tomas Bata University in Zlín, answers this very question. Its core idea is to transform Czech and
+                    Slavic customs into a modern concept and to remind us of where we come from, where our roots lie,
+                    and what defines us as a society. This results in a fusion of history and youthful interpretation,
+                    opening a discussion about the preservation of cultural heritage in contemporary society.
                 </p>
                 <p>
-                    Síla celého projektu spočívá v unikátní mezioborové spolupráci pěti univerzitních ateliérů. Celý
-                    proces odstartovali studenti Průmyslového designu, kteří navrhli kolekci porcelánových výrobků úzce
-                    spjatých s českými svátky. Tuto základní řadu následně doplnili svými autorskými produkty studenti
-                    ateliérů Design šperku a Design obuvi. Aby byl vizuální dojem dokonalý, studenti Produktového
-                    designu vytvořili pro každý předmět obal přímo na míru. Všechna tato rozmanitá díla nakonec propojí
-                    ateliér Tvorba prostoru, který se postará o kompletní architektonické řešení a prezentaci prací na
-                    společné výstavě.
+                    The strength of the entire project lies in the unique interdisciplinary collaboration of five
+                    university studios. The entire process was initiated by students of Industrial Design, who designed
+                    a collection of porcelain products closely associated with Czech holidays. This primary line was
+                    subsequently expanded with original creations by students from the Footwear Design and Jewelry
+                    Design studios. To perfect the visual impact, Product Design students crafted custom-made packaging
+                    for each individual item. All these diverse works will ultimately be brought together by the Spatial
+                    Design studio, which will manage the complete architectural layout and presentation of the pieces at
+                    a joint exhibition.
                 </p>
                 <p>
-                    Inspirační zdroje mladých tvůrců jsou široké a sahají od duchovních tradic až po ikony české
-                    gastronomie. Kolekce tak reflektuje tradiční svátky a zvyky, jako je Otvírání studánek, Dušičky,
-                    masopust či Hromnice. Vedle lidového folklóru však designéři vzdávají hold i typicky českým
-                    vynálezům a fenoménům, bez kterých si náš stůl neumíme představit. V projektu tak potkáte nový
-                    pohled na světový unikát v podobě kostkového cukru, fenomén českého obloženého chlebíčku nebo
-                    tradiční pečivo a pivo. Projekt KOŘENY jasně dokazuje, že tradice nejsou mrtvou minulostí, ale živou
-                    inspirací pro dnešní dobu.
+                    The young creators drew inspiration from a wide range of sources, spanning from spiritual traditions
+                    to icons of Czech gastronomy. The collection reflects traditional holidays and customs, such as the
+                    Opening of the Springs, All Souls' Day, Carnival, and Candlemas. In addition to folklore, the
+                    designers pay tribute to typical Czech inventions and phenomena that are essential to our dining
+                    tables. The project offers a fresh perspective on the globally unique sugar cube, the phenomenon of
+                    the Czech open-faced sandwich, as well as traditional pastries and beer. Project ROOTS clearly
+                    proves that traditions are not a dead past, but a living inspiration for the present day.
                 </p>
             </div>
         </section>
@@ -425,12 +428,12 @@
             <div class="team-content">
 
                 <div class="team-group">
-                    <div class="team-role">Vedoucí projektu:</div>
+                    <div class="team-role">Project Leader:</div>
                     <div class="team-names">Jana Jagošová</div>
                 </div>
 
                 <div class="team-group">
-                    <div class="team-role">Projektový tým:</div>
+                    <div class="team-role">Project Team:</div>
                     <div class="team-names">
                         Gabriela Metzová<br>
                         Karolína Borýsková<br>
@@ -441,12 +444,12 @@
                 </div>
 
                 <div class="team-group">
-                    <div class="team-role">Grafika:</div>
+                    <div class="team-role">Graphics:</div>
                     <div class="team-names">Anna Drozenová</div>
                 </div>
 
                 <div class="team-group">
-                    <div class="team-role">Fotografie:</div>
+                    <div class="team-role">Photography:</div>
                     <div class="team-names">Vojtěch Kapounek</div>
                 </div>
 
@@ -456,7 +459,7 @@
                 </div>
 
                 <div class="team-group">
-                    <div class="team-role">Tvorba Prostoru:</div>
+                    <div class="team-role">Spatial Design:</div>
                     <div class="team-names">Eva Martinková</div>
                 </div>
 
@@ -473,66 +476,69 @@
     </main>
 
 
-<!-- Page Transition Overlay -->
-<div id="page-transition-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: auto; z-index: 999999; display: flex; justify-content: center; align-items: center; background-color: #ffffff; transition: background-color 0.8s ease;">
-    <div id="page-transition-flower" style="width: 100px; height: 100px; background-image: url('kytka_blue.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale(10); opacity: 1; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;"></div>
-</div>
+    <!-- Page Transition Overlay -->
+    <div id="page-transition-overlay"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: auto; z-index: 999999; display: flex; justify-content: center; align-items: center; background-color: #ffffff; transition: background-color 0.8s ease;">
+        <div id="page-transition-flower"
+            style="width: 100px; height: 100px; background-image: url('kytka_blue.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale(10); opacity: 1; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;">
+        </div>
+    </div>
 
-<script>
-    window.triggerPageTransition = function(url) {
-        const overlay = document.getElementById('page-transition-overlay');
-        const flower = document.getElementById('page-transition-flower');
-        if(!overlay || !flower) {
-            window.location.href = url;
-            return;
-        }
-        
-        flower.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease';
-        overlay.style.transition = 'background-color 0.8s ease';
-        
-        overlay.style.pointerEvents = 'auto';
-        overlay.style.backgroundColor = '#ffffff';
-        flower.style.opacity = '1';
-        flower.style.transform = 'scale(10)';
-        
-        setTimeout(() => {
-            window.location.href = url;
-        }, 800);
-    };
+    <script>
+        window.triggerPageTransition = function (url) {
+            const overlay = document.getElementById('page-transition-overlay');
+            const flower = document.getElementById('page-transition-flower');
+            if (!overlay || !flower) {
+                window.location.href = url;
+                return;
+            }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const overlay = document.getElementById('page-transition-overlay');
-        const flower = document.getElementById('page-transition-flower');
-        
-        if (overlay && flower) {
-            void flower.offsetWidth; // force reflow
-            
-            overlay.style.transition = 'background-color 0.6s ease 0.4s';
-            flower.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease';
-            
-            requestAnimationFrame(() => {
-                overlay.style.backgroundColor = 'transparent';
-                flower.style.transform = 'scale(0)';
-                flower.style.opacity = '0';
-                
-                setTimeout(() => {
-                    overlay.style.pointerEvents = 'none';
-                }, 1000);
-            });
-        }
+            flower.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease';
+            overlay.style.transition = 'background-color 0.8s ease';
 
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const target = link.getAttribute('href');
-                const isNewTab = link.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey;
-                if (target && !isNewTab && !target.startsWith('#') && !target.startsWith('mailto:') && !target.startsWith('javascript:')) {
-                    e.preventDefault();
-                    window.triggerPageTransition(target);
-                }
+            overlay.style.pointerEvents = 'auto';
+            overlay.style.backgroundColor = '#ffffff';
+            flower.style.opacity = '1';
+            flower.style.transform = 'scale(10)';
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('page-transition-overlay');
+            const flower = document.getElementById('page-transition-flower');
+
+            if (overlay && flower) {
+                void flower.offsetWidth; // force reflow
+
+                overlay.style.transition = 'background-color 0.6s ease 0.4s';
+                flower.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease';
+
+                requestAnimationFrame(() => {
+                    overlay.style.backgroundColor = 'transparent';
+                    flower.style.transform = 'scale(0)';
+                    flower.style.opacity = '0';
+
+                    setTimeout(() => {
+                        overlay.style.pointerEvents = 'none';
+                    }, 1000);
+                });
+            }
+
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const target = link.getAttribute('href');
+                    const isNewTab = link.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey;
+                    if (target && !isNewTab && !target.startsWith('#') && !target.startsWith('mailto:') && !target.startsWith('javascript:')) {
+                        e.preventDefault();
+                        window.triggerPageTransition(target);
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 
 
