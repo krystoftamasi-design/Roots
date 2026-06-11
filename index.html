@@ -1072,7 +1072,7 @@
     <div class="bottom-container">
         <div class="bottom-title">
             <div class="bottom-label">Title:</div>
-            <span class="title-text-inner">Dust</span>
+            <span class="title-text-inner">Carp scale</span>
         </div>
     </div>
 
@@ -1223,8 +1223,8 @@
                 <label for="select-title-text" style="font-size: 13px; color: #ccc;">Text názvu</label>
                 <select id="select-title-text"
                     style="background: #222; color: #fff; border: 1px solid #444; padding: 4px 8px; font-size: 12px; border-radius: 4px; outline: none; cursor: pointer; font-family: 'Montserrat', sans-serif;">
-                    <option value="Carp scale">Carp scale</option>
-                    <option value="Dust" selected>Dust</option>
+                    <option value="Carp scale" selected>Carp scale</option>
+                    <option value="Dust">Dust</option>
                 </select>
             </div>
 
@@ -1293,7 +1293,7 @@
                 lineRightHeight: 300,
                 bgColor: '#ffffff',
                 titleColor: '#001eff',
-                titleText: 'Dust'
+                titleText: 'Carp scale'
             };
 
             let config = { ...DEFAULTS };
@@ -1337,9 +1337,9 @@
                 try {
                     const saved = localStorage.getItem('kapr_anim_config');
                     const configVersion = localStorage.getItem('kapr_anim_config_version');
-                    if (!saved || configVersion !== 'v4') {
+                    if (!saved || configVersion !== 'v5') {
                         config = { ...DEFAULTS };
-                        localStorage.setItem('kapr_anim_config_version', 'v4');
+                        localStorage.setItem('kapr_anim_config_version', 'v5');
                         saveConfig();
                     } else {
                         const parsed = JSON.parse(saved);
