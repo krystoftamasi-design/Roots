@@ -156,7 +156,7 @@
             /* Proměnná pro počet sloupců */
             grid-template-columns: repeat(var(--cols, 3), 1fr);
             column-gap: 2vw;
-            row-gap: var(--row-gap, 6vw);
+            row-gap: var(--row-gap, 10vw);
             padding: 0 4vw;
             width: 100%;
             position: relative;
@@ -334,7 +334,7 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 1.2;
-            transform: scale(var(--project-scale, 1));
+            transform: scale(var(--project-scale, 1.12));
             transform-origin: center;
             z-index: 2;
         }
@@ -377,7 +377,7 @@
         .project-photo {
             display: block;
             position: relative;
-            width: var(--photo-size, 45%);
+            width: var(--photo-size, 51%);
             aspect-ratio: 1/1;
             /* Čtvercová fotka */
             background-color: #333;
@@ -402,7 +402,7 @@
         .project-text {
             font-family: 'Montserrat', sans-serif;
             font-weight: 400;
-            font-size: var(--text-size, 20px);
+            font-size: var(--text-size, 14px);
             color: #000;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -925,25 +925,25 @@
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-text-size">Velikost textu projektů (px)</label>
-                    <span id="val-text-size">18</span>
+                    <span id="val-text-size">14</span>
                 </div>
-                <input type="range" id="slider-text-size" min="12" max="36" step="1" value="18">
+                <input type="range" id="slider-text-size" min="12" max="36" step="1" value="14">
             </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-photo-size">Velikost fotek projektů (%)</label>
-                    <span id="val-photo-size">62%</span>
+                    <span id="val-photo-size">51%</span>
                 </div>
-                <input type="range" id="slider-photo-size" min="20" max="80" step="1" value="62">
+                <input type="range" id="slider-photo-size" min="20" max="80" step="1" value="51">
             </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-project-size">Velikost celých projektů (%)</label>
-                    <span id="val-project-size">90%</span>
+                    <span id="val-project-size">112%</span>
                 </div>
-                <input type="range" id="slider-project-size" min="50" max="150" step="1" value="90">
+                <input type="range" id="slider-project-size" min="50" max="150" step="1" value="112">
             </div>
 
             <div class="debug-slider-group">
@@ -968,25 +968,25 @@
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-tilt-speed">Rychlost náklonu po najetí</label>
-                    <span id="val-tilt-speed">0.05</span>
+                    <span id="val-tilt-speed">0.04</span>
                 </div>
-                <input type="range" id="slider-tilt-speed" min="0.01" max="0.2" step="0.01" value="0.05">
+                <input type="range" id="slider-tilt-speed" min="0.01" max="0.2" step="0.01" value="0.04">
             </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-return-speed">Rychlost návratu po opuštění</label>
-                    <span id="val-return-speed">0.02</span>
+                    <span id="val-return-speed">0.01</span>
                 </div>
-                <input type="range" id="slider-return-speed" min="0.01" max="0.2" step="0.01" value="0.02">
+                <input type="range" id="slider-return-speed" min="0.01" max="0.2" step="0.01" value="0.01">
             </div>
 
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-tilt-intensity">Intenzita náklonu (multiplikátor)</label>
-                    <span id="val-tilt-intensity">15</span>
+                    <span id="val-tilt-intensity">31</span>
                 </div>
-                <input type="range" id="slider-tilt-intensity" min="5" max="45" step="1" value="15">
+                <input type="range" id="slider-tilt-intensity" min="5" max="45" step="1" value="31">
             </div>
 
             <div class="debug-submenu-divider"
@@ -1020,15 +1020,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             const DEFAULTS = {
                 columns: 3,
-                tiltSpeed: 0.05,
-                returnSpeed: 0.02,
-                tiltIntensity: 15,
+                tiltSpeed: 0.04,
+                returnSpeed: 0.01,
+                tiltIntensity: 31,
                 bgColor: '#ffffff',
                 accentColor: '#001eff',
-                textSize: 18,
-                photoSize: 62,
+                textSize: 14,
+                photoSize: 51,
                 rowGap: 10,
-                projectSize: 90,
+                projectSize: 112,
                 rotatePhoto: false
             };
 
@@ -1038,9 +1038,9 @@
                 try {
                     const saved = localStorage.getItem('projects_anim_config_v2');
                     const configVersion = localStorage.getItem('projects_anim_config_version');
-                    if (!saved || configVersion !== 'v3') {
+                    if (!saved || configVersion !== 'v4') {
                         config = { ...DEFAULTS };
-                        localStorage.setItem('projects_anim_config_version', 'v3');
+                        localStorage.setItem('projects_anim_config_version', 'v4');
                         saveConfig();
                     } else {
                         config = { ...DEFAULTS, ...JSON.parse(saved) };
