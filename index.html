@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Carp scale - O projektu</title>
+    <title>Carp scale</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -72,10 +72,13 @@
 
         .bottom-label {
             position: absolute;
-            bottom: 0.9em; /* Posunuto níž, přímo nad text */
-            left: 0.08em; /* Mírné zarovnání s nakloněným písmem */
+            bottom: 0.9em;
+            /* Posunuto níž, přímo nad text */
+            left: 0.08em;
+            /* Mírné zarovnání s nakloněným písmem */
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.05em; /* Odpovídá 14px při 280px fontu */
+            font-size: 0.05em;
+            /* Odpovídá 14px při 280px fontu */
             font-style: normal;
             font-weight: 600;
             color: #000000;
@@ -824,17 +827,21 @@
                 bottom: 40px;
                 gap: 15px;
             }
+
             .info-specs {
                 margin-top: 50px;
             }
+
             .info-text-title {
                 margin-top: -10px;
                 font-size: 24px;
                 margin-bottom: 15px;
             }
+
             .info-text {
                 font-size: 16px;
             }
+
             .info-spacer {
                 min-height: 10px;
             }
@@ -846,16 +853,20 @@
                 bottom: 30px;
                 gap: 10px;
             }
+
             .info-spacer {
                 display: none;
             }
+
             .info-specs {
                 margin-top: 20px;
             }
+
             .info-text-title {
                 font-size: 20px;
                 margin-bottom: 10px;
             }
+
             .info-text {
                 font-size: 14px;
                 line-height: 1.5;
@@ -979,12 +990,12 @@
                 <use href="#sipky-all" />
             </svg>
         </div>
-        <h1>Projekty</h1>
+        <h1>Projects</h1>
     </div>
 
     <!-- Top Right: O projektu -->
     <a href="oprojektu.html" class="header-top-right" style="text-decoration: none; color: inherit;">
-        <h1>O projektu</h1>
+        <h1>About</h1>
         <div class="svg-icon">
             <svg viewBox="361.975 49.288 54 54" width="100%" height="100%">
                 <use href="#sipky-all" />
@@ -1060,7 +1071,7 @@
     <!-- Bottom Left Title -->
     <div class="bottom-container">
         <div class="bottom-title">
-            <div class="bottom-label">Název:</div>
+            <div class="bottom-label">Title:</div>
             <span class="title-text-inner">Dust</span>
         </div>
     </div>
@@ -2161,66 +2172,69 @@
     </script>
 
 
-<!-- Page Transition Overlay -->
-<div id="page-transition-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: auto; z-index: 999999; display: flex; justify-content: center; align-items: center; background-color: #ffffff; transition: background-color 0.8s ease;">
-    <div id="page-transition-flower" style="width: 100px; height: 100px; background-image: url('kytka_blue.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale(10); opacity: 1; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;"></div>
-</div>
+    <!-- Page Transition Overlay -->
+    <div id="page-transition-overlay"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: auto; z-index: 999999; display: flex; justify-content: center; align-items: center; background-color: #ffffff; transition: background-color 0.8s ease;">
+        <div id="page-transition-flower"
+            style="width: 100px; height: 100px; background-image: url('kytka_blue.svg'); background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale(10); opacity: 1; transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;">
+        </div>
+    </div>
 
-<script>
-    window.triggerPageTransition = function(url) {
-        const overlay = document.getElementById('page-transition-overlay');
-        const flower = document.getElementById('page-transition-flower');
-        if(!overlay || !flower) {
-            window.location.href = url;
-            return;
-        }
-        
-        flower.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease';
-        overlay.style.transition = 'background-color 0.8s ease';
-        
-        overlay.style.pointerEvents = 'auto';
-        overlay.style.backgroundColor = '#ffffff';
-        flower.style.opacity = '1';
-        flower.style.transform = 'scale(10)';
-        
-        setTimeout(() => {
-            window.location.href = url;
-        }, 800);
-    };
+    <script>
+        window.triggerPageTransition = function (url) {
+            const overlay = document.getElementById('page-transition-overlay');
+            const flower = document.getElementById('page-transition-flower');
+            if (!overlay || !flower) {
+                window.location.href = url;
+                return;
+            }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const overlay = document.getElementById('page-transition-overlay');
-        const flower = document.getElementById('page-transition-flower');
-        
-        if (overlay && flower) {
-            void flower.offsetWidth; // force reflow
-            
-            overlay.style.transition = 'background-color 0.6s ease 0.4s';
-            flower.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease';
-            
-            requestAnimationFrame(() => {
-                overlay.style.backgroundColor = 'transparent';
-                flower.style.transform = 'scale(0)';
-                flower.style.opacity = '0';
-                
-                setTimeout(() => {
-                    overlay.style.pointerEvents = 'none';
-                }, 1000);
-            });
-        }
+            flower.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease';
+            overlay.style.transition = 'background-color 0.8s ease';
 
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const target = link.getAttribute('href');
-                const isNewTab = link.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey;
-                if (target && !isNewTab && !target.startsWith('#') && !target.startsWith('mailto:') && !target.startsWith('javascript:')) {
-                    e.preventDefault();
-                    window.triggerPageTransition(target);
-                }
+            overlay.style.pointerEvents = 'auto';
+            overlay.style.backgroundColor = '#ffffff';
+            flower.style.opacity = '1';
+            flower.style.transform = 'scale(10)';
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('page-transition-overlay');
+            const flower = document.getElementById('page-transition-flower');
+
+            if (overlay && flower) {
+                void flower.offsetWidth; // force reflow
+
+                overlay.style.transition = 'background-color 0.6s ease 0.4s';
+                flower.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease';
+
+                requestAnimationFrame(() => {
+                    overlay.style.backgroundColor = 'transparent';
+                    flower.style.transform = 'scale(0)';
+                    flower.style.opacity = '0';
+
+                    setTimeout(() => {
+                        overlay.style.pointerEvents = 'none';
+                    }, 1000);
+                });
+            }
+
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const target = link.getAttribute('href');
+                    const isNewTab = link.getAttribute('target') === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey;
+                    if (target && !isNewTab && !target.startsWith('#') && !target.startsWith('mailto:') && !target.startsWith('javascript:')) {
+                        e.preventDefault();
+                        window.triggerPageTransition(target);
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 
 
