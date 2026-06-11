@@ -115,7 +115,8 @@
             overflow: hidden;
             border-radius: 4px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-            pointer-events: none;
+            pointer-events: auto;
+            cursor: pointer;
             transform-origin: center;
         }
 
@@ -1803,6 +1804,30 @@
                 });
             }
 
+            // Fullscreen photo overlay logic
+            const photoWrapper = document.querySelector('.center-photo-wrapper');
+            const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+            const fullscreenImage = document.getElementById('fullscreen-image');
+
+            if (photoWrapper && fullscreenOverlay && fullscreenImage) {
+                photoWrapper.addEventListener('click', () => {
+                    const currentPhoto = photos[currentPhotoIndex];
+                    fullscreenImage.src = currentPhoto;
+                    fullscreenOverlay.style.display = 'flex';
+                    void fullscreenOverlay.offsetWidth;
+                    fullscreenOverlay.style.opacity = '1';
+                    fullscreenImage.style.transform = 'scale(1)';
+                });
+
+                fullscreenOverlay.addEventListener('click', () => {
+                    fullscreenOverlay.style.opacity = '0';
+                    fullscreenImage.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        fullscreenOverlay.style.display = 'none';
+                    }, 300);
+                });
+            }
+
             // Debug Menu Toggle Logic
             document.addEventListener('keydown', (e) => {
                 // Ignore keydown if user is typing in an input
@@ -2171,6 +2196,14 @@
         });
     </script>
 
+
+    <!-- Fullscreen Photo Overlay -->
+    <div id="fullscreen-overlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.95); z-index: 99990; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: auto;">
+        <img id="fullscreen-image" src="" alt="Fullscreen"
+            style="max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);">
+        <div style="position: absolute; top: 30px; right: 40px; color: #ffffff; font-size: 35px; font-weight: 300; font-family: sans-serif; cursor: pointer; user-select: none;">&times;</div>
+    </div>
 
     <!-- Page Transition Overlay -->
     <div id="page-transition-overlay"
