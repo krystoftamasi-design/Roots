@@ -334,7 +334,7 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 1.2;
-            transform: scale(var(--project-scale, 1.12));
+            transform: scale(var(--project-scale, 1.01));
             transform-origin: center;
             z-index: 2;
         }
@@ -941,9 +941,9 @@
             <div class="debug-slider-group">
                 <div class="slider-label-row">
                     <label for="slider-project-size">Velikost celých projektů (%)</label>
-                    <span id="val-project-size">112%</span>
+                    <span id="val-project-size">101%</span>
                 </div>
-                <input type="range" id="slider-project-size" min="50" max="150" step="1" value="112">
+                <input type="range" id="slider-project-size" min="50" max="150" step="1" value="101">
             </div>
 
             <div class="debug-slider-group">
@@ -1028,7 +1028,7 @@
                 textSize: 14,
                 photoSize: 51,
                 rowGap: 10,
-                projectSize: 112,
+                projectSize: 101,
                 rotatePhoto: false
             };
 
@@ -1038,9 +1038,9 @@
                 try {
                     const saved = localStorage.getItem('projects_anim_config_v2');
                     const configVersion = localStorage.getItem('projects_anim_config_version');
-                    if (!saved || configVersion !== 'v4') {
+                    if (!saved || configVersion !== 'v5') {
                         config = { ...DEFAULTS };
-                        localStorage.setItem('projects_anim_config_version', 'v4');
+                        localStorage.setItem('projects_anim_config_version', 'v5');
                         saveConfig();
                     } else {
                         config = { ...DEFAULTS, ...JSON.parse(saved) };
